@@ -98,9 +98,7 @@ menu: nav/home.html
             class="h-96 w-auto fade-in">
         <h3 class="text-6xl font-bold mt-8 text-gray-900 fade-in">Our Mission</h3>
         <p class="text-3xl text-gray-700 mt-4 max-w-5xl fade-in">
-            At Legendary Motorsport, we strive to create a community where car lovers can collaborate,
-            share, and support each other. From vintage classics to modern supercars, every car has a story,
-            and we’re here to help you tell yours.
+            At MediPulse, we strive to create a community where social media lovers can collaborate, share, and support each other. From analyzing posts to providing improvements to your social media posts.
         </p>
     </section>
 
