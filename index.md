@@ -87,9 +87,7 @@ menu: nav/home.html
 <section id="about" class="h-screen flex flex-col items-center justify-center text-center">
         <h2 class="text-7xl font-extrabold text-indigo-500 fade-in mb-6">About Us</h2>
         <p class="text-3xl text-gray-700 max-w-5xl fade-in">
-            Legendary Motorsport is the ultimate social media hub for car enthusiasts! Whether you're looking to share
-            your experiences, troubleshoot car issues, or showcase stunning photos of your vehicle, our platform is here
-            for you. We aim to connect gearheads, provide solutions, and celebrate the love of cars.
+            MediPulse is your next social media platform
         </p>
     </section>
 
