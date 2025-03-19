@@ -55,7 +55,7 @@ menu: nav/home.html
             </ul>
 
             <div class="flex justify-center my-6">
-                <img src="{{site.baseurl}}/images/Datacollection.webp" alt="Data Collection" class="w-3/4 h-auto rounded-lg shadow-md">
+                <img src="{{site.baseurl}}/images/Datacollection.webp" alt="Data Collection" class="w-1/2 h-auto rounded-lg shadow-md">
             </div>
 
             <p class="text-gray-700 mt-4">Your data is collected whenever you visit a website for purposes such as security, marketing, or analytics. This information is called <span class="font-bold">PII (Personally Identifiable Information)</span>. PII helps sites like Google create a personalized searching experience for you based on data such as:</p>
