@@ -3,7 +3,7 @@ description: "Palomar Social Media Optimization"
 owner_name: Gavin Copley
 github_username: GavinCopley
 github_repo: "Palomar-MediPulse"
-baseurl: "/MediPulse"
+baseurl: "/Palomar-MediPulse"
 future: true
 remote_theme: jekyll/minima
 minima:
