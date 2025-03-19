@@ -79,7 +79,7 @@ menu: nav/home.html
 <!-- Welcome Section -->
  <section id="welcome" class="h-screen flex items-center justify-center text-center bg-gray-900 text-white">
         <h1 class="text-8xl font-extrabold fade-in">
-            Welcome to <span class="text-indigo-500">PCoC</span>
+            Welcome to <span class="text-indigo-500">MediPulse</span>
         </h1>
     </section>
 
