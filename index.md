@@ -44,7 +44,7 @@ menu: nav/home.html
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PCoC</title>
+    <title>MediPulse</title>
     <script src="https://cdn.tailwingidcss.com"></script>
     <style>
         /* Fade-in animation */
