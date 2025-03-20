@@ -6,7 +6,6 @@ comments: true
 permalink: /csp/teach/safe_computing/all
 menu: nav/home.html
 ---
-<!DOCTYPE html>
 <html lang="en">
 
 <head>
