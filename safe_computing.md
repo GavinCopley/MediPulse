@@ -265,6 +265,6 @@ menu: nav/home.html
     <p class="text-gray-700">Go to <a class="text-indigo-500 hover:text-indigo-700" href="https://www.security.org/how-secure-is-my-password/">security.org/how-secure-is-my-password</a> and make a secure password.</p>
     <p class="text-gray-700">Remember: secure passwords have capitalized letters, numbers, and special characters</p>
     <h3 class="mt-6 text-lg font-semibold text-gray-900">Lesson Homework</h3>
-    <p class="text-gray-700">Answer the multiple choice questions on this <a class="text-indigo-500 hover:text-indigo-700" href="https://www.security.org/how-secure-is-my-password/">NOT DONE Google Form</a></p>
+    <p class="text-gray-700">Answer the multiple choice questions on this <a class="text-indigo-500 hover:text-indigo-700" href="https://docs.google.com/forms/d/e/1FAIpQLSeelbZF4chgYZLIyDe2uTnH7mSem1tUBnwqUcKTQtgEQYzqJA/viewform?usp=dialog">NOT DONE Google Form</a></p>
   </div>
 </div>
