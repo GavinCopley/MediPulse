@@ -71,6 +71,9 @@ menu: nav/home.html
 
         <img src="https://i.postimg.cc/K8jcHnb9/image.png" alt="Social Media Demographics" class="w-1/2 mx-auto mb-6 rounded-md shadow-md" />
 
+        <h3 class="text-xl font-semibold mb-4">Popcorn Hack #2:</h3>
+        <p class="mb-4">Think about a time when you felt a technology didn't work well for you. What was the issue, and how did it make you feel? Write a short paragraph describing the experience and suggest one way the technology could be improved to be more inclusive.</p>
+
         <hr class="my-6 border-gray-300">
 
         <h2 class="text-2xl font-semibold mb-4">The HP Camera Incident: A Closer Look</h2>
