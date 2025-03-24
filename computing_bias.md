@@ -132,6 +132,7 @@ menu: nav/home.html
             <li><strong>Identify Potential Bias:</strong> Are there any patterns in the recommendations or interactions that might suggest bias? Does the platform cater well to different user groups (e.g., age, gender, language, accessibility)?</li>
             <li><strong>Analyze the Cause:</strong> What might be causing this bias? Consider data collection, algorithm design, or lack of diverse testing.</li>
             <li><strong>Propose a Solution:</strong> Suggest one way the developers could reduce bias and make the platform more inclusive.</li>
+            LINK TO MC: https://forms.gle/R9iSwyZkWW9N51be6
         </ul>
     </div>
 
