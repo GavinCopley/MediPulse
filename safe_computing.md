@@ -311,7 +311,7 @@ menu: nav/home.html
   <section class="bg-white shadow-lg rounded-lg p-6 mb-8">
     <h3 class="text-lg font-semibold text-gray-900">Popcorn Hack</h3>
     <p class="text-gray-700">Go to <a class="text-indigo-500 hover:text-indigo-700" href="https://www.security.org/how-secure-is-my-password/">security.org/how-secure-is-my-password</a> and make a secure password.</p>
-    <p class="text-gray-700">Remember: secure passwords have capitalized letters, numbers, and special characters</p>
+    <p class="text-gray-700">Write and discuss with the people around you about what makes a good password.</p>
   </section>
 
   <!-- Section: Lesson Homework -->
