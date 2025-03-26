@@ -139,7 +139,7 @@ menu: nav/home.html
             <div class="bg-gray-800 rounded-lg p-8 shadow-lg min-w-[300px] min-h-[350px] flex flex-col justify-between">
                 <p class="text-3xl italic leading-relaxed">
                     "Legendary Motorsport is the<br>
-                    best platform for car enthusiasts!<br>
+                    best platform for phone enthusiasts!<br>
                     I've learned so much<br>
                     and connected with amazing people."
                 </p>
@@ -148,7 +148,7 @@ menu: nav/home.html
             <div class="bg-gray-800 rounded-lg p-8 shadow-lg min-w-[300px] min-h-[350px] flex flex-col justify-between">
                 <p class="text-3xl italic leading-relaxed">
                     "A fantastic community where<br>
-                    I can share my car photography<br>
+                    I can share my photography<br>
                     and get great feedback."
                 </p>
                 <h3 class="mt-6 font-bold text-xl">- Jamie T.</h3>
@@ -156,14 +156,14 @@ menu: nav/home.html
             <div class="bg-gray-800 rounded-lg p-8 shadow-lg min-w-[300px] min-h-[350px] flex flex-col justify-between">
                 <p class="text-3xl italic leading-relaxed">
                     "The forums have been super helpful<br>
-                    for troubleshooting car problems.<br>
+                    for troubleshooting problems.<br>
                     Highly recommended!"
                 </p>
                 <h3 class="mt-6 font-bold text-xl">- Chris M.</h3>
             </div>
             <div class="bg-gray-800 rounded-lg p-8 shadow-lg min-w-[300px] min-h-[350px] flex flex-col justify-between">
                 <p class="text-3xl italic leading-relaxed">
-                    "I’ve found my dream car<br>
+                    "I’ve found my dream platform<br>
                     thanks to the resources<br>
                     on this platform.<br>
                     Amazing work!"
@@ -173,14 +173,14 @@ menu: nav/home.html
             <div class="bg-gray-800 rounded-lg p-8 shadow-lg min-w-[300px] min-h-[350px] flex flex-col justify-between">
                 <p class="text-3xl italic leading-relaxed">
                     "This community has been incredible<br>
-                    for finding advice on car parts."
+                    for finding advice on social media posts."
                 </p>
                 <h3 class="mt-6 font-bold text-xl">- Morgan S.</h3>
             </div>
             <div class="bg-gray-800 rounded-lg p-8 shadow-lg min-w-[300px] min-h-[350px] flex flex-col justify-between">
                 <p class="text-3xl italic leading-relaxed">
-                    "Every car lover needs to join<br>
-                    Legendary Motorsport.<br>
+                    "Every phone lover needs to join<br>
+                    MediPulse.<br>
                     It’s a game-changer."
                 </p>
                 <h3 class="mt-6 font-bold text-xl">- Riley D.</h3>
@@ -189,7 +189,7 @@ menu: nav/home.html
             <div class="bg-gray-800 rounded-lg p-8 shadow-lg min-w-[300px] min-h-[350px] flex flex-col justify-between">
                 <p class="text-3xl italic leading-relaxed">
                     "Legendary Motorsport is the<br>
-                    best platform for car enthusiasts!<br>
+                    best platform for phone adicts!<br>
                     I've learned so much<br>
                     and connected with amazing people."
                 </p>
@@ -198,7 +198,7 @@ menu: nav/home.html
             <div class="bg-gray-800 rounded-lg p-8 shadow-lg min-w-[300px] min-h-[350px] flex flex-col justify-between">
                 <p class="text-3xl italic leading-relaxed">
                     "A fantastic community where<br>
-                    I can share my car photography<br>
+                    I can share my social media photography<br>
                     and get great feedback."
                 </p>
                 <h3 class="mt-6 font-bold text-xl">- Jamie T.</h3>
@@ -206,14 +206,14 @@ menu: nav/home.html
             <div class="bg-gray-800 rounded-lg p-8 shadow-lg min-w-[300px] min-h-[350px] flex flex-col justify-between">
                 <p class="text-3xl italic leading-relaxed">
                     "The forums have been super helpful<br>
-                    for troubleshooting car problems.<br>
+                    for troubleshooting social problems.<br>
                     Highly recommended!"
                 </p>
                 <h3 class="mt-6 font-bold text-xl">- Chris M.</h3>
             </div>
             <div class="bg-gray-800 rounded-lg p-8 shadow-lg min-w-[300px] min-h-[350px] flex flex-col justify-between">
                 <p class="text-3xl italic leading-relaxed">
-                    "I’ve found my dream car<br>
+                    "I’ve found my dream post<br>
                     thanks to the resources<br>
                     on this platform.<br>
                     Amazing work!"
@@ -222,15 +222,15 @@ menu: nav/home.html
             </div>
             <div class="bg-gray-800 rounded-lg p-8 shadow-lg min-w-[300px] min-h-[350px] flex flex-col justify-between">
                 <p class="text-3xl italic leading-relaxed">
-                    "This community has been incredible<br>
-                    for finding advice on car parts."
+                    "This website is tuff<br>
+                    lowk recomend."
                 </p>
                 <h3 class="mt-6 font-bold text-xl">- Morgan S.</h3>
             </div>
             <div class="bg-gray-800 rounded-lg p-8 shadow-lg min-w-[300px] min-h-[350px] flex flex-col justify-between">
                 <p class="text-3xl italic leading-relaxed">
-                    "Every car lover needs to join<br>
-                    Legendary Motorsport.<br>
+                    "Every social media lover needs to join<br>
+                    MediPulse.<br>
                     It’s a game-changer."
                 </p>
                 <h3 class="mt-6 font-bold text-xl">- Riley D.</h3>
