@@ -138,7 +138,7 @@ menu: nav/home.html
             <!-- Original Testimonials -->
             <div class="bg-gray-800 rounded-lg p-8 shadow-lg min-w-[300px] min-h-[350px] flex flex-col justify-between">
                 <p class="text-3xl italic leading-relaxed">
-                    "Legendary Motorsport is the<br>
+                    "MediPulse is the<br>
                     best platform for phone enthusiasts!<br>
                     I've learned so much<br>
                     and connected with amazing people."
@@ -188,7 +188,7 @@ menu: nav/home.html
             <!-- Duplicate Testimonials for Infinite Scroll -->
             <div class="bg-gray-800 rounded-lg p-8 shadow-lg min-w-[300px] min-h-[350px] flex flex-col justify-between">
                 <p class="text-3xl italic leading-relaxed">
-                    "Legendary Motorsport is the<br>
+                    "MediPulse is the<br>
                     best platform for phone adicts!<br>
                     I've learned so much<br>
                     and connected with amazing people."
@@ -254,9 +254,9 @@ menu: nav/home.html
 
 <!-- Call-to-Action Section -->
 <section id="cta" class="h-screen flex flex-col items-center justify-center bg-gradient-to-r from-red-600 to-indigo-500 text-white">
-        <h2 class="text-7xl font-bold mb-6 fade-in">Join the Legendary Motorsport Community</h2>
+        <h2 class="text-7xl font-bold mb-6 fade-in">Join the MediPulse Community</h2>
         <p class="text-3xl max-w-4xl text-center mb-8 fade-in">
-            Connect with car enthusiasts from around the world, share your experiences, and explore amazing content about cars!
+            Connect with phone enthusiasts from around the world, share your experiences, and explore amazing content about cars!
         </p>
         <a href="{{site.baseurl}}/signup" class="bg-white text-red-600 text-3xl px-8 py-4 rounded-lg shadow-lg font-bold transition-transform transform hover:scale-110 fade-in">
             Get Started Now
@@ -266,7 +266,7 @@ menu: nav/home.html
  <!-- Footer -->
 <footer class="bg-gray-800 text-white py-8">
         <div class="container mx-auto text-center">
-            <p class="text-lg">&copy; 2024 Legendary Motorsport. All rights reserved.</p>
+            <p class="text-lg">&copy; 2024 MediPulse. All rights reserved.</p>
             <div class="mt-4">
                 <a href="#" class="text-gray-400 hover:text-white mx-2">Facebook</a>
                 <a href="#" class="text-gray-400 hover:text-white mx-2">Twitter</a>
