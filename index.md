@@ -104,7 +104,7 @@ menu: nav/home.html
 
  <!-- Featured Cars Section -->
  <section id="featured-vids" class="py-20 bg-gray-100">
-        <h2 class="text-7xl font-bold text-center text-blue-600 mb-10 fade-in">Featured Videos</h2>
+        <h2 class="text-7xl font-bold text-center text-indigo-600 mb-10 fade-in">Featured Videos</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <a href="{{site.baseurl}}/gas" class="bg-white rounded-lg shadow-lg overflow-hidden transform transition-transform duration-500 hover:scale-105">
                     <img src="images/palomar1.png" alt="Meeting Dr. Peters" class="w-full h-64 object-cover">
