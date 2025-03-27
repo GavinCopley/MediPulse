@@ -103,28 +103,28 @@ menu: nav/home.html
     </section>
 
  <!-- Featured Cars Section -->
- <section id="featured-cars" class="py-20 bg-gray-100">
-        <h2 class="text-7xl font-bold text-center text-red-600 mb-10 fade-in">Featured Cars</h2>
+ <section id="featured-vids" class="py-20 bg-gray-100">
+        <h2 class="text-7xl font-bold text-center text-red-600 mb-10 fade-in">Featured Vids</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <a href="{{site.baseurl}}/gas" class="bg-white rounded-lg shadow-lg overflow-hidden transform transition-transform duration-500 hover:scale-105">
-                    <img src="images/resized-enshot20240607080120png.png" alt="Gas Car" class="w-full h-64 object-cover">
+                    <img src="images/palomar1.png" alt="Meeting Dr. Peters" class="w-full h-64 object-cover">
                     <div class="p-6">
-                        <h3 class="text-3xl font-bold mb-2">Gas Car</h3>
-                        <p class="text-xl text-gray-700">The timeless classic fueled by gasoline, offering reliability and power.</p>
+                        <h3 class="text-3xl font-bold mb-2">Meeting Dr. Peters</h3>
+                        <p class="text-xl text-gray-700"> Interviewing Dr. Peters on effects of sunscreen.</p>
                     </div>
                 </a>
                 <a href="{{site.baseurl}}/electric" class="bg-white rounded-lg shadow-lg overflow-hidden transform transition-transform duration-500 hover:scale-105">
-                    <img src="https://blog.vipautoaccessories.com/wp-content/uploads/2024/08/2024_Super-Chrome-Red-Gloss-Wrap_0Hero2.jpg" alt="Electric Car" class="w-full h-64 object-cover">
+                    <img src="images/palomar2.png" alt="Meeting Dr. Knutson" class="w-full h-64 object-cover">
                     <div class="p-6">
-                        <h3 class="text-3xl font-bold mb-2">Electric Car</h3>
-                        <p class="text-xl text-gray-700">Maximum efficiency and eco-friendliness, quick acceleration and futuristic design.</p>
+                        <h3 class="text-3xl font-bold mb-2">Meeting Dr. Knutson</h3>
+                        <p class="text-xl text-gray-700">Interviewing Dr. Knutson on ground breaking discovery.</p>
                     </div>
                 </a>
                 <a href="{{site.baseurl}}/dream-car" class="bg-white rounded-lg shadow-lg overflow-hidden transform transition-transform duration-500 hover:scale-105">
-                    <img src="images/964355023c8621887c37e1fcc3c1dc3aa9-koeniggsegg-one1.2x.h473.w710.png" alt="Dream Car" class="w-full h-64 object-cover">
+                    <img src="images/palomar3.png" alt="Meeting Dr. Maltz" class="w-full h-64 object-cover">
                     <div class="p-6">
-                        <h3 class="text-3xl font-bold mb-2">Dream Car</h3>
-                        <p class="text-xl text-gray-700">A hypercar designed for the ultimate driving experience.</p>
+                        <h3 class="text-3xl font-bold mb-2">Meeting Dr. Maltz</h3>
+                        <p class="text-xl text-gray-700">Learn about how to choose a Primary physician.</p>
                     </div>
                 </a>
             </div>
