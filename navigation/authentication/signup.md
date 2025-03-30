@@ -62,7 +62,13 @@ menu: nav/home.html
         const signupOptions = {
             URL: `${pythonURI}/api/user`,
             method: "POST",
+            mode: "cors",
             cache: "no-cache",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+                "X-Origin": "client"
+            },
             body: {
                 name: document.getElementById("name").value,
                 uid: document.getElementById("username").value,
@@ -72,9 +78,10 @@ menu: nav/home.html
 
         fetch(signupOptions.URL, {
             method: signupOptions.method,
-            headers: {
-                "Content-Type": "application/json"
-            },
+            mode: signupOptions.mode,
+            cache: signupOptions.cache,
+            credentials: signupOptions.credentials,
+            headers: signupOptions.headers,
             body: JSON.stringify(signupOptions.body)
         })
         .then(response => {
@@ -84,8 +91,7 @@ menu: nav/home.html
             return response.json();
         })
         .then(data => {
-            document.getElementById("message").textContent = "Signup successful!";
-            window.location.href = '{{site.baseurl}}/login';
+            window.location.href = '{{site.baseurl}}/survey';
         })
         .catch(error => {
             console.error("Signup Error:", error);
