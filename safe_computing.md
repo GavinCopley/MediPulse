@@ -288,7 +288,7 @@ menu: nav/home.html
             <!-- Keylogging -->
             <section class="mt-8">
                 <h3 class="text-2xl font-bold text-gray-800 mb-4">Keylogging - IOC-2.C.2</h3>
-                <p class="text-gray-700">Keylogging is the use of a program to record every keystroke...</p>
+                <p class="text-gray-700">Keylogging is the use of a program to record every keystroke made by a computer user in order to gain fraudulent access to passwords and other confidential information.</p>
                 <ul class="list-disc list-inside text-gray-700 mt-4 space-y-2">
                     <li>Keylogging does have a few benefits: parental controls or employee monitoring in a business setting</li>
                     <li>Other than that, keylogging almost always happens when you install malware</li>
