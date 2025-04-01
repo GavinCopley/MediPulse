@@ -130,7 +130,7 @@ menu: nav/home.html
                 <p class="text-gray-700">A strong password is easy for the user to remember but difficult for others to guess.</p>
                 <ul class="list-disc list-inside text-gray-700 mt-4 space-y-2">
                     <li>Example: <span class="font-bold">Q3!xT@9$z</span> is a strong password, while <span class="font-bold">John123</span> is weak because it can be easily guessed.</li>
-                    <li>Use at least <span class="font-bold">16 characters</span> whenever possible.</li>
+                    <li>Use at least <span class="font-bold">8 characters</span> whenever possible.</li>
                     <li>Create a <span class="font-bold">passphrase</span> using 4-7 random words.</li>
                     <li>Use <span class="font-bold">different passwords</span> for different websites and accounts to prevent one breach from compromising all accounts.</li>
                 </ul>
