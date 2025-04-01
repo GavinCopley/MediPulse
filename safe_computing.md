@@ -120,8 +120,6 @@ menu: nav/home.html
                 <h3 class="text-2xl font-bold text-gray-800 mb-4">Authentication Measures - IOC-2.B.1</h3>
                 <p class="text-gray-700">Authentication measures protect devices and information from unauthorized access.</p>
                 <ul class="list-disc list-inside text-gray-700 mt-4 space-y-2">
-                    <li><span class="font-bold">Strong Passwords:</span> Should be at least 10 characters long and include symbols, numbers, and uppercase/lowercase letters.</li>
-                    <li>Avoid using easily guessed passwords like birthdays or common words.</li>
                     <li><span class="font-bold">Multi-Factor Authentication (MFA):</span> Requires users to verify their identity using multiple authentication factors.</li>
                     <li>Example: Logging into an account with a password and a code sent to a mobile device.</li>
                 </ul>
