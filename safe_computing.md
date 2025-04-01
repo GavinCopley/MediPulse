@@ -100,9 +100,7 @@ menu: nav/home.html
                 </ul>
             </div>
         </section>
-
     </div>
-
 </body>
 
 <body class="bg-gray-100 text-gray-900">
@@ -113,12 +111,10 @@ menu: nav/home.html
             <h1 class="text-4xl font-bold text-blue-600">Safe Computing - B</h1>
             <p class="mt-2 text-lg text-gray-700">Safe computing from Collegeboard's AP CSP curriculum</p>
         </div>
-
         <!-- Main Content -->
         <section class="bg-white shadow-lg rounded-lg p-6 mb-8">
             <h2 class="text-2xl font-bold text-gray-800 mb-4">Key Topic - IOC-2.B</h2>
             <p class="text-gray-700">Explain how computing resources can be protected and misused.</p>
-
             <!-- Authentication Measures -->
             <section class="mt-8">
                 <h3 class="text-2xl font-bold text-gray-800 mb-4">Authentication Measures - IOC-2.B.1</h3>
@@ -130,7 +126,6 @@ menu: nav/home.html
                     <li>Example: Logging into an account with a password and a code sent to a mobile device.</li>
                 </ul>
             </section>
-
             <!-- Strong Passwords -->
             <section class="mt-8">
                 <h3 class="text-2xl font-bold text-gray-800 mb-4">Strong Passwords - IOC-2.B.2</h3>
@@ -142,7 +137,6 @@ menu: nav/home.html
                     <li>Use <span class="font-bold">different passwords</span> for different websites and accounts to prevent one breach from compromising all accounts.</li>
                 </ul>
             </section>
-
             <!-- MFA & Security Layers -->
             <section class="mt-8">
                 <h3 class="text-2xl font-bold text-gray-800 mb-4">Multifactor Authentication & Security Layers - IOC-2.B.3 & IOC-2.B.4</h3>
@@ -157,7 +151,6 @@ menu: nav/home.html
                     <img src="{{site.baseurl}}/images/mfa.png" alt="Multi-Factor Authentication" class="w-1/2 h-auto rounded-lg shadow-md">
                 </div>
             </section>
-
             <!-- Popcorn Hack: Quiz -->
             <section class="bg-white shadow-lg rounded-lg p-6 mb-8">
                 <h2 class="text-2xl font-bold text-purple-600 mb-4">🎯 Pop Quiz: Multifactor Authentication</h2>
@@ -176,7 +169,6 @@ menu: nav/home.html
                     <span class="hidden group-hover:inline text-gray-700"> (Usernames are identifiers, not authentication factors.)</span>
                 </p>
             </section>
-
             <!-- Encryption -->
             <section class="mt-8">
                 <h3 class="text-2xl font-bold text-gray-800 mb-4">Encryption - IOC-2.B.5</h3>
@@ -194,7 +186,6 @@ menu: nav/home.html
                     <li><span class="font-bold">Public Key Encryption:</span> Uses a public key for encryption and a private key for decryption.</li>
                 </ul>
             </section>
-
             <!-- Popcorn Hack: Encryption Question -->
             <section class="bg-white shadow-lg rounded-lg p-6 mb-8 mt-8">
                 <h2 class="text-2xl font-bold text-purple-600 mb-4">🔒 Popcorn Hack: Encryption Quiz</h2>
@@ -223,17 +214,18 @@ menu: nav/home.html
                     </ul>
                 </div>
             </section>
-
             <!-- Certificate Authorities -->
             <section class="mt-8">
                 <h3 class="text-2xl font-bold text-gray-800 mb-4">Certificate Authorities - IOC-2.B.6</h3>
-                <p class="text-gray-700">Certificate authorities (CAs) issue digital certificates to validate encryption keys and enable secure communications.</p>
+                <p class="text-gray-700">Certificate authorities (CAs) are trusted entities that issue digital certificates to verify the authenticity of websites and enable secure encrypted communications.</p>
+                <p class="text-gray-700 mt-4">One widely used tool for obtaining and managing certificates is <span class="font-bold">Certbot</span>, an open-source client developed by the Electronic Frontier Foundation (EFF).</p>
                 <ul class="list-disc list-inside text-gray-700 mt-4 space-y-2">
-                    <li>Users can obtain certificates manually by submitting a Certificate Signing Request (CSR) to a CA like DigiCert or GlobalSign.</li>
-                    <li>Automated tools like <span class="font-bold">Certbot</span> streamline the certificate issuance and renewal process for HTTPS security.</li>
+                    <li><span class="font-bold">Certbot</span> automates the process of obtaining, installing, and renewing SSL/TLS certificates from Let’s Encrypt.</li>
+                    <li>It simplifies the setup of HTTPS by handling domain validation and configuring web servers like Apache and Nginx.</li>
+                    <li>Certbot helps website owners maintain security by automatically renewing certificates before they expire, reducing the risk of downtime or security lapses.</li>
+                    <li>Its user-friendly command-line interface makes it accessible for both beginners and experienced administrators.</li>
                 </ul>
             </section>
-
             <!-- Antivirus -->
             <section class="mt-8">
                 <h3 class="text-2xl font-bold text-gray-800 mb-4">Antivirus and Malware Protection - IOC-2.B.7</h3>
@@ -244,7 +236,6 @@ menu: nav/home.html
                     <li><span class="font-bold">Best Practices:</span> Keep antivirus software updated, enable real-time protection, and avoid unknown downloads.</li>
                 </ul>
             </section>
-
             <!-- Privacy -->
             <section class="mt-8">
                 <h3 class="text-2xl font-bold text-gray-800 mb-4">Privacy and Permissions - IOC-2.B.11</h3>
@@ -257,7 +248,6 @@ menu: nav/home.html
             </section>
         </section>
     </div>
-
     <!-- Lesson 2.C Container -->
     <div class="container mx-auto p-6">
         <!-- Header -->
@@ -265,14 +255,24 @@ menu: nav/home.html
             <h1 class="text-4xl font-bold text-blue-600">Safe Computing - C</h1>
             <p class="mt-2 text-lg text-gray-700">Safe computing from Collegeboard's AP CSP curriculum</p>
         </div>
-
         <!-- Main Content -->
         <section class="bg-white shadow-lg rounded-lg p-6 mb-8">
             <h2 class="text-2xl font-bold text-gray-800 mb-4">Key Topic - IOC-2.C</h2>
             <p class="text-gray-700">Explain how unauthorized access to computing resources is gained.</p>
-
             <!-- Phishing -->
             <section class="mt-8">
+                <div class="flex justify-center">
+                    <div class="aspect-[9/16] w-[250px]">
+                        <iframe 
+                            class="w-full h-full rounded-lg shadow-lg" 
+                            src="https://www.youtube.com/embed/xp2pEjViQ1s" 
+                            title="YouTube video player" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
                 <h3 class="text-2xl font-bold text-gray-800 mb-4">Phishing - IOC-2.C.1</h3>
                 <p class="text-gray-700">Phishing is a technique that attempts to trick a user into providing personal information. That personal information can then be used to access sensitive online resources, such as bank accounts and emails.</p>
                 <ul class="list-disc list-inside text-gray-700 mt-4 space-y-2">
@@ -285,7 +285,6 @@ menu: nav/home.html
                     <img src="{{site.baseurl}}/images/mobile_phishing.png" alt="Phishing Example" class="w-1/2 h-auto rounded-lg shadow-md">
                 </div>
             </section>
-
             <!-- Keylogging -->
             <section class="mt-8">
                 <h3 class="text-2xl font-bold text-gray-800 mb-4">Keylogging - IOC-2.C.2</h3>
@@ -298,7 +297,6 @@ menu: nav/home.html
                     <li><span class="font-bold">Prevention:</span> Don't install untrusted software or apps</li>
                 </ul>
             </section>
-
             <!-- Data Interception -->
             <section class="mt-8">
                 <h3 class="text-2xl font-bold text-gray-800 mb-4">Data Interception - IOC-2.C.3</h3>
@@ -308,7 +306,6 @@ menu: nav/home.html
                     <li><span class="font-bold">Prevention:</span> Connect to secure networks and verify the address of websites you connect to are legitimate.</li>
                 </ul>
             </section>
-
             <!-- Rogue Access Point -->
             <section class="mt-8">
                 <h3 class="text-2xl font-bold text-gray-800 mb-4">Rogue Access Point - IOC-2.C.3</h3>
@@ -321,7 +318,6 @@ menu: nav/home.html
                     <li><span class="font-bold">Prevention:</span> Connect to trusted networks and only send information via websites with HTTPS (Hypertext Transfer Protocol Secure), to ensure data is encrypted.</li>
                 </ul>
             </section>
-
             <!-- Malicious Links -->
             <section class="mt-8">
                 <h3 class="text-2xl font-bold text-gray-800 mb-4">Malicious Links - IOC-2.C.5</h3>
@@ -332,7 +328,6 @@ menu: nav/home.html
                     <li><span class="font-bold">Prevention:</span> Don't click links that you don't know.</li>
                 </ul>
             </section>
-
             <!-- Malicious Emails -->
             <section class="mt-8">
                 <h3 class="text-2xl font-bold text-gray-800 mb-4">Malicious Emails - IOC-2.C.6</h3>
@@ -344,7 +339,6 @@ menu: nav/home.html
                     <li><span class="font-bold">Prevention:</span> Don't download files or click random links from emails. If you have to, make sure its someone you know and can verify if it was actually them.</li>
                 </ul>
             </section>
-
             <!-- Freeware -->
             <section class="mt-8">
                 <h3 class="text-2xl font-bold text-gray-800 mb-4">Freeware - IOC-2.C.7</h3>
@@ -355,20 +349,17 @@ menu: nav/home.html
                     <li><span class="font-bold">Prevention:</span> Don't download software for free, especially if there is a popular paid version. If you have to, make sure it's from a trusted site that you know and can verify has no malware.</li>
                 </ul>
             </section>
-
             <!-- Real Life Example -->
             <section class="mt-8">
                 <h3 class="text-2xl font-bold text-gray-800 mb-4">Real Life Example</h3>
                 <p class="text-gray-700">You connect to an unsecure free wifi at a coffee shop. You send private information on an unsecure http website (NOT https). What you don't know is that someone set up a rogue access point in the shop. They named their fake wifi "WiFi Coffee Shop Free" while the real WiFi was "Free Coffee Shop WiFi." They can read and even manipulate the packets you send via the network before they relay it to the real network. Or they can send you to a different website than the one you intended to go to, possibly injecting malware or stealing info.</p>
             </section>
-
             <!-- Popcorn Hack -->
             <section class="bg-white shadow-lg rounded-lg p-6 mb-8 mt-8">
                 <h2 class="text-2xl font-bold text-purple-600 mb-4">🔑 Popcorn Hack: Password Security</h2>
                 <p class="text-gray-700">Go to <a href="https://www.security.org/how-secure-is-my-password/" class="text-indigo-500 hover:text-indigo-700">security.org/how-secure-is-my-password</a> and make a secure password.</p>
                 <p class="text-gray-700 mt-2">Write and discuss with the people around you about what makes a good password.</p>
             </section>
-
             <!-- Homework -->
             <section class="bg-white shadow-lg rounded-lg p-6 mb-8">
                 <h2 class="text-2xl font-bold text-gray-800 mb-4">Lesson Homework</h2>
