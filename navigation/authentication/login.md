@@ -112,7 +112,7 @@ menu: nav/home.html
                 return response.json();
             })
             .then(data => {
-                window.location.href = '{{site.baseurl}}/profile';
+                window.location.href = '{{site.baseurl}}/survey';
             })
             .catch(error => {
                 console.error("Python Database Error:", error);
