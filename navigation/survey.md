@@ -5,17 +5,8 @@ permalink: /survey
 search_exclude: true
 menu: nav/home.html 
 ---
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Survey Form</title>
-    <script defer src="survey.js"></script>
-    <script defer src="api.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 flex items-center justify-center h-screen">
+
+<div class="bg-gray-100 flex items-center justify-center h-screen">
     <div class="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
         <h2 class="text-xl font-bold text-gray-800 mb-4">Survey Form</h2>
         <form id="surveyForm" class="space-y-4">
@@ -26,8 +17,8 @@ menu: nav/home.html
 
             <hr>
             <input type="number" id="age" placeholder="Age" required class="input-field">
-            <input type="number" id="weight" placeholder="Weight (kg)" required class="input-field">
-            <input type="number" id="height" placeholder="Height (cm)" required class="input-field">
+            <input type="number" id="weight" placeholder="Weight (lbs)" required class="input-field">
+            <input type="number" id="height" placeholder="Height (ft'inches)" required class="input-field">
             <input type="text" id="allergies" placeholder="Allergies" class="input-field">
             <input type="text" id="conditions" placeholder="Medical Conditions" class="input-field">
             <input type="text" id="ethnicity" placeholder="Ethnicity" required class="input-field">
@@ -74,5 +65,5 @@ menu: nav/home.html
             border-radius: 5px;
         }
     </style>
-</body>
-</html>
+</div>
+
