@@ -44,7 +44,7 @@ menu: nav/home.html
                 ethnicity: document.getElementById("ethnicity").value,
             };
 
-            const response = await fetch("/api/survey", {
+            const response = await fetch("{{site.baseurl}}/api/survey", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formData),

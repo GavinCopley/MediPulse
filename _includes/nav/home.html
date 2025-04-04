@@ -7,8 +7,6 @@
             class="text-sm/6 font-semibold text-gray-900"
             >Computing Bias</a
         >
-        
-            
     </div>
     <div class="p-2" id="home-btn">
         <a href="{{site.baseurl}}/" class="text-sm/6 font-bold text-indigo-500"
@@ -47,24 +45,23 @@
     <div
         class="col-span-2 flex gap-x-12 mt-3 justify-self-start"
         id="link-bar-2"
-
-        
-           <!-- Help dropdown (hover version) -->
-            <div class="relative group">
-                <a
-                    href="{{site.baseurl}}/csp/teach/safe_computing/all"
-                    class="text-sm/6 font-semibold text-gray-900"
-                    id="help-button"
-                >Safe Computing</a>
-                <div
-                    id="help-dropdown"
-                    class="dropdown-content absolute hidden group-hover:block bg-white shadow-md rounded-lg mt-2 w-40 text-sm font-semibold text-gray-900"
-                >
-                    <a href="{{site.baseurl}}/csp/teach/safe_computing/a" class="block px-4 py-2">Part A</a>
-                    <a href="{{site.baseurl}}/csp/teach/safe_computing/b" class="block px-4 py-2">Part B</a>
-                    <a href="{{site.baseurl}}/csp/teach/safe_computing/c" class="block px-4 py-2">Part C</a>
-                </div>
+    >
+        <!-- Help dropdown (hover version) -->
+        <div class="relative group">
+            <a
+                href="{{site.baseurl}}/csp/teach/safe_computing/all"
+                class="text-sm/6 font-semibold text-gray-900"
+                id="help-button"
+            >Safe Computing</a>
+            <div
+                id="help-dropdown"
+                class="dropdown-content absolute hidden group-hover:block bg-white shadow-md rounded-lg mt-2 w-40 text-sm font-semibold text-gray-900"
+            >
+                <a href="{{site.baseurl}}/csp/teach/safe_computing/a" class="block px-4 py-2">Part A</a>
+                <a href="{{site.baseurl}}/csp/teach/safe_computing/b" class="block px-4 py-2">Part B</a>
+                <a href="{{site.baseurl}}/csp/teach/safe_computing/c" class="block px-4 py-2">Part C</a>
             </div>
+        </div>
 
         <a
             id="signup-login"
@@ -72,13 +69,25 @@
             class="hover:drop-shadow-xl z-10 right-6 absolute text-indigo-500 font-extrabold tracking-tight"
             >Sign Up | Login</a
         >
-        <a
-            hidden
-            id="profile"
-            href="{{site.baseurl}}/profile"
-            class="hover:drop-shadow-xl z-10 right-6 absolute text-indigo-500 font-extrabold tracking-tight"
-            >Profile</a
-        >
+        <div class="relative group">
+            <a
+                hidden
+                id="profile"
+                href="{{site.baseurl}}/profile"
+                class="hover:drop-shadow-xl z-10 right-6 absolute text-indigo-500 font-extrabold tracking-tight"
+            >Profile</a>
+            <div
+                id="profile-dropdown"
+                class="dropdown-content absolute hidden group-hover:block bg-white shadow-md rounded-lg mt-2 w-40 text-sm font-semibold text-gray-900"
+            >
+                <a href="{{site.baseurl}}/profile" class="block px-4 py-2">View Profile</a>
+                <a
+                    href="{{site.baseurl}}/logout"
+                    id="logout-button"
+                    class="block px-4 py-2 text-red-500"
+                >Logout</a>
+            </div>
+        </div>
     </div>
 </header>
 
@@ -95,40 +104,65 @@
         getCredentials() // Call the function to get credentials
             .then((data) => {
                 if (data) {
-                    //IF DATA THEN THE USER IS AUTHENTICATED/LOGGED IN
+                    // IF DATA THEN THE USER IS AUTHENTICATED/LOGGED IN
                     console.log("LOGGED IN");
                     loginLink.hidden = true;
                     profileLink.hidden = false;
                 } else {
-                    //USER IS NOT AUTHENTICATED/LOGGED IN
+                    // USER IS NOT AUTHENTICATED/LOGGED IN
                 }
             })
             .catch((err) => {
                 // General error handler
                 console.error("Error fetching credentials: ", err);
-                // Handle any errors that occurred during getCredentials
             });
     });
+
     function getCredentials() {
         const URL = pythonURI + "/api/user";
         return fetch(URL, fetchOptions)
             .then((response) => {
-                // API response handler
                 if (response.status !== 200) {
                     console.error("HTTP status code: " + response.status);
-                    return null; // prepares to stop the chain by returning null.
+                    return null;
                 }
-                return response.json(); // plans to continue the chain with the data.
+                return response.json();
             })
             .then((data) => {
-                // Data handler from the previous promise
-                if (data === null) return null; // stops the chain, returns null.
-                return data; // returns data to caller
+                if (data === null) return null;
+                return data;
             })
             .catch((err) => {
-                // General error handler
                 console.error("Fetch error: ", err);
                 return null;
             });
     }
 </script>
+
+<style>
+/* Ensure the dropdown stays visible when hovering over it */
+#profile-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%; /* Position the dropdown directly below the parent */
+    left: 0;
+    z-index: 10;
+}
+
+.group:hover #profile-dropdown,
+#profile-dropdown:hover {
+    display: block;
+}
+
+/* Add padding to the dropdown to make it easier to hover */
+#profile-dropdown a {
+    padding: 8px 12px;
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+#profile-dropdown a:hover {
+    background-color: #f3f4f6; /* Light gray background on hover */
+}
+</style>
