@@ -1,93 +1,58 @@
-<header
-    class="z-10 sticky justify-items-center w-full top-0 grid grid-cols-5 bg-white justify-center p-4 drop-shadow"
->
-    <div class="col-span-2 flex gap-x-12 mt-3 justify-self-end" id="link-bar-1">
-        <a
-            href="{{site.baseurl}}/csp/teach/computing_bias"
-            class="text-sm/6 font-semibold text-gray-900"
-            >Computing Bias</a
-        >
-    </div>
-    <div class="p-2" id="home-btn">
-        <a href="{{site.baseurl}}/" class="text-sm/6 font-bold text-indigo-500"
-            ><svg
-                xmlns="http://www.w3.org/2000/svg"
-                x="0px"
-                y="0px"
-                width="30"
-                height="30"
-                viewBox="0,0,256,256"
-            >
-                <g
-                    fill="#4760de"
-                    fill-rule="nonzero"
-                    stroke="none"
-                    stroke-width="1"
-                    stroke-linecap="butt"
-                    stroke-linejoin="miter"
-                    stroke-miterlimit="10"
-                    stroke-dasharray=""
-                    stroke-dashoffset="0"
-                    font-family="none"
-                    font-weight="none"
-                    font-size="none"
-                    text-anchor="none"
-                    style="mix-blend-mode: normal"
-                >
-                    <g transform="scale(10.66667,10.66667)">
-                        <path
-                            d="M12,2c-0.26712,0.00003 -0.52312,0.10694 -0.71094,0.29688l-10.08594,8.80078c-0.12774,0.09426 -0.20313,0.24359 -0.20312,0.40234c0,0.27614 0.22386,0.5 0.5,0.5h2.5v8c0,0.552 0.448,1 1,1h4c0.552,0 1,-0.448 1,-1v-6h4v6c0,0.552 0.448,1 1,1h4c0.552,0 1,-0.448 1,-1v-8h2.5c0.27614,0 0.5,-0.22386 0.5,-0.5c0.00001,-0.15876 -0.07538,-0.30808 -0.20312,-0.40234l-10.08008,-8.79492c-0.00194,-0.00196 -0.0039,-0.00391 -0.00586,-0.00586c-0.18782,-0.18994 -0.44382,-0.29684 -0.71094,-0.29687z"
-                        ></path>
-                    </g>
-                </g></svg
-        ></a>
-    </div>
-    <div
-        class="col-span-2 flex gap-x-12 mt-3 justify-self-start"
-        id="link-bar-2"
-    >
-        <!-- Help dropdown (hover version) -->
-        <div class="relative group">
-            <a
-                href="{{site.baseurl}}/csp/teach/safe_computing/all"
-                class="text-sm/6 font-semibold text-gray-900"
-                id="help-button"
-            >Safe Computing</a>
-            <div
-                id="help-dropdown"
-                class="dropdown-content absolute hidden group-hover:block bg-white shadow-md rounded-lg mt-2 w-40 text-sm font-semibold text-gray-900"
-            >
-                <a href="{{site.baseurl}}/csp/teach/safe_computing/a" class="block px-4 py-2">Part A</a>
-                <a href="{{site.baseurl}}/csp/teach/safe_computing/b" class="block px-4 py-2">Part B</a>
-                <a href="{{site.baseurl}}/csp/teach/safe_computing/c" class="block px-4 py-2">Part C</a>
-            </div>
+<header class="z-10 sticky top-0 w-full bg-white p-4 drop-shadow flex items-center justify-between flex-wrap">
+    <!-- Hamburger Menu Button -->
+    <button class="sm:hidden block text-gray-700 focus:outline-none" id="menu-toggle">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+    </button>
+
+    <!-- Navigation Links Container -->
+    <div id="nav-links" class="w-full sm:flex sm:items-center sm:justify-center hidden sm:flex-row flex-col gap-x-12">
+        <!-- Left Side -->
+        <div class="flex gap-x-6 items-center justify-center mb-2 sm:mb-0" id="link-bar-1">
+            <a href="{{site.baseurl}}/csp/teach/computing_bias" class="text-sm font-semibold text-gray-900">
+                Computing Bias
+            </a>
         </div>
 
-        <a
-            id="signup-login"
-            href="{{site.baseurl}}/noauth"
-            class="hover:drop-shadow-xl z-10 right-6 absolute text-indigo-500 font-extrabold tracking-tight"
-            >Sign Up | Login</a
-        >
-        <div class="relative group">
-            <a
-                hidden
-                id="profile"
-                href="{{site.baseurl}}/profile"
-                class="hover:drop-shadow-xl z-10 right-6 absolute text-indigo-500 font-extrabold tracking-tight"
-            >Profile</a>
-            <div
-                id="profile-dropdown"
-                class="dropdown-content absolute hidden group-hover:block bg-white shadow-md rounded-lg mt-2 w-40 text-sm font-semibold text-gray-900"
-            >
-                <a href="{{site.baseurl}}/profile" class="block px-4 py-2">View Profile</a>
-                <a
-                    href="{{site.baseurl}}/logout"
-                    id="logout-button"
-                    class="block px-4 py-2 text-red-500"
-                >Logout</a>
+        <!-- Center (Home Button) -->
+        <div class="flex justify-center items-center mb-2 sm:mb-0 px-4">
+            <a href="{{site.baseurl}}/" class="text-sm font-bold text-indigo-500">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0,0,256,256">
+                    <g fill="#4760de">
+                        <g transform="scale(10.66667,10.66667)">
+                            <path
+                                d="M12,2c-0.26712,0.00003 -0.52312,0.10694 -0.71094,0.29688l-10.08594,8.80078c-0.12774,0.09426 -0.20313,0.24359 -0.20312,0.40234c0,0.27614 0.22386,0.5 0.5,0.5h2.5v8c0,0.552 0.448,1 1,1h4c0.552,0 1,-0.448 1,-1v-6h4v6c0,0.552 0.448,1 1,1h4c0.552,0 1,-0.448 1,-1v-8h2.5c0.27614,0 0.5,-0.22386 0.5,-0.5c0.00001,-0.15876 -0.07538,-0.30808 -0.20312,-0.40234l-10.08008,-8.79492c-0.00194,-0.00196 -0.0039,-0.00391 -0.00586,-0.00586c-0.18782,-0.18994 -0.44382,-0.29684 -0.71094,-0.29687z">
+                            </path>
+                        </g>
+                    </g>
+                </svg>
+            </a>
+        </div>
+
+        <!-- Right Side -->
+        <div class="flex gap-x-6 items-center justify-center mb-2 sm:mb-0" id="link-bar-2">
+            <div class="relative group">
+                <a href="{{site.baseurl}}/csp/teach/safe_computing/all" class="text-sm font-semibold text-gray-900" id="help-button">
+                    Safe Computing
+                </a>
+                <div id="help-dropdown" class="dropdown-content absolute hidden group-hover:block bg-white shadow-md rounded-lg mt-2 w-40 text-sm font-semibold text-gray-900">
+                    <a href="{{site.baseurl}}/csp/teach/safe_computing/a" class="block px-4 py-2">Part A</a>
+                    <a href="{{site.baseurl}}/csp/teach/safe_computing/b" class="block px-4 py-2">Part B</a>
+                    <a href="{{site.baseurl}}/csp/teach/safe_computing/c" class="block px-4 py-2">Part C</a>
+                </div>
             </div>
         </div>
+    </div>
+
+    <!-- Sign Up / Login -->
+    <div class="sm:absolute sm:right-6 flex sm:flex-row flex-col items-center mt-2 sm:mt-0">
+        <a id="signup-login" href="{{site.baseurl}}/noauth" class="hover:drop-shadow-xl text-indigo-500 font-extrabold tracking-tight">
+            Sign Up | Login
+        </a>
+        <a hidden id="profile" href="{{site.baseurl}}/profile" class="hover:drop-shadow-xl text-indigo-500 font-extrabold tracking-tight">
+            Profile
+        </a>
     </div>
 </header>
 
@@ -99,9 +64,15 @@
 
     const loginLink = document.getElementById("signup-login");
     const profileLink = document.getElementById("profile");
+    const menuToggle = document.getElementById("menu-toggle");
+    const navLinks = document.getElementById("nav-links");
+
+    menuToggle.addEventListener("click", () => {
+        navLinks.classList.toggle("hidden");
+    });
 
     document.addEventListener("DOMContentLoaded", () => {
-        getCredentials() // Call the function to get credentials
+        getCredentials()
             .then((data) => {
                 if (data) {
                     // IF DATA THEN THE USER IS AUTHENTICATED/LOGGED IN
@@ -109,11 +80,10 @@
                     loginLink.hidden = true;
                     profileLink.hidden = false;
                 } else {
-                    // USER IS NOT AUTHENTICATED/LOGGED IN
+                    //USER IS NOT AUTHENTICATED/LOGGED IN
                 }
             })
             .catch((err) => {
-                // General error handler
                 console.error("Error fetching credentials: ", err);
             });
     });
@@ -129,8 +99,9 @@
                 return response.json();
             })
             .then((data) => {
-                if (data === null) return null;
-                return data;
+                // Data handler from the previous promise
+                if (data === null) return null; // stops the chain, returns null.
+                return data; // returns data to caller
             })
             .catch((err) => {
                 console.error("Fetch error: ", err);
