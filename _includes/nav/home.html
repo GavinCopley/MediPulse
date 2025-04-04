@@ -75,12 +75,8 @@
         getCredentials()
             .then((data) => {
                 if (data) {
-                    // IF DATA THEN THE USER IS AUTHENTICATED/LOGGED IN
-                    console.log("LOGGED IN");
                     loginLink.hidden = true;
                     profileLink.hidden = false;
-                } else {
-                    //USER IS NOT AUTHENTICATED/LOGGED IN
                 }
             })
             .catch((err) => {
@@ -98,42 +94,10 @@
                 }
                 return response.json();
             })
-            .then((data) => {
-                // Data handler from the previous promise
-                if (data === null) return null; // stops the chain, returns null.
-                return data; // returns data to caller
-            })
+            .then((data) => data || null)
             .catch((err) => {
                 console.error("Fetch error: ", err);
                 return null;
             });
     }
 </script>
-
-<style>
-/* Ensure the dropdown stays visible when hovering over it */
-#profile-dropdown {
-    display: none;
-    position: absolute;
-    top: 100%; /* Position the dropdown directly below the parent */
-    left: 0;
-    z-index: 10;
-}
-
-.group:hover #profile-dropdown,
-#profile-dropdown:hover {
-    display: block;
-}
-
-/* Add padding to the dropdown to make it easier to hover */
-#profile-dropdown a {
-    padding: 8px 12px;
-    display: block;
-    text-decoration: none;
-    color: inherit;
-}
-
-#profile-dropdown a:hover {
-    background-color: #f3f4f6; /* Light gray background on hover */
-}
-</style>
