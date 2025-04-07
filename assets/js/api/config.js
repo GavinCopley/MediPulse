@@ -4,7 +4,7 @@ if (location.hostname === "localhost") {
 } else if (location.hostname === "127.0.0.1") {
         pythonURI = "http://127.0.0.1:8115";
 } else {
-        pythonURI =  "https://medipulse.stu.nighthawkcodingsociety.com";
+        pythonURI =  "http://127.0.0.1:8115";
 }
 export var javaURI;
 if (location.hostname === "localhost") {
@@ -12,7 +12,7 @@ if (location.hostname === "localhost") {
 } else if (location.hostname === "127.0.0.1") {
         javaURI = "http://127.0.0.1:8115"; //rey
 } else {
-        javaURI = "https://flocker-j.nighthawkcodingsociety.com";
+        javaURI = "http://127.0.0.1:8115";
 }
 
 export const fetchOptions = {
