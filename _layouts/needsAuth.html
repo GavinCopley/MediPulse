@@ -14,8 +14,10 @@ layout: base
         getCredentials() // Call the function to get credentials
             .then((data) => {
                 if (data) {
-                    //IF DATA THEN THE USER IS AUTHENTICATED/LOGGED IN
-                    console.log("LOGGED IN");
+                    // Check if survey is completed
+                    if (!data.survey_completed && !window.location.href.includes("survey")) {
+                        window.location.href = "{{site.baseurl}}/survey";
+                    }
                 } else {
                     //USER IS NOT AUTHENTICATED/LOGGED IN
                     if (!window.location.href.includes("noauth")) {

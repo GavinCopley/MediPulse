@@ -26,21 +26,53 @@
                             </path>
                         </g>
                     </g>
-                </svg>
-            </a>
+                </g></svg
+        ></a>
+    </div>
+    <div
+        class="col-span-2 flex gap-x-12 mt-3 justify-self-start"
+        id="link-bar-2"
+    >
+        <!-- Help dropdown (hover version) -->
+        <div class="relative group">
+            <a
+                href="{{site.baseurl}}/csp/teach/safe_computing/all"
+                class="text-sm/6 font-semibold text-gray-900"
+                id="help-button"
+            >Safe Computing</a>
+            <div
+                id="help-dropdown"
+                class="dropdown-content absolute hidden group-hover:block bg-white shadow-md rounded-lg mt-2 w-40 text-sm font-semibold text-gray-900"
+            >
+                <a href="{{site.baseurl}}/csp/teach/safe_computing/a" class="block px-4 py-2">Part A</a>
+                <a href="{{site.baseurl}}/csp/teach/safe_computing/b" class="block px-4 py-2">Part B</a>
+                <a href="{{site.baseurl}}/csp/teach/safe_computing/c" class="block px-4 py-2">Part C</a>
+            </div>
         </div>
 
-        <!-- Right Side -->
-        <div class="flex gap-x-6 items-center justify-center mb-2 sm:mb-0" id="link-bar-2">
-            <div class="relative group">
-                <a href="{{site.baseurl}}/csp/teach/safe_computing/all" class="text-sm font-semibold text-gray-900" id="help-button">
-                    Safe Computing
-                </a>
-                <div id="help-dropdown" class="dropdown-content absolute hidden group-hover:block bg-white shadow-md rounded-lg mt-2 w-40 text-sm font-semibold text-gray-900">
-                    <a href="{{site.baseurl}}/csp/teach/safe_computing/a" class="block px-4 py-2">Part A</a>
-                    <a href="{{site.baseurl}}/csp/teach/safe_computing/b" class="block px-4 py-2">Part B</a>
-                    <a href="{{site.baseurl}}/csp/teach/safe_computing/c" class="block px-4 py-2">Part C</a>
-                </div>
+        <a
+            id="signup-login"
+            href="{{site.baseurl}}/noauth"
+            class="hover:drop-shadow-xl z-10 right-6 absolute text-indigo-500 font-extrabold tracking-tight"
+            >Sign Up | Login</a
+        >
+        <div class="relative group">
+            <a
+                hidden
+                id="profile"
+                href="{{site.baseurl}}/profile"
+                class="hover:drop-shadow-xl z-10 right-6 absolute text-indigo-500 font-extrabold tracking-tight"
+            >Profile</a>
+            <div
+                id="profile-dropdown"
+                class="dropdown-content absolute hidden group-hover:block bg-white shadow-md rounded-lg mt-2 w-40 text-sm font-semibold text-gray-900"
+            >
+                <a href="{{site.baseurl}}/profile" class="block px-4 py-2">View Profile</a>
+                <a
+                    href="{{site.baseurl}}/logout"
+                    id="logout-button"
+                    class="block px-4 py-2 text-red-500"
+                >Logout</a>
             </div>
         </div>
     </div>

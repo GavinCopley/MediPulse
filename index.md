@@ -1,299 +1,523 @@
 ---
 layout: base
-title: Flocker Social Media Site
+title: MediPulse
 search_exclude: true
 menu: nav/home.html
 ---
 
-<!-- Loading Screen -->
-<div id="loading-screen" class="fixed inset-0 bg-gray-200 flex items-center justify-center z-50">
+<div id="public-view">
+    <!-- Hero Section -->
+    <div class="relative isolate px-6 pt-24 lg:px-8">
+        <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true">
+            <div class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
+        </div>
+        <div class="mx-auto max-w-3xl py-32 sm:py-48 lg:py-56">
     <div class="text-center">
-        <div class="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-32 w-32 mb-4"></div>
-        <h2 class="text-4xl font-semibold text-gray-900">Loading...</h2>
+                <h1 class="fade-in text-gradient font-extrabold tracking-tight sm:text-8xl">Welcome to MediPulse</h1>
     </div>
 </div>
-
-<style>
-    .loader {
-        border-top-color: #3498db;
-        animation: spin 1s infinite linear;
-    }
-
-    @keyframes spin {
-        0% {
-            transform: rotate(0deg);
-        }
-        100% {
-            transform: rotate(360deg);
-        }
-    }
-</style>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const loadingScreen = document.getElementById('loading-screen');
-        window.addEventListener('load', function() {
-            loadingScreen.style.display = 'none';
-        });
-        window.addEventListener('beforeunload', function() {
-            loadingScreen.style.display = 'flex';
-        });
-    });
-</script>
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MediPulse</title>
-    <script src="https://cdn.tailwingidcss.com"></script>
-    <style>
-        /* Fade-in animation */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 1s ease-out, transform 1s ease-out;
-        }
-  .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
- /* Gradient Animation */
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        .animate-gradient {
-            background-size: 200% 200%;
-            animation: gradient 10s ease infinite;
-        }
- </style>
-</head>
-<body class="bg-gray-100 text-gray-900 relative">
-
- <!-- Background Animation -->
-<div class="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
-        <div class="bg-gradient-to-r from-gray-900 via-gray-800 to-black w-full h-full opacity-50 animate-gradient"></div>
-    </div>
-
-<!-- Welcome Section -->
- <section id="welcome" class="h-screen flex items-center justify-center text-center bg-gray-900 text-white">
-        <h1 class="text-8xl font-extrabold fade-in">
-            Welcome to <span class="text-indigo-500">MediPulse</span>
-        </h1>
-    </section>
-
-<!-- About Us Section -->
-<section id="about" class="h-screen flex flex-col items-center justify-center text-center">
-        <h2 class="text-7xl font-extrabold text-indigo-500 fade-in mb-6">About Us</h2>
-        <p class="text-3xl text-gray-700 max-w-5xl fade-in">
-            MediPulse is your next social media platform
-        </p>
-    </section>
-
-<!-- Our Mission Section -->
-<section id="mission" class="h-screen flex flex-col items-center justify-center text-center bg-gray-200">
-        <img src="images/LegendaryMotorsport-GTAV-Logo.png"
-            alt="Legendary Motorsport Logo"
-            class="h-96 w-auto fade-in">
-        <h3 class="text-6xl font-bold mt-8 text-gray-900 fade-in">Our Mission</h3>
-        <p class="text-3xl text-gray-700 mt-4 max-w-5xl fade-in">
-            At MediPulse, we strive to create a community where social media lovers can collaborate, share, and support each other. From analyzing posts to providing improvements to your social media posts.
-        </p>
-    </section>
-
- <!-- Featured Cars Section -->
- <section id="featured-vids" class="py-20 bg-gray-100">
-        <h2 class="text-7xl font-bold text-center text-indigo-600 mb-10 fade-in">Featured Videos</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <a href="{{site.baseurl}}/gas" class="bg-white rounded-lg shadow-lg overflow-hidden transform transition-transform duration-500 hover:scale-105">
-                    <img src="images/palomar1.png" alt="Meeting Dr. Peters" class="w-full h-64 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-3xl font-bold mb-2">Meeting Dr. Peters</h3>
-                        <p class="text-xl text-gray-700"> Interviewing Dr. Peters on effects of sunscreen.</p>
-                    </div>
-                </a>
-                <a href="{{site.baseurl}}/electric" class="bg-white rounded-lg shadow-lg overflow-hidden transform transition-transform duration-500 hover:scale-105">
-                    <img src="images/palomar2.png" alt="Meeting Dr. Knutson" class="w-full h-64 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-3xl font-bold mb-2">Meeting Dr. Knutson</h3>
-                        <p class="text-xl text-gray-700">Interviewing Dr. Knutson on ground breaking discovery.</p>
-                    </div>
-                </a>
-                <a href="{{site.baseurl}}/dream-car" class="bg-white rounded-lg shadow-lg overflow-hidden transform transition-transform duration-500 hover:scale-105">
-                    <img src="images/palomar3.png" alt="Meeting Dr. Maltz" class="w-full h-64 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-3xl font-bold mb-2">Meeting Dr. Maltz</h3>
-                        <p class="text-xl text-gray-700">Learn about how to choose a Primary physician.</p>
-                    </div>
-                </a>
-            </div>
-    </section>
-
-<!-- Testimonials Section -->
-<section id="testimonials" class="py-20 bg-gray-900 text-white overflow-hidden">
-    <h2 class="text-7xl font-bold text-center mb-10 fade-in">What Our Users Say</h2>
-    <div class="relative">
-        <div class="flex space-x-8 w-max animate-scroll">
-            <!-- Original Testimonials -->
-            <div class="bg-gray-800 rounded-lg p-8 shadow-lg min-w-[300px] min-h-[350px] flex flex-col justify-between">
-                <p class="text-3xl italic leading-relaxed">
-                    "MediPulse is the<br>
-                    best platform for phone enthusiasts!<br>
-                    I've learned so much<br>
-                    and connected with amazing people."
-                </p>
-                <h3 class="mt-6 font-bold text-xl">- Alex R.</h3>
-            </div>
-            <div class="bg-gray-800 rounded-lg p-8 shadow-lg min-w-[300px] min-h-[350px] flex flex-col justify-between">
-                <p class="text-3xl italic leading-relaxed">
-                    "A fantastic community where<br>
-                    I can share my photography<br>
-                    and get great feedback."
-                </p>
-                <h3 class="mt-6 font-bold text-xl">- Jamie T.</h3>
-            </div>
-            <div class="bg-gray-800 rounded-lg p-8 shadow-lg min-w-[300px] min-h-[350px] flex flex-col justify-between">
-                <p class="text-3xl italic leading-relaxed">
-                    "The forums have been super helpful<br>
-                    for troubleshooting problems.<br>
-                    Highly recommended!"
-                </p>
-                <h3 class="mt-6 font-bold text-xl">- Chris M.</h3>
-            </div>
-            <div class="bg-gray-800 rounded-lg p-8 shadow-lg min-w-[300px] min-h-[350px] flex flex-col justify-between">
-                <p class="text-3xl italic leading-relaxed">
-                    "I’ve found my dream platform<br>
-                    thanks to the resources<br>
-                    on this platform.<br>
-                    Amazing work!"
-                </p>
-                <h3 class="mt-6 font-bold text-xl">- Taylor L.</h3>
-            </div>
-            <div class="bg-gray-800 rounded-lg p-8 shadow-lg min-w-[300px] min-h-[350px] flex flex-col justify-between">
-                <p class="text-3xl italic leading-relaxed">
-                    "This community has been incredible<br>
-                    for finding advice on social media posts."
-                </p>
-                <h3 class="mt-6 font-bold text-xl">- Morgan S.</h3>
-            </div>
-            <div class="bg-gray-800 rounded-lg p-8 shadow-lg min-w-[300px] min-h-[350px] flex flex-col justify-between">
-                <p class="text-3xl italic leading-relaxed">
-                    "Every phone lover needs to join<br>
-                    MediPulse.<br>
-                    It’s a game-changer."
-                </p>
-                <h3 class="mt-6 font-bold text-xl">- Riley D.</h3>
-            </div>
-            <!-- Duplicate Testimonials for Infinite Scroll -->
-            <div class="bg-gray-800 rounded-lg p-8 shadow-lg min-w-[300px] min-h-[350px] flex flex-col justify-between">
-                <p class="text-3xl italic leading-relaxed">
-                    "MediPulse is the<br>
-                    best platform for phone adicts!<br>
-                    I've learned so much<br>
-                    and connected with amazing people."
-                </p>
-                <h3 class="mt-6 font-bold text-xl">- Alex R.</h3>
-            </div>
-            <div class="bg-gray-800 rounded-lg p-8 shadow-lg min-w-[300px] min-h-[350px] flex flex-col justify-between">
-                <p class="text-3xl italic leading-relaxed">
-                    "A fantastic community where<br>
-                    I can share my social media photography<br>
-                    and get great feedback."
-                </p>
-                <h3 class="mt-6 font-bold text-xl">- Jamie T.</h3>
-            </div>
-            <div class="bg-gray-800 rounded-lg p-8 shadow-lg min-w-[300px] min-h-[350px] flex flex-col justify-between">
-                <p class="text-3xl italic leading-relaxed">
-                    "The forums have been super helpful<br>
-                    for troubleshooting social problems.<br>
-                    Highly recommended!"
-                </p>
-                <h3 class="mt-6 font-bold text-xl">- Chris M.</h3>
-            </div>
-            <div class="bg-gray-800 rounded-lg p-8 shadow-lg min-w-[300px] min-h-[350px] flex flex-col justify-between">
-                <p class="text-3xl italic leading-relaxed">
-                    "I’ve found my dream post<br>
-                    thanks to the resources<br>
-                    on this platform.<br>
-                    Amazing work!"
-                </p>
-                <h3 class="mt-6 font-bold text-xl">- Taylor L.</h3>
-            </div>
-            <div class="bg-gray-800 rounded-lg p-8 shadow-lg min-w-[300px] min-h-[350px] flex flex-col justify-between">
-                <p class="text-3xl italic leading-relaxed">
-                    "This website is tuff<br>
-                    lowk recomend."
-                </p>
-                <h3 class="mt-6 font-bold text-xl">- Morgan S.</h3>
-            </div>
-            <div class="bg-gray-800 rounded-lg p-8 shadow-lg min-w-[300px] min-h-[350px] flex flex-col justify-between">
-                <p class="text-3xl italic leading-relaxed">
-                    "Every social media lover needs to join<br>
-                    MediPulse.<br>
-                    It’s a game-changer."
-                </p>
-                <h3 class="mt-6 font-bold text-xl">- Riley D.</h3>
-            </div>
+        <div class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]" aria-hidden="true">
+            <div class="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
         </div>
     </div>
-</section>
-<style>
-    @keyframes scroll {
-        from {
-            transform: translateX(0);
-        }
-        to {
-            transform: translateX(-50%);
-        }
-    }
-    .animate-scroll {
-        animation: scroll 45s linear infinite;
-    }
-</style>
 
-<!-- Call-to-Action Section -->
-<section id="cta" class="h-screen flex flex-col items-center justify-center bg-gradient-to-r from-red-600 to-indigo-500 text-white">
-        <h2 class="text-7xl font-bold mb-6 fade-in">Join the MediPulse Community</h2>
-        <p class="text-3xl max-w-4xl text-center mb-8 fade-in">
-            Connect with phone enthusiasts from around the world, share your experiences, and explore amazing content about cars!
-        </p>
-        <a href="{{site.baseurl}}/signup" class="bg-white text-red-600 text-3xl px-8 py-4 rounded-lg shadow-lg font-bold transition-transform transform hover:scale-110 fade-in">
-            Get Started Now
-        </a>
+    <!-- Mission Statement -->
+    <section class="py-24 bg-indigo-50 fade-in-section">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h2 class="text-4xl font-bold text-indigo-900 mb-6 slide-in-left">Our Mission</h2>
+                <p class="text-2xl text-indigo-700 max-w-4xl mx-auto leading-relaxed slide-in-right">To empower patients with data-driven insights about hospital performance, helping them make informed decisions about their healthcare journey.</p>
+            </div>
+        </div>
     </section>
 
- <!-- Footer -->
-<footer class="bg-gray-800 text-white py-8">
-        <div class="container mx-auto text-center">
-            <p class="text-lg">&copy; 2024 MediPulse. All rights reserved.</p>
-            <div class="mt-4">
-                <a href="#" class="text-gray-400 hover:text-white mx-2">Facebook</a>
-                <a href="#" class="text-gray-400 hover:text-white mx-2">Twitter</a>
-                <a href="#" class="text-gray-400 hover:text-white mx-2">Instagram</a>
+    <!-- Core Values -->
+    <section class="py-24 bg-white fade-in-section">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-center text-indigo-900 mb-16 slide-in-bottom">What We Provide</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <div class="bg-indigo-50 rounded-xl p-10 text-center transform transition-all duration-300 hover:scale-105 hover:shadow-xl slide-in-left">
+                    <div class="text-indigo-600 mb-6">
+                        <svg class="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-indigo-900 mb-4">Performance Metrics</h3>
+                    <p class="text-lg text-gray-600">Comprehensive data on hospital success rates, patient outcomes, and procedure-specific performance metrics.</p>
+                </div>
+                <div class="bg-indigo-50 rounded-xl p-10 text-center transform transition-all duration-300 hover:scale-105 hover:shadow-xl slide-in-bottom">
+                    <div class="text-indigo-600 mb-6">
+                        <svg class="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-indigo-900 mb-4">Specialized Rankings</h3>
+                    <p class="text-lg text-gray-600">Detailed rankings of hospitals by specialty, condition, and procedure type to help you find the best care.</p>
+                </div>
+                <div class="bg-indigo-50 rounded-xl p-10 text-center transform transition-all duration-300 hover:scale-105 hover:shadow-xl slide-in-right">
+                    <div class="text-indigo-600 mb-6">
+                        <svg class="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-indigo-900 mb-4">Real-time Updates</h3>
+                    <p class="text-lg text-gray-600">Stay informed with the latest hospital performance data and healthcare quality metrics.</p>
+                </div>
+            </div>
+            </div>
+    </section>
+
+    <!-- Healthcare Impact -->
+    <section class="py-24 bg-indigo-50 fade-in-section">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+                <div>
+                    <h2 class="text-4xl font-bold text-indigo-900 mb-6 slide-in-left">Making Informed Healthcare Decisions</h2>
+                    <p class="text-xl text-gray-600 mb-8 leading-relaxed slide-in-right">MediPulse provides comprehensive data to help you choose the right hospital for your specific needs. Our platform enables you to:</p>
+                    <ul class="space-y-4 text-gray-600">
+                        <li class="flex items-center text-lg slide-in-left">
+                            <svg class="w-6 h-6 text-indigo-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Compare hospital success rates for specific procedures
+                        </li>
+                        <li class="flex items-center text-lg slide-in-left delay-1">
+                            <svg class="w-6 h-6 text-indigo-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Access detailed patient outcome statistics
+                        </li>
+                        <li class="flex items-center text-lg slide-in-left delay-2">
+                            <svg class="w-6 h-6 text-indigo-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Find specialized centers of excellence
+                        </li>
+                    </ul>
+                </div>
+                <div class="bg-white rounded-xl p-8 shadow-xl transform transition-all duration-300 hover:scale-105 slide-in-right">
+                    <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Healthcare technology" class="rounded-lg">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-center text-indigo-900 mb-16 fade-in-section">What Our Users Say</h2>
+            <div class="relative">
+                <div class="overflow-hidden">
+                    <div class="flex space-x-8 animate-scroll">
+                        <!-- Original Reviews -->
+                        <!-- Review 1 -->
+                        <div class="flex-shrink-0 w-96 bg-indigo-50 rounded-xl p-8 transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
+                            <div class="flex items-center mb-6">
+                                <div class="w-16 h-16 rounded-full bg-indigo-100 flex items-center justify-center">
+                                    <span class="text-2xl text-indigo-600 font-bold">JD</span>
+                                </div>
+                                <div class="ml-4">
+                                    <h3 class="text-xl font-semibold text-gray-900">Dr. James Davidson</h3>
+                                    <p class="text-indigo-600">Cardiologist</p>
+                                </div>
+                            </div>
+                            <p class="text-lg text-gray-600">"MediPulse helped me find the best cardiac care center for my patient's complex procedure. The detailed success rates were invaluable."</p>
+                        </div>
+                        <!-- Review 2 -->
+                        <div class="flex-shrink-0 w-96 bg-indigo-50 rounded-xl p-8 transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
+                            <div class="flex items-center mb-6">
+                                <div class="w-16 h-16 rounded-full bg-indigo-100 flex items-center justify-center">
+                                    <span class="text-2xl text-indigo-600 font-bold">SM</span>
+                                </div>
+                                <div class="ml-4">
+                                    <h3 class="text-xl font-semibold text-gray-900">Sarah Mitchell</h3>
+                                    <p class="text-indigo-600">Patient</p>
+                                </div>
+                            </div>
+                            <p class="text-lg text-gray-600">"When I needed knee replacement surgery, MediPulse helped me compare hospitals and find one with the best outcomes for my specific condition."</p>
+                        </div>
+                        <!-- Review 3 -->
+                        <div class="flex-shrink-0 w-96 bg-indigo-50 rounded-xl p-8 transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
+                            <div class="flex items-center mb-6">
+                                <div class="w-16 h-16 rounded-full bg-indigo-100 flex items-center justify-center">
+                                    <span class="text-2xl text-indigo-600 font-bold">RN</span>
+                                </div>
+                                <div class="ml-4">
+                                    <h3 class="text-xl font-semibold text-gray-900">Rachel Nguyen</h3>
+                                    <p class="text-indigo-600">Healthcare Administrator</p>
+                                </div>
+                            </div>
+                            <p class="text-lg text-gray-600">"The comprehensive data on MediPulse helps us benchmark our performance and identify areas for improvement in patient care."</p>
+                        </div>
+                        <!-- Review 4 -->
+                        <div class="flex-shrink-0 w-96 bg-indigo-50 rounded-xl p-8 transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
+                            <div class="flex items-center mb-6">
+                                <div class="w-16 h-16 rounded-full bg-indigo-100 flex items-center justify-center">
+                                    <span class="text-2xl text-indigo-600 font-bold">MT</span>
+                                </div>
+                                <div class="ml-4">
+                                    <h3 class="text-xl font-semibold text-gray-900">Michael Thompson</h3>
+                                    <p class="text-indigo-600">Patient</p>
+                                </div>
+                            </div>
+                            <p class="text-lg text-gray-600">"Thanks to MediPulse, I found a hospital with exceptional outcomes for my specific type of surgery. The recovery was better than expected."</p>
+                        </div>
+                        <!-- Duplicated Reviews for Infinite Scroll -->
+                        <!-- Review 1 -->
+                        <div class="flex-shrink-0 w-96 bg-indigo-50 rounded-xl p-8 transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
+                            <div class="flex items-center mb-6">
+                                <div class="w-16 h-16 rounded-full bg-indigo-100 flex items-center justify-center">
+                                    <span class="text-2xl text-indigo-600 font-bold">JD</span>
+                                </div>
+                                <div class="ml-4">
+                                    <h3 class="text-xl font-semibold text-gray-900">Dr. James Davidson</h3>
+                                    <p class="text-indigo-600">Cardiologist</p>
+                                </div>
+                            </div>
+                            <p class="text-lg text-gray-600">"MediPulse helped me find the best cardiac care center for my patient's complex procedure. The detailed success rates were invaluable."</p>
+                        </div>
+                        <!-- Review 2 -->
+                        <div class="flex-shrink-0 w-96 bg-indigo-50 rounded-xl p-8 transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
+                            <div class="flex items-center mb-6">
+                                <div class="w-16 h-16 rounded-full bg-indigo-100 flex items-center justify-center">
+                                    <span class="text-2xl text-indigo-600 font-bold">SM</span>
+                                </div>
+                                <div class="ml-4">
+                                    <h3 class="text-xl font-semibold text-gray-900">Sarah Mitchell</h3>
+                                    <p class="text-indigo-600">Patient</p>
+                                </div>
+                            </div>
+                            <p class="text-lg text-gray-600">"When I needed knee replacement surgery, MediPulse helped me compare hospitals and find one with the best outcomes for my specific condition."</p>
+                        </div>
+                        <!-- Review 3 -->
+                        <div class="flex-shrink-0 w-96 bg-indigo-50 rounded-xl p-8 transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
+                            <div class="flex items-center mb-6">
+                                <div class="w-16 h-16 rounded-full bg-indigo-100 flex items-center justify-center">
+                                    <span class="text-2xl text-indigo-600 font-bold">RN</span>
+                                </div>
+                                <div class="ml-4">
+                                    <h3 class="text-xl font-semibold text-gray-900">Rachel Nguyen</h3>
+                                    <p class="text-indigo-600">Healthcare Administrator</p>
+                                </div>
+                            </div>
+                            <p class="text-lg text-gray-600">"The comprehensive data on MediPulse helps us benchmark our performance and identify areas for improvement in patient care."</p>
+                        </div>
+                        <!-- Review 4 -->
+                        <div class="flex-shrink-0 w-96 bg-indigo-50 rounded-xl p-8 transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
+                            <div class="flex items-center mb-6">
+                                <div class="w-16 h-16 rounded-full bg-indigo-100 flex items-center justify-center">
+                                    <span class="text-2xl text-indigo-600 font-bold">MT</span>
+                                </div>
+                                <div class="ml-4">
+                                    <h3 class="text-xl font-semibold text-gray-900">Michael Thompson</h3>
+                                    <p class="text-indigo-600">Patient</p>
+                                </div>
+                            </div>
+                            <p class="text-lg text-gray-600">"Thanks to MediPulse, I found a hospital with exceptional outcomes for my specific type of surgery. The recovery was better than expected."</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-24 bg-indigo-600 fade-in-section">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl font-bold text-white mb-6 slide-in-bottom">Find the Best Care for Your Needs</h2>
+            <p class="text-2xl text-indigo-100 mb-12 slide-in-bottom delay-1">Access comprehensive hospital performance data and make informed healthcare decisions</p>
+            <a href="noauth" class="inline-block bg-white text-indigo-600 px-8 py-4 rounded-xl text-xl font-semibold hover:bg-indigo-50 transition-all duration-300 hover:scale-105 hover:shadow-xl slide-in-bottom delay-2">Explore Hospital Data</a>
+        </div>
+    </section>
+
+    <!-- Copyright Footer -->
+    <footer class="bg-white py-8 fade-in-section">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center text-gray-500 text-sm">
+                <p>&copy; 2024 MediPulse. All rights reserved.</p>
+                <p class="mt-2">Healthcare data and hospital performance metrics provided for informational purposes only.</p>
             </div>
         </div>
     </footer>
+</div>
 
- <!-- JavaScript -->
+<div id="auth-view" class="hidden">
+    <div class="min-h-screen bg-gray-100 p-8">
+        <!-- Profile Dropdown -->
+        <div class="absolute top-4 right-6 z-50">
+            <div class="relative inline-block text-left group">
+                <button id="profile-button" class="flex items-center space-x-2 text-indigo-600 hover:text-indigo-800 bg-white rounded-md px-3 py-2">
+                    <span id="profile-name" class="font-semibold">Profile</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+                <div class="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 invisible group-hover:visible transition-all duration-100 ease-in-out">
+                    <div class="py-1">
+                        <a href="{{site.baseurl}}/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">View Profile</a>
+                        <a href="{{site.baseurl}}/settings" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                        <hr class="my-1">
+                        <button onclick="handleLogout()" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto">
+            <!-- Welcome Section -->
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <h1 class="text-2xl font-bold text-gray-800" id="welcome-message">Welcome back!</h1>
+                <p class="text-gray-600 mt-2" id="user-stats">Loading your stats...</p>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <!-- Cars Section -->
+                <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Your Cars</h2>
+                    <div id="user-cars" class="space-y-2">
+                        <p class="text-gray-500">Loading your cars...</p>
+                    </div>
+                    <a href="{{site.baseurl}}/car-info" class="mt-4 inline-block text-indigo-600 hover:text-indigo-800">Add New Car</a>
+                </div>
+
+                <!-- Posts Section -->
+                <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Recent Posts</h2>
+                    <div id="recent-posts" class="space-y-2">
+                        <p class="text-gray-500">Loading your posts...</p>
+            </div>
+                    <a href="{{site.baseurl}}/make_post" class="mt-4 inline-block text-indigo-600 hover:text-indigo-800">Create New Post</a>
+            </div>
+
+                <!-- Quick Links -->
+                <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Quick Links</h2>
+                    <div class="space-y-2">
+                        <a href="{{site.baseurl}}/profile" class="block text-indigo-600 hover:text-indigo-800">View Profile</a>
+                        <a href="{{site.baseurl}}/settings" class="block text-indigo-600 hover:text-indigo-800">Account Settings</a>
+            </div>
+            </div>
+            </div>
+
+            <!-- Activity Feed -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Recent Activity</h2>
+                <div id="activity-feed" class="space-y-4">
+                    <p class="text-gray-500">Loading activity...</p>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="module">
+    import { pythonURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js';
+    import { getUserCars } from '{{site.baseurl}}/assets/js/api/userCar.js';
+    import { getPostsByUser } from '{{site.baseurl}}/assets/js/api/posts.js';
+
+    // Add logout handler
+    window.handleLogout = async function() {
+        try {
+            const response = await fetch(`${pythonURI}/api/authenticate`, {
+                ...fetchOptions,
+                method: 'DELETE'
+            });
+            
+            if (response.ok) {
+                window.location.href = '{{site.baseurl}}/login';
+            } else {
+                console.error('Logout failed');
+            }
+        } catch (error) {
+            console.error('Logout error:', error);
+        }
+    };
+
+    async function checkAuth() {
+        try {
+            const response = await fetch(`${pythonURI}/api/user`, fetchOptions);
+            if (response.ok) {
+                document.getElementById('public-view').classList.add('hidden');
+                document.getElementById('auth-view').classList.remove('hidden');
+                loadDashboard();
+            } else {
+                document.getElementById('public-view').classList.remove('hidden');
+                document.getElementById('auth-view').classList.add('hidden');
+            }
+        } catch (error) {
+            console.error('Auth check failed:', error);
+            document.getElementById('public-view').classList.remove('hidden');
+            document.getElementById('auth-view').classList.add('hidden');
+        }
+    }
+
+    async function loadDashboard() {
+        try {
+            // Get user data
+            const userResponse = await fetch(`${pythonURI}/api/user`, fetchOptions);
+            const userData = await userResponse.json();
+            
+            // Update welcome message and profile name
+            document.getElementById('welcome-message').textContent = `Welcome back, ${userData.name}!`;
+            document.getElementById('profile-name').textContent = userData.name;
+            
+            // Load user's cars
+            const cars = await getUserCars();
+            const carsContainer = document.getElementById('user-cars');
+            if (cars && cars.length > 0) {
+                carsContainer.innerHTML = cars.slice(0, 3).map(car => 
+                    `<div class="text-gray-700">${car.year} ${car.make} ${car.model}</div>`
+                ).join('');
+            } else {
+                carsContainer.innerHTML = '<p class="text-gray-500">No cars added yet</p>';
+            }
+
+            // Load recent posts
+            const posts = await getPostsByUser(userData.id);
+            const postsContainer = document.getElementById('recent-posts');
+            if (posts && posts.length > 0) {
+                postsContainer.innerHTML = posts.slice(0, 3).map(post => 
+                    `<div class="text-gray-700">${post.title}</div>`
+                ).join('');
+            } else {
+                postsContainer.innerHTML = '<p class="text-gray-500">No posts yet</p>';
+            }
+
+            // Update activity feed
+            document.getElementById('activity-feed').innerHTML = '<p class="text-gray-500">No recent activity</p>';
+
+        } catch (error) {
+            console.error('Error loading dashboard:', error);
+        }
+    }
+
+    // Check auth status when page loads
+    document.addEventListener('DOMContentLoaded', checkAuth);
+</script>
+
+<style>
+.hidden {
+    display: none;
+}
+
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.fade-in-delay-1 {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease-out 0.3s, transform 0.8s ease-out 0.3s;
+}
+
+.fade-in-delay-2 {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease-out 0.6s, transform 0.8s ease-out 0.6s;
+}
+
+.fade-in-section {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 1s ease-out, transform 1s ease-out;
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(calc(-416px * 4));
+    }
+}
+
+    .animate-scroll {
+    animation: scroll 20s linear infinite;
+    width: max-content;
+    backface-visibility: hidden;
+    perspective: 1000px;
+    transform-style: preserve-3d;
+    will-change: transform;
+}
+
+.animate-scroll:hover {
+    animation-play-state: paused;
+}
+
+.slide-in-left {
+    opacity: 0;
+    transform: translateX(-50px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.slide-in-right {
+    opacity: 0;
+    transform: translateX(50px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.slide-in-bottom {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.delay-1 {
+    transition-delay: 0.2s;
+}
+
+.delay-2 {
+    transition-delay: 0.4s;
+}
+
+.text-gradient {
+    background: linear-gradient(90deg, #4f46e5, #7c3aed, #4f46e5);
+    background-size: 200% auto;
+    color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+    animation: gradient 8s linear infinite;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Add this new class for visible elements */
+.visible {
+    opacity: 1;
+    transform: translate(0);
+    }
+</style>
 
  <script>
-        // JavaScript to handle fade-in effect on scroll
-        const fadeInElements = document.querySelectorAll('.fade-in');
+/* Intersection Observer for section animations */
+document.addEventListener('DOMContentLoaded', () => {
+    const sections = document.querySelectorAll('.fade-in, .fade-in-delay-1, .fade-in-delay-2, .fade-in-section, .slide-in-left, .slide-in-right, .slide-in-bottom');
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    });
 
-        const handleScroll = () => {
-            fadeInElements.forEach(el => {
-                const rect = el.getBoundingClientRect();
-                if (rect.top < window.innerHeight * 0.9 && rect.bottom > 0) {
-                    el.classList.add('visible');
-                } else {
-                    el.classList.remove('visible');
-                }
-            });
-        };
-
-        window.addEventListener('scroll', handleScroll);
-        window.addEventListener('load', handleScroll); // Trigger on page load
+    sections.forEach(section => {
+        observer.observe(section);
+    });
+});
     </script>
-</body>
-</html>
