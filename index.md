@@ -271,6 +271,37 @@ menu: nav/home.html
 
             <!-- Quick Actions -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <!-- Health Information Section -->
+                <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Your Health Profile</h2>
+                    <div id="health-info" class="space-y-2">
+                        <div class="grid grid-cols-2 gap-2">
+                            <p class="text-gray-600">Age:</p>
+                            <p class="font-medium" id="user-age">Loading...</p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <p class="text-gray-600">Height:</p>
+                            <p class="font-medium" id="user-height">Loading...</p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <p class="text-gray-600">Weight:</p>
+                            <p class="font-medium" id="user-weight">Loading...</p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <p class="text-gray-600">Ethnicity:</p>
+                            <p class="font-medium" id="user-ethnicity">Loading...</p>
+                        </div>
+                        <div class="mt-4">
+                            <p class="text-gray-600 mb-2">Allergies:</p>
+                            <p class="font-medium" id="user-allergies">Loading...</p>
+                        </div>
+                        <div class="mt-4">
+                            <p class="text-gray-600 mb-2">Medical Conditions:</p>
+                            <p class="font-medium" id="user-conditions">Loading...</p>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Cars Section -->
                 <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
                     <h2 class="text-xl font-semibold text-gray-800 mb-4">Your Cars</h2>
@@ -285,9 +316,9 @@ menu: nav/home.html
                     <h2 class="text-xl font-semibold text-gray-800 mb-4">Recent Posts</h2>
                     <div id="recent-posts" class="space-y-2">
                         <p class="text-gray-500">Loading your posts...</p>
-            </div>
+                    </div>
                     <a href="{{site.baseurl}}/make_post" class="mt-4 inline-block text-indigo-600 hover:text-indigo-800">Create New Post</a>
-            </div>
+                </div>
 
                 <!-- Quick Links -->
                 <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
@@ -295,8 +326,8 @@ menu: nav/home.html
                     <div class="space-y-2">
                         <a href="{{site.baseurl}}/profile" class="block text-indigo-600 hover:text-indigo-800">View Profile</a>
                         <a href="{{site.baseurl}}/settings" class="block text-indigo-600 hover:text-indigo-800">Account Settings</a>
-            </div>
-            </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Add the button here -->
@@ -313,7 +344,7 @@ menu: nav/home.html
                 <h2 class="text-xl font-semibold text-gray-800 mb-4">Recent Activity</h2>
                 <div id="activity-feed" class="space-y-4">
                     <p class="text-gray-500">Loading activity...</p>
-            </div>
+                </div>
             </div>
         </div>
     </div>
@@ -369,6 +400,18 @@ menu: nav/home.html
             // Update welcome message and profile name
             document.getElementById('welcome-message').textContent = `Welcome back, ${userData.name}!`;
             document.getElementById('profile-name').textContent = userData.name;
+            
+            // Load user's survey data
+            const surveyResponse = await fetch(`${pythonURI}/api/survey`, fetchOptions);
+            if (surveyResponse.ok) {
+                const surveyData = await surveyResponse.json();
+                document.getElementById('user-age').textContent = surveyData.age;
+                document.getElementById('user-height').textContent = `${surveyData.height} inches`;
+                document.getElementById('user-weight').textContent = `${surveyData.weight} lbs`;
+                document.getElementById('user-ethnicity').textContent = surveyData.ethnicity || 'Not specified';
+                document.getElementById('user-allergies').textContent = surveyData.allergies || 'None reported';
+                document.getElementById('user-conditions').textContent = surveyData.conditions || 'None reported';
+            }
             
             // Load user's cars
             const cars = await getUserCars();
