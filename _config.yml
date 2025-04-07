@@ -23,6 +23,6 @@ header_pages:
   - navigation/share_and_care/home.md
   - navigation/rate_and_relate/home.md
 
-Server: http://localhost:8115
-Domain: http://localhost:8115
+Server: http://127.0.0.1:8115
+Domain: http://127.0.0.1:8115
 Subdomain: medipulse
