@@ -299,6 +299,15 @@ menu: nav/home.html
             </div>
             </div>
 
+            <!-- Add the button here -->
+            <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Hospital Data Analytics</h2>
+                <p class="text-gray-600 mb-4">Access comprehensive hospital performance data and analytics.</p>
+                <a href="{{site.baseurl}}/analytics" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors">
+                    Go to Data Analytics
+                </a>
+            </div>
+
             <!-- Activity Feed -->
             <div class="bg-white rounded-lg shadow-md p-6">
                 <h2 class="text-xl font-semibold text-gray-800 mb-4">Recent Activity</h2>
