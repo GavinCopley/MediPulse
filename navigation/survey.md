@@ -16,16 +16,16 @@ menu: nav/home.html
             <input type="text" id="number" placeholder="Phone Number (Optional)" class="input-field">
 
             <hr>
-            <input type="number" id="age" placeholder="Age" required class="input-field">
-            <input type="number" id="weight" placeholder="Weight (lbs)" required class="input-field">
-            <input type="number" id="height" placeholder="Height (Inches)" required class="input-field">
+            <input type="number" id="age" placeholder="Age" required min="0" max="120" class="input-field">
+            <input type="number" id="weight" placeholder="Weight (lbs)" required min="0" max="1000" class="input-field">
+            <input type="number" id="height" placeholder="Height (Inches)" required min="0" max="120" class="input-field">
             <input type="text" id="allergies" placeholder="Allergies" class="input-field">
             <input type="text" id="conditions" placeholder="Medical Conditions" class="input-field">
             <input type="text" id="ethnicity" placeholder="Ethnicity" required class="input-field">
 
-            <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-600 transition-colors">Submit</button>
+            <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-600 transition-colors w-full">Submit</button>
         </form>
-        <p id="message" class="text-green-500 mt-2"></p>
+        <div id="message" class="mt-4 p-4 rounded hidden"></div>
     </div>
 </div>
 
@@ -34,42 +34,102 @@ menu: nav/home.html
 
     document.getElementById("surveyForm").addEventListener("submit", async function(event) {
         event.preventDefault();
+        
+        // Get form elements
+        const form = event.target;
+        const messageDiv = document.getElementById("message");
+        
+        // Validate form data
+        const age = parseInt(document.getElementById("age").value);
+        const weight = parseInt(document.getElementById("weight").value);
+        const height = parseInt(document.getElementById("height").value);
+        
+        if (age < 0 || age > 120) {
+            showMessage("Please enter a valid age between 0 and 120", "error");
+            return;
+        }
+        
+        if (weight < 0 || weight > 1000) {
+            showMessage("Please enter a valid weight between 0 and 1000 lbs", "error");
+            return;
+        }
+        
+        if (height < 0 || height > 120) {
+            showMessage("Please enter a valid height between 0 and 120 inches", "error");
+            return;
+        }
+
+        // Prepare form data
         const formData = {
-            name: document.getElementById("name").value,
-            username: document.getElementById("username").value,
-            email: document.getElementById("email").value,
-            number: document.getElementById("number").value,
-            age: document.getElementById("age").value,
-            weight: document.getElementById("weight").value,
-            height: document.getElementById("height").value,
-            allergies: document.getElementById("allergies").value,
-            conditions: document.getElementById("conditions").value,
-            ethnicity: document.getElementById("ethnicity").value,
-            survey_completed: true  // Add this field to mark survey completion
+            name: document.getElementById("name").value.trim(),
+            username: document.getElementById("username").value.trim(),
+            email: document.getElementById("email").value.trim(),
+            number: document.getElementById("number").value.trim(),
+            age: age,
+            weight: weight,
+            height: height,
+            allergies: document.getElementById("allergies").value.trim(),
+            conditions: document.getElementById("conditions").value.trim(),
+            ethnicity: document.getElementById("ethnicity").value.trim(),
+            survey_completed: true
         };
 
-        const surveyOptions = {
-            ...fetchOptions,
-            method: "POST",
-            body: JSON.stringify(formData)
-        };
+        // Validate required fields
+        if (!formData.name || !formData.username || !formData.email || !formData.ethnicity) {
+            showMessage("Please fill in all required fields", "error");
+            return;
+        }
+
+        // Validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(formData.email)) {
+            showMessage("Please enter a valid email address", "error");
+            return;
+        }
 
         try {
-            const response = await fetch(`${pythonURI}/api/survey`, surveyOptions);
+            // Show loading state
+            const submitButton = form.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+            submitButton.textContent = "Submitting...";
+
+            // Send POST request
+            const response = await fetch(`${pythonURI}/api/survey`, {
+                ...fetchOptions,
+                method: "POST",
+                body: JSON.stringify(formData)
+            });
+
             if (!response.ok) {
                 throw new Error(`Survey submission failed: ${response.status}`);
             }
+
             const result = await response.json();
-            document.getElementById("message").textContent = "Survey completed successfully!";
+            
+            // Show success message
+            showMessage("Survey completed successfully! Redirecting...", "success");
+            
             // Redirect to home page after successful submission
             setTimeout(() => {
                 window.location.href = '{{site.baseurl}}/';
             }, 1500);
         } catch (error) {
             console.error("Survey Error:", error);
-            document.getElementById("message").textContent = `Error: ${error.message}`;
+            showMessage(`Error: ${error.message}`, "error");
+            
+            // Reset button state
+            const submitButton = form.querySelector('button[type="submit"]');
+            submitButton.disabled = false;
+            submitButton.textContent = "Submit";
         }
     });
+
+    function showMessage(message, type) {
+        const messageDiv = document.getElementById("message");
+        messageDiv.textContent = message;
+        messageDiv.className = `mt-4 p-4 rounded ${type === "error" ? "bg-red-100 text-red-700" : "bg-green-100 text-green-700"}`;
+        messageDiv.classList.remove("hidden");
+    }
 </script>
 
 <style>
@@ -80,6 +140,12 @@ menu: nav/home.html
         margin-top: 5px;
         border: 1px solid #ccc;
         border-radius: 5px;
+    }
+    
+    .input-field:focus {
+        outline: none;
+        border-color: #4f46e5;
+        box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1);
     }
 </style>
 
