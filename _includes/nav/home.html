@@ -129,8 +129,9 @@
         getCredentials()
             .then((data) => {
                 if (data) {
-                    loginLink.hidden = true;
-                    profileLink.hidden = false;
+                    // Only hide the login link if user is logged in
+                    if (loginLink) loginLink.hidden = true;
+                    if (profileLink) profileLink.hidden = false;
                 }
             })
             .catch((err) => {
