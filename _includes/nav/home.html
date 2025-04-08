@@ -88,6 +88,28 @@
     </div>
 </header>
 
+<nav class="bg-white shadow-md p-4">
+    <div class="flex justify-between items-center">
+        <!-- Left Section -->
+        <div class="flex space-x-4">
+            <!-- Home Button -->
+            <a href="{{site.baseurl}}/" class="text-gray-800 hover:text-indigo-600 font-semibold">Home</a>
+
+            <!-- Safe Computing Button -->
+            <a href="{{site.baseurl}}/csp/teach/safe_computing/all" class="text-gray-800 hover:text-indigo-600 font-semibold">Safe Computing</a>
+
+            <!-- Computing Bias Button -->
+            <a href="{{site.baseurl}}/csp/teach/computing_bias" class="text-gray-800 hover:text-indigo-600 font-semibold">Computing Bias</a>
+        </div>
+
+        <!-- Right Section -->
+        <div class="flex space-x-4">
+            <!-- Login/Sign Up Button -->
+            <a href="{{site.baseurl}}/noauth" class="text-indigo-600 hover:text-indigo-800 font-semibold">Login / Sign Up</a>
+        </div>
+    </div>
+</nav>
+
 <script type="module">
     import {
         pythonURI,
