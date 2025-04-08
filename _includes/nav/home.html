@@ -1,35 +1,39 @@
-<header class="z-10 sticky top-0 w-full bg-white p-4 drop-shadow flex items-center justify-between">
-    <!-- Left Section -->
-    <div class="flex items-center space-x-6">
-        <!-- Home Button -->
-        <a href="{{site.baseurl}}/" class="text-indigo-500 font-bold">
-            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0,0,256,256">
-                <g fill="#4760de">
-                    <g transform="scale(10.66667,10.66667)">
-                        <path d="M12,2c-0.26712,0.00003 -0.52312,0.10694 -0.71094,0.29688l-10.08594,8.80078c-0.12774,0.09426 -0.20313,0.24359 -0.20312,0.40234c0,0.27614 0.22386,0.5 0.5,0.5h2.5v8c0,0.552 0.448,1 1,1h4c0.552,0 1,-0.448 1,-1v-6h4v6c0,0.552 0.448,1 1,1h4c0.552,0 1,-0.448 1,-1v-8h2.5c0.27614,0 0.5,-0.22386 0.5,-0.5c0.00001,-0.15876 -0.07538,-0.30808 -0.20312,-0.40234l-10.08008,-8.79492c-0.00194,-0.00196 -0.0039,-0.00391 -0.00586,-0.00586c-0.18782,-0.18994 -0.44382,-0.29684 -0.71094,-0.29687z"></path>
+<header class="z-10 sticky top-0 w-full bg-white p-4 drop-shadow">
+    <div class="flex items-center justify-between">
+        <!-- Left Section -->
+        <div class="flex items-center space-x-6">
+            <!-- Safe Computing Button -->
+            <a href="{{site.baseurl}}/csp/teach/safe_computing/all" class="text-gray-800 hover:text-indigo-600 font-semibold">Safe Computing</a>
+        </div>
+
+        <!-- Center Section (Home Button) -->
+        <div class="flex items-center">
+            <a href="{{site.baseurl}}/" class="text-indigo-500 font-bold">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0,0,256,256">
+                    <g fill="#4760de">
+                        <g transform="scale(10.66667,10.66667)">
+                            <path d="M12,2c-0.26712,0.00003 -0.52312,0.10694 -0.71094,0.29688l-10.08594,8.80078c-0.12774,0.09426 -0.20313,0.24359 -0.20312,0.40234c0,0.27614 0.22386,0.5 0.5,0.5h2.5v8c0,0.552 0.448,1 1,1h4c0.552,0 1,-0.448 1,-1v-6h4v6c0,0.552 0.448,1 1,1h4c0.552,0 1,-0.448 1,-1v-8h2.5c0.27614,0 0.5,-0.22386 0.5,-0.5c0.00001,-0.15876 -0.07538,-0.30808 -0.20312,-0.40234l-10.08008,-8.79492c-0.00194,-0.00196 -0.0039,-0.00391 -0.00586,-0.00586c-0.18782,-0.18994 -0.44382,-0.29684 -0.71094,-0.29687z"></path>
+                        </g>
                     </g>
-                </g>
-            </svg>
-        </a>
+                </svg>
+            </a>
+        </div>
 
-        <!-- Safe Computing Button -->
-        <a href="{{site.baseurl}}/csp/teach/safe_computing/all" class="text-gray-800 hover:text-indigo-600 font-semibold">Safe Computing</a>
+        <!-- Right Section -->
+        <div class="flex items-center space-x-6">
+            <!-- Computing Bias Button -->
+            <a href="{{site.baseurl}}/csp/teach/computing_bias" class="text-gray-800 hover:text-indigo-600 font-semibold">Computing Bias</a>
 
-        <!-- Computing Bias Button -->
-        <a href="{{site.baseurl}}/csp/teach/computing_bias" class="text-gray-800 hover:text-indigo-600 font-semibold">Computing Bias</a>
-    </div>
-
-    <!-- Right Section -->
-    <div class="flex items-center space-x-4">
-        <!-- Login/Sign Up Button -->
-        <a id="signup-login" href="{{site.baseurl}}/noauth" class="text-indigo-600 hover:text-indigo-800 font-semibold">Login / Sign Up</a>
-        
-        <!-- Profile Button (hidden by default) -->
-        <div class="relative group">
-            <a hidden id="profile" href="{{site.baseurl}}/profile" class="text-indigo-600 hover:text-indigo-800 font-semibold">Profile</a>
-            <div id="profile-dropdown" class="dropdown-content absolute hidden group-hover:block bg-white shadow-md rounded-lg mt-2 w-40 text-sm font-semibold text-gray-900">
-                <a href="{{site.baseurl}}/profile" class="block px-4 py-2">View Profile</a>
-                <a href="{{site.baseurl}}/logout" id="logout-button" class="block px-4 py-2 text-red-500">Logout</a>
+            <!-- Login/Sign Up Button (hidden on login page) -->
+            <a id="signup-login" href="{{site.baseurl}}/noauth" class="text-indigo-600 hover:text-indigo-800 font-semibold" data-hide-on-login>Login / Sign Up</a>
+            
+            <!-- Profile Button (hidden by default) -->
+            <div class="relative group">
+                <a hidden id="profile" href="{{site.baseurl}}/profile" class="text-indigo-600 hover:text-indigo-800 font-semibold">Profile</a>
+                <div id="profile-dropdown" class="dropdown-content absolute hidden group-hover:block bg-white shadow-md rounded-lg mt-2 w-40 text-sm font-semibold text-gray-900">
+                    <a href="{{site.baseurl}}/profile" class="block px-4 py-2">View Profile</a>
+                    <a href="{{site.baseurl}}/logout" id="logout-button" class="block px-4 py-2 text-red-500">Logout</a>
+                </div>
             </div>
         </div>
     </div>
@@ -45,6 +49,13 @@
     const profileLink = document.getElementById("profile");
 
     document.addEventListener("DOMContentLoaded", () => {
+        // Hide login button if we're on the login page
+        if (window.location.pathname.includes('/noauth') || 
+            window.location.pathname.includes('/login') || 
+            window.location.pathname.includes('/signup')) {
+            if (loginLink) loginLink.style.display = 'none';
+        }
+
         getCredentials()
             .then((data) => {
                 if (data) {
