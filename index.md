@@ -302,15 +302,6 @@ menu: nav/home.html
                     </div>
                 </div>
 
-                <!-- Cars Section -->
-                <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
-                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Your Cars</h2>
-                    <div id="user-cars" class="space-y-2">
-                        <p class="text-gray-500">Loading your cars...</p>
-                    </div>
-                    <a href="{{site.baseurl}}/car-info" class="mt-4 inline-block text-indigo-600 hover:text-indigo-800">Add New Car</a>
-                </div>
-
                 <!-- Posts Section -->
                 <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
                     <h2 class="text-xl font-semibold text-gray-800 mb-4">Recent Posts</h2>
