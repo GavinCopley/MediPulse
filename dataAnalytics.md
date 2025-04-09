@@ -4,20 +4,21 @@ title: Hospital Data Analytics
 description: Displaying hospital data from backend CSV
 permalink: /analytics
 hide: true
+menu: nav/home.html
 ---
+
+
 <div class="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
   <div class="grid grid-cols-1 md:grid-cols-[12rem_1fr] min-h-screen">
     <!-- Sidebar -->
-    <div class="bg-gray-200 dark:bg-gray-800 p-4 shadow-md">
-      <div class="flex justify-center mb-6">
-        <img class="w-24 h-24 rounded-full border-4 border-gray-800 dark:border-gray-100" src="{{site.baseurl}}/images/logo.png" alt="Profile Picture" />
-      </div>
-      <nav class="space-y-4 text-center md:text-left">
-        <a href="#profile" class="block font-medium hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Profile</a>
-        <a href="#messages" class="block font-medium hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Messages</a>
-        <a href="#settings" class="block font-medium hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Settings</a>
-      </nav>
-    </div>
+    <!-- Sidebar -->
+  <div class="bg-gray-200 dark:bg-gray-800 p-4 shadow-md">
+    <h2 class="text-lg font-semibold text-center md:text-left mb-4">Menu</h2>
+    <nav class="space-y-4 text-center md:text-left">
+      <!-- Add any relevant nav items here if needed -->
+    </nav>
+  </div>
+
 
     <!-- Main Content Area -->
     <div class="flex flex-col h-screen">
