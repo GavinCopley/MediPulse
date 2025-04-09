@@ -244,24 +244,6 @@ menu: nav/home.html
 <div id="auth-view" class="hidden">
     <div class="min-h-screen bg-gray-100 p-8">
         <!-- Profile Dropdown -->
-        <div class="absolute top-4 right-6 z-50">
-            <div class="relative inline-block text-left group">
-                <button id="profile-button" class="flex items-center space-x-2 text-indigo-600 hover:text-indigo-800 bg-white rounded-md px-3 py-2">
-                    <span id="profile-name" class="font-semibold">Profile</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                    </svg>
-                </button>
-                <div class="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 invisible group-hover:visible transition-all duration-100 ease-in-out">
-                    <div class="py-1">
-                        <a href="{{site.baseurl}}/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">View Profile</a>
-                        <a href="{{site.baseurl}}/settings" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
-                        <hr class="my-1">
-                        <button onclick="handleLogout()" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Logout</button>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="max-w-7xl mx-auto">
             <!-- Welcome Section -->
             <div class="bg-white rounded-lg shadow-md p-6 mb-6">
@@ -311,15 +293,6 @@ menu: nav/home.html
                     <a href="{{site.baseurl}}/make_post" class="mt-4 inline-block text-indigo-600 hover:text-indigo-800">Create New Post</a>
                 </div>
 
-                <!-- Quick Links -->
-                <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
-                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Quick Links</h2>
-                    <div class="space-y-2">
-                        <a href="{{site.baseurl}}/profile" class="block text-indigo-600 hover:text-indigo-800">View Profile</a>
-                        <a href="{{site.baseurl}}/settings" class="block text-indigo-600 hover:text-indigo-800">Account Settings</a>
-                    </div>
-                </div>
-            </div>
 
             <!-- Add the button here -->
             <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
