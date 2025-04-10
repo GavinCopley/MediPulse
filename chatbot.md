@@ -1,14 +1,14 @@
 ---
-layout: needsAuth
-title: Car Expert Chatbot
-permalink: /chatbot
+layout: base
+title: Medipulse Chatbot
+permalink: /hospital-chat
 search_exclude: true
 menu: nav/home.html
 ---
 
 <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
   <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-    <h2 class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">Car Expert Chatbot</h2>
+    <h2 class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">Medipulse Chatbot</h2>
   </div>
 
   <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
