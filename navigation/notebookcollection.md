@@ -21,7 +21,7 @@ menu: nav/home.html
                     <span class="text-sm text-gray-500">
                         February 20, 2025
                     </span>
-                    <a href="{{ site.baseurl }}/notebooks/pandas" 
+                    <a href="{{ site.baseurl }}/notebooks/data-analytics/" 
                        class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-300">
                         View Notebook
                         <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
