@@ -34,8 +34,8 @@ menu: nav/home.html
   <div class="bg-white shadow-lg rounded-lg p-6 mb-8" id="step-one">
     <h2 class="text-2xl font-bold text-gray-800 mb-4">Step 1: Choose Your Location</h2>
 
-    <!-- 1) Google Places Autocomplete -->
-    <div class="mb-4">
+ <!-- 1) Google Places Autocomplete -->
+  <div class="mb-4">
       <label for="address-input" class="block text-lg font-medium text-gray-700 mb-1.5">
         Type your address (autocomplete):
       </label>
@@ -50,8 +50,8 @@ menu: nav/home.html
       </p>
     </div>
 
-    <!-- 2) Quick pick buttons -->
-    <div class="mb-4 flex flex-wrap items-center space-x-3 space-y-2">
+<!-- 2) Quick pick buttons -->
+  <div class="mb-4 flex flex-wrap items-center space-x-3 space-y-2">
       <button
         id="anonymous-petco"
         class="bg-gray-700 hover:bg-gray-900 text-white font-semibold py-2 px-4 rounded-md"
@@ -72,13 +72,13 @@ menu: nav/home.html
       </button>
     </div>
 
-    <!-- Map to place or see chosen location, default center is SD -->
-    <div id="user-map" class="w-full h-64 mb-4"></div>
+  <!-- Map to place or see chosen location, default center is SD -->
+  <div id="user-map" class="w-full h-64 mb-4"></div>
     <p class="text-gray-600 text-sm">
       If you choose "Select on Map," click anywhere on the map to set your location marker.
     </p>
 
-    <div id="location-status" class="text-gray-800 mt-2 font-medium">
+  <div id="location-status" class="text-gray-800 mt-2 font-medium">
       No location selected yet.
     </div>
   </div>
@@ -119,8 +119,8 @@ menu: nav/home.html
             </select>
           </div>
 
-          <!-- Priority Selection -->
-          <div>
+<!-- Priority Selection -->
+  <div>
             <label for="priority" class="block text-lg font-medium text-gray-700 mb-1.5">
               What's most important to you?
             </label>
@@ -134,8 +134,7 @@ menu: nav/home.html
               <option value="safety" title="Complication rate.">Safety</option>
             </select>
           </div>
-
-          <!-- Number of Results Selection -->
+<!-- Number of Results Selection -->
           <div>
             <label for="num-results" class="block text-lg font-medium text-gray-700 mb-1.5">
               How many hospital results do you want? (1 to 10)
@@ -152,8 +151,7 @@ menu: nav/home.html
           </div>
         </div>
       </div>
-
-      <!-- Right Column (1/2 width) - Distance Slider -->
+<!-- Right Column (1/2 width) - Distance Slider -->
       <div class="md:col-span-2 p-6 bg-gray-50 rounded-lg shadow-inner h-full flex flex-col justify-center">
         <div class="flex items-center mb-4">
           <label for="distance-range" class="block text-xl font-medium text-gray-700">
@@ -213,7 +211,7 @@ menu: nav/home.html
       </div>
     </div>
 
-    <div class="mt-8 flex justify-center">
+<div class="mt-8 flex justify-center">
       <button
         type="submit"
         id="find-hospitals-btn"
