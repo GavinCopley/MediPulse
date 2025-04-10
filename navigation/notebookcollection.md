@@ -12,7 +12,7 @@ menu: nav/home.html
         <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
             <div class="p-6">
                 <h3 class="text-xl font-semibold text-gray-800 mb-2">
-                    <a href="{{site.baseurl}}/notebooks/pandas" class="hover:text-blue-600 transition-colors duration-300">
+                    <a href="{{site.baseurl}}/notebooks/data-analytics/" class="hover:text-blue-600 transition-colors duration-300">
                         Pandas ML Neural
                     </a>
                 </h3>
