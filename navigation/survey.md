@@ -47,52 +47,64 @@ menu: nav/home.html
     if (height < 0 || height > 120) return showMessage("Please enter a valid height between 0 and 120 inches", "error");
 
     const formData = {
-      name: document.getElementById("name").value.trim(),
-      username: document.getElementById("username").value.trim(),
-      email: document.getElementById("email").value.trim(),
-      number: document.getElementById("number").value.trim(),
-      age,
-      weight,
-      height,
-      allergies: document.getElementById("allergies").value.trim(),
-      conditions: document.getElementById("conditions").value.trim(),
-      ethnicity: document.getElementById("ethnicity").value.trim(),
-      survey_completed: true
+        name: document.getElementById("name").value.trim(),
+        username: document.getElementById("username").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        number: document.getElementById("number").value.trim(),
+        age,
+        weight,
+        height,
+        allergies: document.getElementById("allergies").value.trim(),
+        conditions: document.getElementById("conditions").value.trim(),
+        ethnicity: document.getElementById("ethnicity").value.trim(),
+        survey_completed: true
     };
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formData.name || !formData.username || !formData.email || !formData.ethnicity)
-      return showMessage("Please fill in all required fields", "error");
+        return showMessage("Please fill in all required fields", "error");
 
     if (!emailRegex.test(formData.email))
-      return showMessage("Please enter a valid email address", "error");
+        return showMessage("Please enter a valid email address", "error");
 
     try {
-      const submitButton = form.querySelector('button[type="submit"]');
-      submitButton.disabled = true;
-      submitButton.textContent = "Submitting...";
+        const submitButton = form.querySelector('button[type="submit"]');
+        submitButton.disabled = true;
+        submitButton.textContent = "Submitting...";
 
-      const response = await fetch(`${pythonURI}/api/survey`, {
-        ...fetchOptions,
-        method: "POST",
-        body: JSON.stringify(formData)
-      });
+        console.log("Form Data:", formData); // Log the form data before sending
 
-      if (!response.ok) throw new Error(`Survey submission failed: ${response.status}`);
+        // Send the POST request with JSON data
+        const response = await fetch(`${pythonURI}/api/survey`, {
+            ...fetchOptions,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json", // Ensure the server knows it's JSON
+                ...fetchOptions.headers // Include any additional headers from fetchOptions
+            },
+            body: JSON.stringify(formData) // Convert formData to JSON
+        });
 
-      const result = await response.json();
-      showMessage("Survey completed successfully! Redirecting...", "success");
+        if (!response.ok) {
+            const errorDetails = await response.text(); // Get error details from the server
+            console.error("Server Response:", errorDetails);
+            throw new Error(`Survey submission failed: ${response.status}`);
+        }
 
-      setTimeout(() => {
-        window.location.href = '{{site.baseurl}}/';
-      }, 1500);
+        const result = await response.json();
+        console.log("Server Response:", result); // Log the server's response
+        showMessage("Survey completed successfully! Redirecting...", "success");
+
+        setTimeout(() => {
+            window.location.href = '{{site.baseurl}}/';
+        }, 1500);
     } catch (error) {
-      console.error("Survey Error:", error);
-      showMessage(`Error: ${error.message}`, "error");
+        console.error("Survey Error:", error);
+        showMessage(`Error: ${error.message}`, "error");
 
-      const submitButton = form.querySelector('button[type="submit"]');
-      submitButton.disabled = false;
-      submitButton.textContent = "Submit";
+        const submitButton = form.querySelector('button[type="submit"]');
+        submitButton.disabled = false;
+        submitButton.textContent = "Submit";
     }
   });
 

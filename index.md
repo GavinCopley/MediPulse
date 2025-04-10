@@ -377,17 +377,7 @@ menu: nav/home.html
                 document.getElementById('user-conditions').textContent = surveyData.conditions || 'None reported';
             }
             
-            // Load user's cars
-            const cars = await getUserCars();
-            const carsContainer = document.getElementById('user-cars');
-            if (cars && cars.length > 0) {
-                carsContainer.innerHTML = cars.slice(0, 3).map(car => 
-                    `<div class="text-gray-700">${car.year} ${car.make} ${car.model}</div>`
-                ).join('');
-            } else {
-                carsContainer.innerHTML = '<p class="text-gray-500">No cars added yet</p>';
-            }
-
+           
             // Load recent posts
             const posts = await getPostsByUser(userData.id);
             const postsContainer = document.getElementById('recent-posts');
