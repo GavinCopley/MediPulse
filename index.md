@@ -365,19 +365,42 @@ menu: nav/home.html
             document.getElementById('welcome-message').textContent = `Welcome back, ${userData.name}!`;
             document.getElementById('profile-name').textContent = userData.name;
             
-            // Load user's survey data
-            const surveyResponse = await fetch(`${pythonURI}/api/survey`, fetchOptions);
-            if (surveyResponse.ok) {
-                const surveyData = await surveyResponse.json();
-                document.getElementById('user-age').textContent = surveyData.age;
-                document.getElementById('user-height').textContent = `${surveyData.height} inches`;
-                document.getElementById('user-weight').textContent = `${surveyData.weight} lbs`;
-                document.getElementById('user-ethnicity').textContent = surveyData.ethnicity || 'Not specified';
-                document.getElementById('user-allergies').textContent = surveyData.allergies || 'None reported';
-                document.getElementById('user-conditions').textContent = surveyData.conditions || 'None reported';
+            async function loadUserSurvey() {
+                try {
+                    // Get the currently logged-in username
+                    const userResponse = await fetch(`${pythonURI}/api/auth/user`, fetchOptions);
+                    if (!userResponse.ok) throw new Error("Failed to fetch authenticated user");
+
+                    const { username } = await userResponse.json();
+                    console.log("Logged-in username:", username); // Debugging log
+
+                    // Fetch that user's survey data
+                    const surveyResponse = await fetch(`${pythonURI}/api/survey/username/${username}`, fetchOptions);
+                    if (!surveyResponse.ok) {
+                        const errorDetails = await surveyResponse.text();
+                        console.error("Survey fetch error details:", errorDetails); // Debugging log
+                        throw new Error("Failed to fetch survey");
+                    }
+
+                    const { survey } = await surveyResponse.json();
+                    console.log("Fetched survey data:", survey); // Debugging log
+
+                    // Update the DOM with the user's survey data
+                    document.getElementById('user-age').textContent = survey.age || 'Not specified';
+                    document.getElementById('user-height').textContent = survey.height ? `${survey.height} inches` : 'Not specified';
+                    document.getElementById('user-weight').textContent = survey.weight ? `${survey.weight} lbs` : 'Not specified';
+                    document.getElementById('user-ethnicity').textContent = survey.ethnicity || 'Not specified';
+                    document.getElementById('user-allergies').textContent = survey.allergies || 'None reported';
+                    document.getElementById('user-conditions').textContent = survey.conditions || 'None reported';
+
+                } catch (error) {
+                    console.error("Survey loading error:", error);
+                    const errorMessage = 'Error loading data';
+                    ['user-age', 'user-height', 'user-weight', 'user-ethnicity', 'user-allergies', 'user-conditions']
+                        .forEach(id => document.getElementById(id).textContent = errorMessage);
+                }
             }
-            
-           
+
             // Load recent posts
             const posts = await getPostsByUser(userData.id);
             const postsContainer = document.getElementById('recent-posts');

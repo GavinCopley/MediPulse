@@ -101,24 +101,32 @@ menu: nav/home.html
     }
 
     // Function to fetch and display Python data
-    function pythonDatabase() {
-        const URL = `${pythonURI}/api/user`;
-
-        fetch(URL, fetchOptions)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Flask server response: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                window.location.href = '{{site.baseurl}}/survey';
-            })
-            .catch(error => {
-                console.error("Python Database Error:", error);
-                const errorMsg = `Python Database Error: ${error.message}`;
-            });
-    }
+   function pythonDatabase() {
+    fetch(`${pythonURI}/api/check-survey`, {
+        method: "GET",
+        credentials: "include", // Send the auth cookie (JWT)
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Survey check failed: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.survey_completed) {
+            window.location.href = '{{site.baseurl}}/'; // Already took survey
+        } else {
+            window.location.href = '{{site.baseurl}}/survey'; // Needs to take survey
+        }
+    })
+    .catch(error => {
+        console.error("Survey Check Error:", error);
+        window.location.href = '{{site.baseurl}}/'; // Optional fallback
+    });
+}
 
     // Check for cookies and call relevant database functions on page load
     window.onload = function() {

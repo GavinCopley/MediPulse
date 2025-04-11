@@ -91,7 +91,7 @@ menu: nav/home.html
             return response.json();
         })
         .then(data => {
-            window.location.href = '{{site.baseurl}}/survey';
+            window.location.href = '{{site.baseurl}}/login';
         })
         .catch(error => {
             console.error("Signup Error:", error);
