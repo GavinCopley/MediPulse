@@ -51,7 +51,7 @@ menu: nav/home.html
     </div>
 
 <!-- 2) Quick pick buttons -->
-  <div class="mb-4 flex flex-wrap items-center space-x-3 space-y-2">
+  <div class="mb-4 flex flex-wrap gap-3">
       <button
         id="anonymous-petco"
         class="bg-gray-700 hover:bg-gray-900 text-white font-semibold py-2 px-4 rounded-md"
@@ -215,7 +215,7 @@ menu: nav/home.html
       <button
         type="submit"
         id="find-hospitals-btn"
-        class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-8 rounded-md shadow-md 
+        class="bg-indigo-600 hover:bg-indigo-800 text-white font-bold py-2 px-8 rounded-md shadow-md 
                transition duration-150 ease-in-out text-xl"
       >
         Find My Best Hospital Match
@@ -229,7 +229,7 @@ menu: nav/home.html
     <div class="grid grid-cols-1 gap-6" id="hospital-list"></div>
   </div>
 
-  <!-- MAP OF HOSPITAL MARKERS (AFTER RANKING) -->
+  <!-- MAP OF HOSPITAL MARKERS (AFTER RANKING) - Now hidden as we'll show individual maps -->
   <div id="map" class="hidden w-full h-96 mb-6"></div>
 </div>
 
@@ -250,6 +250,9 @@ menu: nav/home.html
 
   // For the hospital results map
   let hospitalsMap = null;
+  
+  // Store individual hospital maps
+  let hospitalMaps = [];
 
   // API URL (adjust if needed)
   const frontEndAPIURL = 'http://127.0.0.1:8115/api/predict';
@@ -391,6 +394,14 @@ menu: nav/home.html
       hospitalsMap.remove();
       hospitalsMap = null;
     }
+    
+    // Clean up any previous hospital maps
+    hospitalMaps.forEach(map => {
+      if (map) {
+        map.remove();
+      }
+    });
+    hospitalMaps = [];
 
     // Prepare request body
     const payload = {
@@ -425,25 +436,9 @@ menu: nav/home.html
         return;
       }
 
-      // If we have hospitals, show them + the map
-      mapContainer.classList.remove('hidden');
-      hospitalsMap = L.map('map').setView([chosenLocation.lat, chosenLocation.lng], 10);
-
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19
-      }).addTo(hospitalsMap);
-
-      // Mark user location on this second map
-      L.marker([chosenLocation.lat, chosenLocation.lng])
-        .addTo(hospitalsMap)
-        .bindPopup("Your Chosen Location")
-        .openPopup();
-
-      const latLngs = [[chosenLocation.lat, chosenLocation.lng]];
-
       data.recommended_hospitals.forEach((hosp, index) => {
         const card = document.createElement('div');
-        card.classList.add('p-4', 'border', 'border-gray-300', 'rounded-md', 'bg-white');
+        card.classList.add('p-4', 'border', 'border-gray-300', 'rounded-md', 'bg-white', 'mb-6');
 
         const rank = index + 1;
         const nameEl = document.createElement('h3');
@@ -463,28 +458,58 @@ menu: nav/home.html
         detailsEl.classList.add('text-sm', 'text-gray-600');
         detailsEl.textContent = `Distance: ${hosp.distance} miles${scoreText}`;
 
+        // Create a map container for this hospital
+        const mapDiv = document.createElement('div');
+        mapDiv.id = `hospital-map-${index}`;
+        mapDiv.classList.add('w-full', 'h-64', 'mt-4');
+
         card.appendChild(nameEl);
         card.appendChild(latLonEl);
         card.appendChild(detailsEl);
+        card.appendChild(mapDiv);
         resultsContainer.appendChild(card);
 
-        // Add marker
+        // Initialize map for this hospital
         if (hosp.latitude !== undefined && hosp.longitude !== undefined) {
-          const marker = L.marker([hosp.latitude, hosp.longitude]).addTo(hospitalsMap);
-          marker.bindPopup(`
+          // Create a map centered between user location and hospital
+          const centerLat = (chosenLocation.lat + hosp.latitude) / 2;
+          const centerLng = (chosenLocation.lng + hosp.longitude) / 2;
+          
+          const hospitalMap = L.map(`hospital-map-${index}`).setView([centerLat, centerLng], 10);
+          
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19
+          }).addTo(hospitalMap);
+          
+          // Add user marker
+          const userMarker = L.marker([chosenLocation.lat, chosenLocation.lng]).addTo(hospitalMap);
+          userMarker.bindPopup("Your Location").openPopup();
+          
+          // Add hospital marker
+          const hospitalMarker = L.marker([hosp.latitude, hosp.longitude]).addTo(hospitalMap);
+          hospitalMarker.bindPopup(`
             <strong>${hosp.hospital}</strong><br/>
             Distance: ${hosp.distance} miles<br/>
-            ${scoreText ? 'Score: ' + scoreText : ''}
+            ${scoreText ? 'Score: ' + (hosp.score * 100).toFixed(1) + '%' : ''}
           `);
-          latLngs.push([hosp.latitude, hosp.longitude]);
+          
+          // Draw a line between user and hospital
+          const polyline = L.polyline([
+            [chosenLocation.lat, chosenLocation.lng],
+            [hosp.latitude, hosp.longitude]
+          ], {color: 'blue', weight: 3, opacity: 0.7}).addTo(hospitalMap);
+          
+          // Fit bounds to include both markers
+          const bounds = L.latLngBounds([
+            [chosenLocation.lat, chosenLocation.lng],
+            [hosp.latitude, hosp.longitude]
+          ]);
+          hospitalMap.fitBounds(bounds, {padding: [30, 30]});
+          
+          // Store the map reference
+          hospitalMaps.push(hospitalMap);
         }
       });
-
-      // Fit bounds to all markers
-      if (latLngs.length > 1) {
-        const bounds = L.latLngBounds(latLngs);
-        hospitalsMap.fitBounds(bounds, { padding: [50, 50] });
-      }
     })
     .catch(err => {
       console.error(err);
