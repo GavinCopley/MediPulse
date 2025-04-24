@@ -1,5 +1,5 @@
 ---
-layout: base
+layout: tailwind
 title: Sign Up
 permalink: /signup
 search_exclude: true

@@ -1,5 +1,5 @@
 ---
-layout: base
+layout: tailwind
 title: MediPulse
 search_exclude: true
 menu: nav/home.html

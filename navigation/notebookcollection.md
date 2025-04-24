@@ -1,5 +1,5 @@
 ---
-layout: base
+layout: tailwind
 title: Notebook Showcase
 permalink: /notebooks/collection
 menu: nav/home.html 

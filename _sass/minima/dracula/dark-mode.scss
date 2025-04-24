@@ -1,109 +1,137 @@
-:root {
-    --default-canvas-filter: invert(0%);
+/* Colors */
+$background-color-start: #132068 !default;  // Dark Purple
+$background-color-end: #024a57 !default;  // Deep Blue
+$text-color: #eaeaea !default;  // Light text color
+$primary-color: #6a4c9c !default;  // Purple for highlights
+$secondary-color: #00adb5 !default;  // Aqua Blue for accents
+
+/* Gradient Background */
+html, body {
+  background: linear-gradient(135deg, $background-color-start, $background-color-end) !important;
+  color: $text-color !important;
+  font-family: 'Segoe UI', Tahoma !important;
 }
+  
+/* Header Styles */
+header {
+    background-color: #ffffff !important;  /* Ensure the entire header has a white background */
+    color: black !important;  /* Black text */
+    border-radius: 10px;  /* Smooth corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  /* Add a subtle shadow for depth */
+  }
+  
+  /* Header Styles */
+  .site-title {
+    color: #000000; /* Text color - black or dark gray */
+    font-weight: bold;
+    font-family: 'Segoe UI', sans-serif !important;
+    font-size: 2.5rem;
+    text-align: center;
+    padding: 10px 0;
+    border-radius: 10px; /* Smooth corners */
+    background-color: #ffffff; /* White background */
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  
+  .site-title:hover {
+    background-color: #f0f0f0; /* Light gray when hovered */
+    transform: scale(1.05);
+  }
+  
 
-$high-emph: rgba(white, 0.87);
-$med-emph: rgba(white, 0.69); 
-$low-emph: rgba(white, 0.38);
-$dark-grey : #121212; 
-// $dark-grey : #1F1B24;
-$overlay: mix($dark-grey, white, 95%);
-$overlay-light: mix($dark-grey, white, 86%);
-
-html, body, input, textarea, select, button {   
-  color: $high-emph !important;
-  background-color: $dark-grey !important;
-}
-
-a {
-    color: rgb(75, 186, 255) !important;
-}
-
-a:hover {
-    color:$high-emph !important;
-}
-
-.site-title, .site-title:visited, .site-nav, .page-link {
-    color: $high-emph !important;
-}
-
+/* Navigation Bar */
 .site-nav {
-    background-color: $dark-grey;
-    border-color: $overlay-light;
+    background-color: #ffffff !important; /* White background */
+    padding: 8px 0;  /* Reduced padding for a smaller height */
+    border-radius: 8px;  /* Rounded corners */
+    box-shadow: 0 4px 6px rgba(255, 255, 255, 0.2);  /* Soft shadow for depth */
+    display: flex;  /* Use flexbox to align items */
+    justify-content: center;  /* Center the links horizontally */
+    gap: 20px;  /* Add space between each link */
 }
 
-* {
-    scrollbar-color: $dark-grey $overlay-light;
+/* Links in Navigation */
+.site-nav a {
+    color: black !important;  /* Black text for links */
+    text-decoration: none;
+    font-size: 1.2rem;  /* Increased font size */
+    font-weight: bold;  /* Make the text bold */
+    padding: 8px 15px;  /* Adjust padding for proper space */
+    border-radius: 5px;  /* Smooth corners for links */
+    transition: color 0.3s ease, background-color 0.3s ease;  /* Smooth transition */
 }
 
-pre, code {
-    // BVas a lighter colour to better highlight short code words
-    border-color: $overlay-light;
-    background-color: $overlay;
+/* Navigation Links Hover Effect */
+.site-nav a:hover {
+    color: $secondary-color !important;  /* Change link color on hover */
+    background-color: #f0f0f0;  /* Light gray background on hover */
 }
 
-.page-description {
-    color: $med-emph;
+
+/* Responsive Adjustment for Smaller Screens */
+@media (max-width: 768px) {
+  .site-nav {
+    flex-direction: column;  /* Stack links vertically on small screens */
+    align-items: center;  /* Center the links vertically */
+    gap: 10px;  /* Reduce space between links */
+  }
+  
+  .site-nav a {
+    font-size: 1rem;  /* Adjust font size for smaller screens */
+    padding: 8px 12px;  /* Adjust padding for smaller screens */
+  }
 }
 
-.post-meta {
-    color: $low-emph;
-}
-
-.post-content p, .post-content li {
-    color: $med-emph;
-}
-
+/* Button Styling with Animation */
 .btn {
-    background-color: $overlay !important;
-    color: $high-emph !important;
-    border-color: $overlay-light !important;
+  background-color: $secondary-color !important;
+  color: $text-color !important;
+  border-radius: 8px;  /* Rounded corners */
+  padding: 10px 20px;
+  border-color: $primary-color !important;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .btn:hover {
-    background-color: $dark-grey !important;
+  background-color: $primary-color !important;
+  transform: scale(1.05);  /* Slightly enlarge the button on hover */
 }
 
-table th{
-    background-color: $overlay;
-    border-color: $overlay-light;
-    color: $high-emph;
+/* Table Styling */
+table th, table td {
+  background-color: $background-color-start !important;
+  color: $text-color !important;
+  border-color: $primary-color !important;
 }
 
-table td{
-    background-color: $dark-grey;
-    border-color: $overlay-light;
-    color: $med-emph;
+table th {
+  font-weight: bold;  /* Bold headers */
 }
 
-.flash {
-    color: $dark-grey !important;
-    filter: brightness(80%);
+/* Pre, Code Block Styling */
+pre, code {
+  background-color: $background-color-start !important;
+  color: $text-color !important;
+  border-radius: 8px;  /* Rounded corners for code blocks */
+  padding: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  /* Soft shadow */
 }
 
-canvas {
-    filter: var(--default-canvas-filter);
-}
-
-.post-list > li > div {
-    box-shadow: none !important;
-    background-color: $overlay;
-    border: none !important;
-}
-
-li .post-meta-description {
-    color: $med-emph !important;
-}
-
-.search-result-preview{
-    color: lightgray !important; 
+/* Search Results */
+.search-result-title {
+  color: $primary-color !important;
 }
 
 .search-result-highlight {
-    color:yellow !important;
-    font-weight:bold !important;
+  color: yellow !important;
+  font-weight: bold !important;
 }
 
-.search-results-list-item .search-result-title {
-    color: cornflowerblue !important;
+.flash {
+  color: $text-color !important;
+  filter: brightness(80%) !important;
+}
+
+canvas {
+  filter: var(--default-canvas-filter);
 }

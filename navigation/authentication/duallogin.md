@@ -1,5 +1,5 @@
 ---
-layout: base
+layout: tailwind
 title: Login
 permalink: /duallogin
 search_exclude: true

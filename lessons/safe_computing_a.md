@@ -1,5 +1,5 @@
 ---
-layout: base
+layout: tailwind
 title: Safe Computing - 2a
 description: Safe computing from Collegeboard's AP CSP curriculum
 comments: true

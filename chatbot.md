@@ -1,5 +1,5 @@
 ---
-layout: base
+layout: tailwind
 title: Medipulse Chatbot
 permalink: /hospital-chat
 search_exclude: true

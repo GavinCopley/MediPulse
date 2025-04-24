@@ -1,5 +1,5 @@
 ---
-layout: base
+layout: tailwind
 menu: nav/home.html
 permalink: /allPosts
 ---

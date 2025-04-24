@@ -1,5 +1,5 @@
 ---
-layout: base
+layout: tailwind
 title: Best Hospital for You
 permalink: /hospitalforyou
 search_exclude: true

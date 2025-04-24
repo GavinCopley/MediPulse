@@ -1,5 +1,5 @@
 ---
-layout: base 
+layout: tailwind 
 title: Hospital Data Analytics
 description: Displaying hospital data from backend CSV
 permalink: /analytics

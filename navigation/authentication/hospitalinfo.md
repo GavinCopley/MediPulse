@@ -1,5 +1,5 @@
 ---
-layout: base
+layout: tailwind
 title: Hospitals
 permalink: /Hospital
 search_exclude: true

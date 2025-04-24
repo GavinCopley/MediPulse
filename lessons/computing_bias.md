@@ -1,5 +1,5 @@
 ---
-layout: base
+layout: tailwind
 title: Computing Bias
 description: Computing from Collegeboard's AP CSP curriculum
 comments: true

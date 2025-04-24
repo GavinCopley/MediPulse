@@ -1,5 +1,5 @@
 ---
-layout: base
+layout: tailwind
 title: Safe Computing - C
 description: Safe computing (C) from Collegeboard's AP CSP curriculum
 comments: true

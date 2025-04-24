@@ -1,5 +1,5 @@
 ---
-layout: base
+layout: tailwind
 title: Car Talk
 search_exclude: true
 menu: nav/home.html

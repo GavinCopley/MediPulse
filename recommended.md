@@ -1,5 +1,5 @@
 ---
-layout: base
+layout: tailwind
 search_exclude: true
 menu: nav/home.html
 ---

@@ -1,5 +1,5 @@
 ---
-layout: base
+layout: tailwind
 title: Comment
 permalink: /comment
 menu: nav/home.html

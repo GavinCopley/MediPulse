@@ -1,5 +1,5 @@
 ---
-layout: base
+layout: tailwind
 title: Logout
 permalink: /logout
 search_exclude: true

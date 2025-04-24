@@ -1,5 +1,5 @@
 ---
-layout: base
+layout: tailwind
 title: Admin
 permalink: /admin
 search_exclude: true

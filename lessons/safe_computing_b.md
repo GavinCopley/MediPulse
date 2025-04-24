@@ -1,5 +1,5 @@
 ---
-layout: base
+layout: tailwind
 title: Safe Computing - B
 description: Safe computing (B) from Collegeboard's AP CSP curriculum
 comments: true
