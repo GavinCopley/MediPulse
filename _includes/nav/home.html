@@ -32,7 +32,7 @@
             
             <!-- Profile Button -->
             <div class="relative">
-                <a id="profile" href="{{site.baseurl}}/profile" class="text-indigo-600 hover:text-indigo-800 font-semibold">Profile</a>
+                <a id="profile" href="{{site.baseurl}}/profile" class="text-indigo-600 hover:text-indigo-800 font-semibold" hidden>Profile</a>
                 <div id="profile-dropdown" class="dropdown-content absolute hidden bg-white shadow-md rounded-lg mt-2 w-40 text-sm font-semibold text-gray-900">
                     <a href="{{site.baseurl}}/profile" class="block px-4 py-2">View Profile</a>
                     <a href="{{site.baseurl}}/logout" id="logout-button" class="block px-4 py-2 text-red-500">Logout</a>
@@ -77,8 +77,13 @@
         getCredentials()
             .then((data) => {
                 if (data) {
+                    // User is authenticated
                     if (loginLink) loginLink.hidden = true;
                     if (profileLink) profileLink.hidden = false;
+                } else {
+                    // User is not authenticated
+                    if (loginLink) loginLink.hidden = false;
+                    if (profileLink) profileLink.hidden = true;
                 }
             })
             .catch((err) => {
