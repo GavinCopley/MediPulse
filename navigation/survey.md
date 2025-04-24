@@ -3,13 +3,16 @@ layout: tailwind
 title: Please Fill out the Following Information
 permalink: /survey
 search_exclude: true
-menu: nav/home.html 
+menu: nav/home.html
 ---
 
 <div class="bg-gray-100 flex items-center justify-center h-screen">
   <div class="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
     <h2 class="text-xl font-bold text-gray-800 mb-4">Required Health Information</h2>
     <form id="surveyForm" class="space-y-4">
+      <!-- Hidden UID Field -->
+      <input type="hidden" id="uid" value="USER_UID_HERE" />
+
       <input type="text" id="name" placeholder="First and Last Name" required class="input-field">
       <input type="text" id="username" placeholder="Username" required class="input-field">
       <input type="email" id="email" placeholder="Email" required class="input-field">
@@ -38,6 +41,7 @@ menu: nav/home.html
     const form = event.target;
     const messageDiv = document.getElementById("message");
 
+    const uid = document.getElementById("uid").value;
     const age = parseInt(document.getElementById("age").value);
     const weight = parseInt(document.getElementById("weight").value);
     const height = parseInt(document.getElementById("height").value);
@@ -47,6 +51,7 @@ menu: nav/home.html
     if (height < 0 || height > 120) return showMessage("Please enter a valid height between 0 and 120 inches", "error");
 
     const formData = {
+        uid, // Include the UID in the form data
         name: document.getElementById("name").value.trim(),
         username: document.getElementById("username").value.trim(),
         email: document.getElementById("email").value.trim(),
