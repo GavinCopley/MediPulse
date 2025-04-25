@@ -1,6 +1,6 @@
 ---
 layout: tailwind
-title: Hospitals
+title: Hospitals 
 permalink: /Hospital
 search_exclude: true
 menu: nav/home.html 
@@ -16,6 +16,8 @@ menu: nav/home.html
       <input type="text" id="specialty" placeholder="Specialty" class="border p-2 rounded w-full">
       <input type="text" id="insurance" placeholder="Insurance" class="border p-2 rounded w-full">
       <input type="text" id="treatment" placeholder="Treatment" class="border p-2 rounded w-full">
+      <!-- Add new search fields for emergency and department -->
+      <input type="text" id="department" placeholder="Department" class="border p-2 rounded w-full">
       <select id="rating" class="border p-2 rounded w-full">
         <option value="1">Any Rating</option>
         <option value="2">2+ Stars</option>
@@ -23,6 +25,10 @@ menu: nav/home.html
         <option value="4">4+ Stars</option>
         <option value="5">5 Stars Only</option>
       </select>
+      <div class="flex items-center">
+        <input type="checkbox" id="emergency" class="mr-2 h-4 w-4 text-indigo-600">
+        <label for="emergency" class="text-gray-700">Emergency Services</label>
+      </div>
       <button type="submit" class="bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700 flex justify-center items-center">
         <span id="search-text">Search</span>
         <svg id="search-loading" class="animate-spin ml-2 h-4 w-4 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -44,6 +50,37 @@ menu: nav/home.html
     </div>
   </div>
   <div id="pagination" class="flex justify-center mt-8 gap-2"></div>
+  
+  <!-- Hospital Details Modal -->
+  <div id="hospital-modal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+    <div class="flex items-center justify-center min-h-screen p-4">
+      <!-- Modal Background Overlay -->
+      <div id="modal-backdrop" class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+      
+      <!-- Modal Content -->
+      <div class="relative bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto z-10">
+        <!-- Modal Header -->
+        <div class="sticky top-0 z-10 bg-white border-b px-6 py-4 flex justify-between items-center">
+          <h3 id="modal-title" class="text-lg font-medium text-gray-900">Hospital Details</h3>
+          <button id="close-modal" class="text-gray-400 hover:text-gray-500">
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        
+        <!-- Modal Body -->
+        <div id="modal-content" class="p-6">
+          <div class="flex justify-center">
+            <svg class="animate-spin h-8 w-8 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -56,6 +93,43 @@ menu: nav/home.html
     const pagination = document.getElementById('pagination');
     const searchText = document.getElementById('search-text');
     const searchLoading = document.getElementById('search-loading');
+    
+    // Modal elements
+    const hospitalModal = document.getElementById('hospital-modal');
+    const modalBackdrop = document.getElementById('modal-backdrop');
+    const closeModal = document.getElementById('close-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalContent = document.getElementById('modal-content');
+    
+    // Modal event listeners
+    closeModal.addEventListener('click', hideModal);
+    modalBackdrop.addEventListener('click', hideModal);
+    
+    // Close modal on escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && !hospitalModal.classList.contains('hidden')) {
+        hideModal();
+      }
+    });
+    
+    function showModal() {
+      hospitalModal.classList.remove('hidden');
+      document.body.classList.add('overflow-hidden');
+    }
+    
+    function hideModal() {
+      hospitalModal.classList.add('hidden');
+      document.body.classList.remove('overflow-hidden');
+      modalTitle.textContent = 'Hospital Details';
+      modalContent.innerHTML = `
+        <div class="flex justify-center">
+          <svg class="animate-spin h-8 w-8 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+        </div>
+      `;
+    }
     
     // Initial load of hospitals
     fetchHospitals();
@@ -87,8 +161,14 @@ menu: nav/home.html
         insurance: document.getElementById('insurance').value,
         treatment: document.getElementById('treatment').value,
         rating: document.getElementById('rating').value,
+        department: document.getElementById('department').value,
         page: page
       });
+      
+      // Add emergency services filter if checked
+      if (document.getElementById('emergency').checked) {
+        params.append('emergency', 'yes');
+      }
       
       // Make API request
       fetch(`${pythonURI}/api/hospitals?${params.toString()}`)
@@ -203,9 +283,15 @@ menu: nav/home.html
             <span class="ml-1 text-xs text-gray-700">${insurances.slice(0, 2).join(', ')}${insurances.length > 2 ? ', ...' : ''}</span>
           </div>` : '';
         
+        // Check for emergency services
+        const hasEmergency = hospital.emergency_services && hospital.emergency_services.toLowerCase() === 'yes';
+        const emergencyBadge = hasEmergency ? 
+          `<span class="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-bl">24/7 Emergency</span>` : '';
+        
         // Create hospital card
         const hospitalCard = `
-          <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition duration-300">
+          <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition duration-300 relative">
+            ${emergencyBadge}
             <div class="md:flex">
               <div class="md:flex-shrink-0">
                 <img class="h-48 w-full object-cover md:w-48" src="${hospital.image_url || 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'}" alt="${hospital.name}">
@@ -236,7 +322,7 @@ menu: nav/home.html
                       </svg>
                       ${hospital.accepting_new_patients ? 'Accepting new patients' : 'Not accepting new patients'}
                     </div>
-                    <a href="#" data-hospital-id="${hospital.id || ''}" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium hospital-details">View details →</a>
+                    <button data-hospital-name="${hospital.name}" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium hospital-details">View details →</button>
                   </div>
                 </div>
               </div>
@@ -248,16 +334,252 @@ menu: nav/home.html
       });
       
       // Add event listeners to hospital detail links
-      document.querySelectorAll('.hospital-details').forEach(link => {
-        link.addEventListener('click', function(e) {
-          e.preventDefault();
-          const hospitalId = this.getAttribute('data-hospital-id');
-          alert(`View details for hospital ID: ${hospitalId || 'N/A'}\nThis would navigate to a detailed hospital page in a full application.`);
+      document.querySelectorAll('.hospital-details').forEach(button => {
+        button.addEventListener('click', function() {
+          const hospitalName = this.getAttribute('data-hospital-name');
+          if (hospitalName) {
+            fetchHospitalDetails(hospitalName);
+          }
         });
       });
       
       // Update pagination
       renderPagination(currentPage, totalPages);
+    }
+    
+    function fetchHospitalDetails(hospitalName) {
+      // Show modal with loading state
+      showModal();
+      modalTitle.textContent = hospitalName;
+      
+      // Make API request for hospital details
+      fetch(`${pythonURI}/api/hospitals/${encodeURIComponent(hospitalName)}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          if (data.status === 'success' && data.hospital) {
+            displayHospitalDetails(data.hospital);
+          } else {
+            throw new Error('Hospital details not found');
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching hospital details:', error);
+          modalContent.innerHTML = `
+            <div class="text-center py-8">
+              <svg class="mx-auto h-12 w-12 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <h3 class="mt-2 text-lg font-medium text-gray-900">Failed to load hospital details</h3>
+              <p class="mt-1 text-sm text-gray-500">${error.message}</p>
+              <button id="modal-retry-btn" class="mt-4 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                Retry
+              </button>
+            </div>
+          `;
+          
+          document.getElementById('modal-retry-btn').addEventListener('click', () => {
+            fetchHospitalDetails(hospitalName);
+          });
+        });
+    }
+    
+    function displayHospitalDetails(hospital) {
+      // Format departments as list items if available
+      const departments = hospital.departments ? hospital.departments.split(',').map(d => d.trim()).filter(d => d.length > 0) : [];
+      const departmentsHTML = departments.length > 0 ?
+        `<div class="mb-6">
+          <h4 class="font-medium text-gray-900 mb-2">Departments</h4>
+          <ul class="grid grid-cols-1 md:grid-cols-2 gap-2">
+            ${departments.map(dept => `<li class="flex items-center">
+              <svg class="h-5 w-5 text-indigo-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              ${dept}
+            </li>`).join('')}
+          </ul>
+        </div>` : '';
+
+      // Format visiting hours
+      const visitingHours = hospital.visiting_hours || 'Not specified';
+      
+      // Format contact information
+      const phoneNumber = hospital.phone || 'Not available';
+      const email = hospital.email || 'Not available';
+      const website = hospital.website ? `<a href="${hospital.website}" target="_blank" class="text-indigo-600 hover:underline">${hospital.website}</a>` : 'Not available';
+      
+      // Format accessibility information
+      const accessibility = hospital.parking_accessibility || 'Information not available';
+      
+      // Format reviews if available
+      const reviews = hospital.patient_review ? hospital.patient_review.split('|').map(r => r.trim()).filter(r => r.length > 0) : [];
+      const reviewsHTML = reviews.length > 0 ?
+        `<div class="mb-6 border-t border-gray-200 pt-6">
+          <h4 class="font-medium text-gray-900 mb-4">Patient Reviews</h4>
+          ${reviews.map(review => {
+            // Parse review - assume format "Name: Comment" or just "Comment"
+            const parts = review.includes(':') ? review.split(':', 2) : ['Anonymous', review];
+            const name = parts[0].trim();
+            const comment = parts[1].trim();
+            
+            return `<div class="mb-4 bg-gray-50 p-4 rounded">
+              <p class="text-sm italic text-gray-600">"${comment}"</p>
+              <p class="text-xs text-gray-500 mt-2">— ${name}</p>
+            </div>`;
+          }).join('')}
+        </div>` : '';
+      
+      // Build the complete modal content
+      modalContent.innerHTML = `
+        <div class="flex flex-col md:flex-row">
+          <div class="md:w-1/2 pr-0 md:pr-6">
+            <img src="${hospital.image_url || 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'}" 
+                 alt="${hospital.name}" 
+                 class="rounded-lg w-full h-64 object-cover mb-6">
+            
+            <div class="mb-6">
+              <h4 class="font-medium text-gray-900 mb-2">About</h4>
+              <p class="text-gray-600">${hospital.description || 'No description available.'}</p>
+            </div>
+            
+            ${departmentsHTML}
+            
+            <div class="mb-6">
+              <h4 class="font-medium text-gray-900 mb-2">Insurance Accepted</h4>
+              <p class="text-gray-600">${hospital.insurance || 'Information not available'}</p>
+            </div>
+          </div>
+          
+          <div class="md:w-1/2 border-t md:border-t-0 md:border-l border-gray-200 pl-0 md:pl-6 pt-6 md:pt-0">
+            <div class="flex items-center mb-4">
+              <div class="bg-indigo-100 rounded-full p-2 mr-3">
+                <svg class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-900">Location</p>
+                <p class="text-sm text-gray-600">${hospital.location}</p>
+              </div>
+            </div>
+            
+            <div class="flex items-center mb-4">
+              <div class="bg-indigo-100 rounded-full p-2 mr-3">
+                <svg class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-900">Visiting Hours</p>
+                <p class="text-sm text-gray-600">${visitingHours}</p>
+              </div>
+            </div>
+            
+            <div class="flex items-center mb-4">
+              <div class="bg-indigo-100 rounded-full p-2 mr-3">
+                <svg class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                </svg>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-900">Phone</p>
+                <p class="text-sm text-gray-600">${phoneNumber}</p>
+              </div>
+            </div>
+            
+            <div class="flex items-center mb-4">
+              <div class="bg-indigo-100 rounded-full p-2 mr-3">
+                <svg class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-900">Email</p>
+                <p class="text-sm text-gray-600">${email}</p>
+              </div>
+            </div>
+            
+            <div class="flex items-center mb-4">
+              <div class="bg-indigo-100 rounded-full p-2 mr-3">
+                <svg class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                </svg>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-900">Website</p>
+                <p class="text-sm text-gray-600">${website}</p>
+              </div>
+            </div>
+            
+            <div class="flex items-center mb-6">
+              <div class="bg-indigo-100 rounded-full p-2 mr-3">
+                <svg class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M13 16h-1v-4h-1m-1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-900">Parking & Accessibility</p>
+                <p class="text-sm text-gray-600">${accessibility}</p>
+              </div>
+            </div>
+            
+            <div class="mb-6">
+              <h4 class="font-medium text-gray-900 mb-2">Emergency Services</h4>
+              <p class="text-gray-600 flex items-center">
+                ${hospital.emergency_services === 'Yes' ? 
+                  `<svg class="h-4 w-4 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                   </svg> Available 24/7` : 
+                  `<svg class="h-4 w-4 text-red-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                   </svg> Not available`
+                }
+              </p>
+            </div>
+            
+            <div class="flex items-center justify-between border-t border-gray-200 pt-4">
+              <div>
+                <div class="flex items-center">
+                  <span class="text-lg font-bold text-indigo-600">${hospital.rating}</span>
+                  <svg class="w-5 h-5 text-yellow-400 ml-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                  </svg>
+                  <span class="ml-1 text-sm text-gray-500">Overall Rating</span>
+                </div>
+              </div>
+              <div class="text-sm ${hospital.accepting_new_patients ? 'text-green-600' : 'text-orange-600'} font-medium">
+                ${hospital.accepting_new_patients ? 'Accepting new patients' : 'Not accepting new patients'}
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        ${reviewsHTML}
+        
+        <div class="border-t border-gray-200 pt-6">
+          <div class="flex justify-center">
+            <a href="tel:${hospital.phone}" class="mx-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded font-medium">
+              Call Hospital
+            </a>
+            <a href="https://maps.google.com/?q=${encodeURIComponent(hospital.name + ' ' + hospital.location)}" target="_blank" 
+               class="mx-2 bg-white border border-indigo-600 text-indigo-600 hover:bg-indigo-50 px-4 py-2 rounded font-medium">
+              Get Directions
+            </a>
+          </div>
+        </div>
+      `;
     }
     
     function renderPagination(currentPage, totalPages) {
@@ -341,7 +663,13 @@ menu: nav/home.html
             treatments: "Surgery,Physical Therapy,Radiation",
             rating: 4.8,
             accepting_new_patients: true,
-            description: "A 288-bed hospital featuring the latest medical technology and nationally recognized care teams."
+            description: "A 288-bed hospital featuring the latest medical technology and nationally recognized care teams.",
+            emergency_services: "Yes",
+            departments: "Cardiology,Oncology,Neurology,Orthopedics",
+            visiting_hours: "9:00 AM - 8:00 PM Daily",
+            phone: "(760) 739-3000",
+            website: "https://www.palomarhealth.org",
+            email: "info@palomarhealth.org"
           },
           {
             id: "2",
@@ -353,7 +681,9 @@ menu: nav/home.html
             treatments: "Surgery,Rehabilitation,Diagnostics",
             rating: 4.5,
             accepting_new_patients: true,
-            description: "Leading the way with advanced technology and specialized care for complex medical conditions."
+            description: "Leading the way with advanced technology and specialized care for complex medical conditions.",
+            emergency_services: "Yes",
+            departments: "Neurology,Orthopedics,Women's Health,Cardiology"
           },
           {
             id: "3",
@@ -365,7 +695,8 @@ menu: nav/home.html
             treatments: "Chemotherapy,Heart Surgery,Clinical Trials",
             rating: 4.7,
             accepting_new_patients: true,
-            description: "Renowned for cancer treatment, cardiovascular care, and groundbreaking clinical research."
+            description: "Renowned for cancer treatment, cardiovascular care, and groundbreaking clinical research.",
+            emergency_services: "Yes"
           },
           {
             id: "4",
@@ -377,7 +708,8 @@ menu: nav/home.html
             treatments: "Organ Transplantation,Pediatric Services,Research",
             rating: 4.9,
             accepting_new_patients: true,
-            description: "Academic medical center providing cutting-edge treatments and pioneering medical research."
+            description: "Academic medical center providing cutting-edge treatments and pioneering medical research.",
+            emergency_services: "Yes"
           }
         ]
       };
@@ -431,5 +763,18 @@ menu: nav/home.html
   }
   .animate-spin {
     animation: spin 1s linear infinite;
+  }
+  
+  body.overflow-hidden {
+    overflow: hidden;
+  }
+  
+  #hospital-modal {
+    transition: opacity 0.3s ease;
+  }
+  
+  #hospital-modal.hidden {
+    display: none;
+    opacity: 0;
   }
 </style>
