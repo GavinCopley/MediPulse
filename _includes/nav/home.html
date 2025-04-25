@@ -30,10 +30,10 @@
             <!-- Login/Sign Up Button -->
             <a id="signup-login" href="{{site.baseurl}}/noauth" class="text-indigo-600 hover:text-indigo-800 font-semibold">Login / Sign Up</a>
             
-            <!-- Profile Button (hidden by default) -->
-            <div class="relative group">
-                <a hidden id="profile" href="{{site.baseurl}}/profile" class="text-indigo-600 hover:text-indigo-800 font-semibold">Profile</a>
-                <div id="profile-dropdown" class="dropdown-content absolute hidden group-hover:block bg-white shadow-md rounded-lg mt-2 w-40 text-sm font-semibold text-gray-900">
+            <!-- Profile Button -->
+            <div class="relative">
+                <a id="profile" href="{{site.baseurl}}/profile" class="text-indigo-600 hover:text-indigo-800 font-semibold">Profile</a>
+                <div id="profile-dropdown" class="dropdown-content absolute hidden bg-white shadow-md rounded-lg mt-2 w-40 text-sm font-semibold text-gray-900">
                     <a href="{{site.baseurl}}/profile" class="block px-4 py-2">View Profile</a>
                     <a href="{{site.baseurl}}/logout" id="logout-button" class="block px-4 py-2 text-red-500">Logout</a>
                 </div>
@@ -41,6 +41,28 @@
         </div>
     </div>
 </header>
+
+<style>
+/* Basic styling for the dropdown */
+#profile-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%; /* Position below the profile button */
+    left: -80px; /* Move the dropdown slightly to the left */
+    z-index: 10;
+}
+
+#profile-dropdown a {
+    padding: 8px 12px;
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+#profile-dropdown a:hover {
+    background-color: #f3f4f6; /* Light gray background on hover */
+}
+</style>
 
 <script type="module">
     import {
@@ -62,6 +84,37 @@
             .catch((err) => {
                 console.error("Error fetching credentials: ", err);
             });
+
+        const profileButton = document.getElementById("profile");
+        const dropdown = document.getElementById("profile-dropdown");
+
+        let hideTimeout;
+
+        // Show the dropdown when hovering over the profile button
+        profileButton.addEventListener("mouseenter", () => {
+            clearTimeout(hideTimeout); // Cancel any hide timeout
+            dropdown.style.display = "block";
+        });
+
+        // Show the dropdown when hovering over the dropdown itself
+        dropdown.addEventListener("mouseenter", () => {
+            clearTimeout(hideTimeout); // Cancel any hide timeout
+            dropdown.style.display = "block";
+        });
+
+        // Hide the dropdown when the mouse leaves the profile button
+        profileButton.addEventListener("mouseleave", () => {
+            hideTimeout = setTimeout(() => {
+                dropdown.style.display = "none";
+            }, 200); // Add a small delay before hiding
+        });
+
+        // Hide the dropdown when the mouse leaves the dropdown itself
+        dropdown.addEventListener("mouseleave", () => {
+            hideTimeout = setTimeout(() => {
+                dropdown.style.display = "none";
+            }, 200); // Add a small delay before hiding
+        });
     });
 
     function getCredentials() {
