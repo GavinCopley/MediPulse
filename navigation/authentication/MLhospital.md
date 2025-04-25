@@ -6,47 +6,47 @@ search_exclude: true
 menu: nav/home.html
 ---
 
-<!-- Leaflet CSS -->
-<link
-  rel="stylesheet"
-  href="https://unpkg.com/leaflet/dist/leaflet.css"
-/>
+<!-- ──────────────────────────────────────────────────────────────── -->
+<!--  CSS / JS CDN IMPORTS                                           -->
+<!-- ──────────────────────────────────────────────────────────────── -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_PLACES_KEY&libraries=places"></script>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-<!-- Google Places API (Autocomplete) -->
-<!-- Replace with your own key, but here's the one you provided. -->
-<script 
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCusKJxX9PZrryqKQ4oYAMfaHYJMS-my24&libraries=places">
-</script>
-
+<!-- ──────────────────────────────────────────────────────────────── -->
+<!--  HERO                                                            -->
+<!-- ──────────────────────────────────────────────────────────────── -->
 <div class="bg-gradient-to-r from-indigo-600 to-blue-500 py-12">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <h1 class="text-4xl font-extrabold text-white text-center">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <h1 class="text-4xl font-extrabold text-white">
       Find the Best Hospital for Your Needs
     </h1>
-    <p class="mt-3 text-xl text-indigo-100 text-center max-w-3xl mx-auto">
-      Using AI and proprietary algorithms will recommend the perfect hospital based on your needs
+    <p class="mt-3 text-xl text-indigo-100 max-w-3xl mx-auto">
+      Using AI-powered scoring we’ll recommend the perfect hospital based on what matters most to you.
     </p>
   </div>
 </div>
 
+<!-- ──────────────────────────────────────────────────────────────── -->
+<!--  MAIN CARD (Step 1 → Step 2 → Results)                           -->
+<!-- ──────────────────────────────────────────────────────────────── -->
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-  <!-- STEP ONE: Location selection -->
-  <div class="bg-white shadow-lg rounded-lg p-6 mb-8" id="step-one">
+
+  <!-- STEP 1 – Location -->
+  <div id="step-one" class="bg-white shadow-lg rounded-lg p-6 mb-8">
     <h2 class="text-2xl font-bold text-gray-800 mb-4">Step 1: Choose Your Location</h2>
 
- <!-- 1) Google Places Autocomplete -->
-  <div class="mb-4">
+    <!-- address autocomplete -->
+    <div class="mb-4">
       <label for="address-input" class="block text-lg font-medium text-gray-700 mb-1.5">
         Type your address (autocomplete):
       </label>
-      <input
-        id="address-input"
-        type="text"
-        placeholder="e.g., 1600 Amphitheatre Parkway, Mountain View, CA"
-        class="border border-gray-300 rounded-md px-4 py-2 focus:ring-indigo-500 focus:border-indigo-500 w-full"
-      />
+      <input id="address-input" type="text"
+             placeholder="e.g., 1600 Amphitheatre Pkwy, Mountain View, CA"
+             class="border border-gray-300 rounded-md px-4 py-2 w-full
+                    focus:ring-indigo-500 focus:border-indigo-500"/>
       <p class="text-sm text-gray-500 mt-1">
-        Start typing an address and select from the suggestions (requires Google API).
+        Start typing an address and select from the suggestions.
       </p>
     </div>
 
@@ -58,156 +58,109 @@ menu: nav/home.html
       >
         Remain Anonymous (Use Petco Park)
       </button>
-      <button
-        id="anonymous-zoo"
-        class="bg-green-700 hover:bg-green-900 text-white font-semibold py-2 px-4 rounded-md"
-      >
+      <button id="anonymous-zoo"
+              class="bg-green-700 hover:bg-green-900 text-white font-semibold py-2 px-4 rounded-md">
         Use San Diego Zoo
       </button>
-      <button
-        id="select-on-map-btn"
-        class="bg-indigo-600 hover:bg-indigo-800 text-white font-semibold py-2 px-4 rounded-md"
-      >
+      <button id="select-on-map-btn"
+              class="bg-indigo-600 hover:bg-indigo-800 text-white font-semibold py-2 px-4 rounded-md">
         Select on Map
       </button>
     </div>
 
-  <!-- Map to place or see chosen location, default center is SD -->
-  <div id="user-map" class="w-full h-64 mb-4"></div>
-    <p class="text-gray-600 text-sm">
-      If you choose "Select on Map," click anywhere on the map to set your location marker.
-    </p>
-
-  <div id="location-status" class="text-gray-800 mt-2 font-medium">
+    <!-- user-map -->
+    <div id="user-map" class="w-full h-64 mb-4"></div>
+    <p class="text-gray-600 text-sm">Click the map to set a custom location.</p>
+    <div id="location-status" class="text-gray-800 mt-2 font-medium">
       No location selected yet.
     </div>
   </div>
 
-  <!-- STEP TWO: Hidden until location is set -->
-  <div class="bg-white shadow-lg rounded-lg p-6 mb-8 hidden" id="step-two">
+  <!-- STEP 2 – Preferences -->
+  <div id="step-two" class="hidden bg-white shadow-lg rounded-lg p-6 mb-8">
     <h2 class="text-2xl font-bold text-gray-800 mb-4">Step 2: Select Your Preferences</h2>
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-      <!-- Left Column (1/2 width) -->
-      <div class="md:col-span-2">
-        <div class="grid grid-cols-1 gap-8">
-          <!-- Medical Issue Dropdown -->
-          <div>
-            <label for="medical-issue" class="block text-lg font-medium text-gray-700 mb-1.5">
-              What is your medical issue?
-            </label>
-            <select
-              id="medical-issue"
-              class="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-indigo-500 focus:border-indigo-500"
-            >
-              <option value="">Select a medical issue</option>
-              <option value="cardiology">AAA Repair Endo Unrupture</option>
-              <option value="oncology">AAA Repair Open Unrupture</option>
-              <option value="neurology">Acute Stroke</option>
-              <option value="orthopedics">Acute Stroke Hemorrhagic</option>
-              <option value="pediatrics">Acute Stroke Ischemic</option>
-              <option value="emergency">Acute Stroke Subarachnoid</option>
-              <option value="womens-health">Acute Myocardial Infection (AMI)</option>
-              <option value="mental-health">Carotid Endarterectomy</option>
-              <option value="surgery">GI Hemorrhage</option>
-              <option value="respiratory">Heart Failure</option>
-              <option value="respiratory">Hip Fracture</option>
-              <option value="respiratory">Isolated Coronary Artery Bypass Grafting (CABG)r</option>
-              <option value="respiratory">Pancreatic Resection</option>
-              <option value="respiratory">Percutaneous Coronary Intervention (PCI)</option>
-              <option value="respiratory">Pneumonia</option>
-              <option value="respiratory">Postoperative Sepsis</option>
-            </select>
-          </div>
 
-<!-- Priority Selection -->
-  <div>
-            <label for="priority" class="block text-lg font-medium text-gray-700 mb-1.5">
-              What's most important to you?
-            </label>
-            <select
-              id="priority"
-              class="w-full border border-gray-300 rounded-md px-4 py-2 
-                     focus:ring-indigo-500 focus:border-indigo-500"
-            >
-              <option value="quality" title="How risky is the procedure?">Quality</option>
-              <option value="experience" title="Facility track record with numerous prior cases.">Experience</option>
-              <option value="safety" title="Complication rate.">Safety</option>
-            </select>
-          </div>
-<!-- Number of Results Selection -->
-          <div>
-            <label for="num-results" class="block text-lg font-medium text-gray-700 mb-1.5">
-              How many hospital results do you want? (1 to 10)
-            </label>
-            <input
-              id="num-results"
-              type="number"
-              min="1"
-              max="10"
-              value="3"
-              class="w-full border border-gray-300 rounded-md px-4 py-2 
-                     focus:ring-indigo-500 focus:border-indigo-500"
-            />
-          </div>
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <!-- left column -->
+      <div class="md:col-span-2 grid gap-8">
+
+        <!-- Medical issue -->
+        <div>
+          <label for="medical-issue" class="block text-lg font-medium text-gray-700 mb-1.5">
+            What is your medical issue?
+          </label>
+          <select id="medical-issue"
+                  class="w-full border border-gray-300 rounded-md px-4 py-2
+                         focus:ring-indigo-500 focus:border-indigo-500">
+            <option value="">Select a medical issue</option>
+            <option>AAA Repair Endo Unrupture</option>
+            <option>AAA Repair Open Unrupture</option>
+            <option>Acute Stroke</option>
+            <option>Acute Stroke Hemorrhagic</option>
+            <option>Acute Stroke Ischemic</option>
+            <option>Acute Stroke Subarachnoid</option>
+            <option>AMI</option>
+            <option>Carotid Endarterectomy</option>
+            <option>GI Hemorrhage</option>
+            <option>Heart Failure</option>
+            <option>Hip Fracture</option>
+            <option>Isolated CABG Operative Mor</option>
+            <option>Pancreatic Resection</option>
+            <option>PCI</option>
+            <option>Pneumonia</option>
+            <option>Postoperative Sepsis</option>
+          </select>
+        </div>
+
+        <!-- Priority -->
+        <div>
+          <label for="priority" class="block text-lg font-medium text-gray-700 mb-1.5">
+            What’s most important to you?
+          </label>
+          <select id="priority"
+                  class="w-full border border-gray-300 rounded-md px-4 py-2
+                         focus:ring-indigo-500 focus:border-indigo-500">
+            <option value="quality">Quality</option>
+            <option value="experience">Experience</option>
+            <option value="safety">Safety</option>
+          </select>
+        </div>
+
+        <!-- Number of results -->
+        <div>
+          <label for="num-results" class="block text-lg font-medium text-gray-700 mb-1.5">
+            How many hospital results do you want? (1 – 10)
+          </label>
+          <input id="num-results" type="number" min="1" max="10" value="3"
+                 class="w-full border border-gray-300 rounded-md px-4 py-2
+                        focus:ring-indigo-500 focus:border-indigo-500"/>
         </div>
       </div>
-<!-- Right Column (1/2 width) - Distance Slider -->
-      <div class="md:col-span-2 p-6 bg-gray-50 rounded-lg shadow-inner h-full flex flex-col justify-center">
-        <div class="flex items-center mb-4">
-          <label for="distance-range" class="block text-xl font-medium text-gray-700">
-            How far are you willing to travel?
-          </label>
+
+      <!-- right column – distance slider -->
+      <div class="md:col-span-2 p-6 bg-gray-50 rounded-lg shadow-inner
+                  flex flex-col justify-center">
+        <label for="distance-range" class="block text-xl font-medium text-gray-700">
+          How far are you willing to travel?
+        </label>
+        <input type="range" id="distance-range" min="1" max="50" value="10"
+               class="w-full h-6 bg-gray-200 rounded-lg appearance-none cursor-pointer mt-4"/>
+        <style>
+          input[type=range] { height:6px; }
+          input[type=range]::-webkit-slider-thumb,
+          input[type=range]::-moz-range-thumb,
+          input[type=range]::-ms-thumb {
+            width:22px;height:22px;border-radius:50%;
+            background:#4f46e5;cursor:pointer;border:2px solid #fff;
+            box-shadow:0 0 2px rgba(0,0,0,.3);
+          }
+        </style>
+        <div class="flex justify-between text-sm text-gray-600 mt-3">
+          <span>1 mile</span><span>Up to 50 miles</span>
         </div>
-        <div class="mt-4">
-          <input
-            type="range"
-            id="distance-range"
-            min="1"
-            max="50"
-            value="10"
-            class="w-full h-6 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-          />
-          <style>
-            input[type=range] {
-              height: 6px;
-            }
-            input[type=range]::-webkit-slider-thumb {
-              appearance: none;
-              width: 22px;
-              height: 22px;
-              border-radius: 50%;
-              background: #4f46e5;
-              cursor: pointer;
-              border: 2px solid #fff;
-              box-shadow: 0 0 2px rgba(0,0,0,0.3);
-            }
-            input[type=range]::-moz-range-thumb {
-              width: 22px;
-              height: 22px;
-              border-radius: 50%;
-              background: #4f46e5;
-              cursor: pointer;
-              border: 2px solid #fff;
-              box-shadow: 0 0 2px rgba(0,0,0,0.3);
-            }
-            input[type=range]::-ms-thumb {
-              width: 22px;
-              height: 22px;
-              border-radius: 50%;
-              background: #4f46e5;
-              cursor: pointer;
-              border: 2px solid #fff;
-              box-shadow: 0 0 2px rgba(0,0,0,0.3);
-            }
-          </style>
-          <div class="flex justify-between text-sm text-gray-600 mt-3">
-            <span>1 mile</span>
-            <span>Up to 50 miles</span>
-          </div>
-          <p class="text-lg text-gray-700 mt-4 font-semibold text-center">
-            Current selection: <span id="distance-value">10</span> miles
-          </p>
-        </div>
+        <p class="text-lg text-gray-700 mt-4 font-semibold text-center">
+          Current selection: <span id="distance-value">10</span> miles
+        </p>
       </div>
     </div>
 
@@ -225,17 +178,19 @@ menu: nav/home.html
 
   <!-- RESULTS -->
   <div id="results" class="hidden">
-    <h2 class="text-2xl font-bold text-gray-900 mb-6">Your Recommended Hospitals</h2>
-    <div class="grid grid-cols-1 gap-6" id="hospital-list"></div>
+    <h2 class="text-2xl font-bold text-gray-900 mb-6">
+      Your Recommended Hospitals
+    </h2>
+    <div id="hospital-list" class="grid grid-cols-1 gap-6"></div>
   </div>
 
   <!-- MAP OF HOSPITAL MARKERS (AFTER RANKING) - Now hidden as we'll show individual maps -->
   <div id="map" class="hidden w-full h-96 mb-6"></div>
 </div>
 
-<!-- Leaflet JS -->
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
+<!-- ──────────────────────────────────────────────────────────────── -->
+<!--  JAVASCRIPT LOGIC                                               -->
+<!-- ──────────────────────────────────────────────────────────────── -->
 <script>
   /*************************************************************
    * GLOBALS for Step One (User's location)
@@ -261,131 +216,72 @@ menu: nav/home.html
   const locationStatusEl = document.getElementById('location-status');
   const stepTwoEl = document.getElementById('step-two');
 
-  /*************************************************************
-   * INIT: Step One's Map
-   *************************************************************/
-  function initUserMap() {
-    userMap = L.map('user-map').setView([32.7157, -117.1611], 12);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19
-    }).addTo(userMap);
+/* ─── map helpers ─────────────────────────────────────────────── */
+function initUserMap() {
+  userMap = L.map('user-map').setView([32.7157,-117.1611], 12);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+              {maxZoom:19}).addTo(userMap);
+}
+function setUserLocation(lat, lng, label='') {
+  chosenLocation = {lat, lng};
+  if (userMarker) userMap.removeLayer(userMarker);
+  userMarker = L.marker([lat,lng]).addTo(userMap);
+  userMap.setView([lat,lng], 14);
+  if (label) userMarker.bindPopup(label).openPopup();
+  locationStatusEl.textContent =
+    `Location set: (${lat.toFixed(4)}, ${lng.toFixed(4)}) ${label}`;
+  stepTwoEl.classList.remove('hidden');
+}
+function initAddressAutocomplete() {
+  const input = document.getElementById('address-input');
+  const ac = new google.maps.places.Autocomplete(
+    input, {fields:['formatted_address','geometry']});
+  ac.addListener('place_changed', () => {
+    const p = ac.getPlace();
+    if (!p.geometry) return;
+    setUserLocation(p.geometry.location.lat(),
+                    p.geometry.location.lng(),
+                    p.formatted_address);
+  });
+}
 
-    // By default, no marker until user picks location 
-    // through any method (autocomplete, quick pick, or map click).
-  }
-
-  /*************************************************************
-   * Setting the user's location (common function)
-   *************************************************************/
-  function setUserLocation(lat, lng, label = '') {
-    chosenLocation = { lat, lng };
-
-    if (userMarker) {
-      userMap.removeLayer(userMarker);
-      userMarker = null;
-    }
-
-    // Place a marker on userMap
-    userMarker = L.marker([lat, lng]).addTo(userMap);
-    userMap.setView([lat, lng], 14);
-
-    if (label) {
-      userMarker.bindPopup(label).openPopup();
-    }
-
-    locationStatusEl.textContent = `Location set: (${lat.toFixed(4)}, ${lng.toFixed(4)}) ${label}`;
-
-    // Reveal step two
-    stepTwoEl.classList.remove('hidden');
-  }
-
-  /*************************************************************
-   * 1) Google Places Autocomplete
-   *************************************************************/
-  function initAddressAutocomplete() {
-    const input = document.getElementById('address-input');
-    addressAutocomplete = new google.maps.places.Autocomplete(input);
-    addressAutocomplete.setFields(['formatted_address', 'geometry']);
-
-    addressAutocomplete.addListener('place_changed', function() {
-      const place = addressAutocomplete.getPlace();
-      if (!place.geometry || !place.geometry.location) {
-        locationStatusEl.textContent = "No valid geometry for that address.";
-        return;
-      }
-
-      const lat = place.geometry.location.lat();
-      const lng = place.geometry.location.lng();
-      setUserLocation(lat, lng, place.formatted_address);
-    });
-  }
-
-  /*************************************************************
-   * 2) Quick Pick Buttons
-   *************************************************************/
-  document.getElementById('anonymous-petco').addEventListener('click', () => {
-    // Approx coords for Petco Park
-    setUserLocation(32.7073, -117.1566, 'Petco Park');
+/* ─── quick-pick buttons ───────────────────────────────────────── */
+document.getElementById('anonymous-petco')
+  .addEventListener('click', () =>
+    setUserLocation(32.7073,-117.1566,'Petco Park'));
+document.getElementById('anonymous-zoo')
+  .addEventListener('click', () =>
+    setUserLocation(32.7353,-117.1490,'San Diego Zoo'));
+document.getElementById('select-on-map-btn')
+  .addEventListener('click', () => {
+    alert('Click on the map to set your location.');
+    userMap.once('click', e =>
+      setUserLocation(e.latlng.lat, e.latlng.lng, 'Custom location'));
   });
 
-  document.getElementById('anonymous-zoo').addEventListener('click', () => {
-    // Approx coords for San Diego Zoo
-    setUserLocation(32.7353, -117.1490, 'San Diego Zoo');
-  });
+/* ─── distance-slider text ─────────────────────────────────────── */
+const distanceRange     = document.getElementById('distance-range');
+const distanceValueEl   = document.getElementById('distance-value');
+distanceRange.addEventListener('input',
+  () => distanceValueEl.textContent = distanceRange.value);
 
-  // Let user click anywhere on the map to choose location
-  document.getElementById('select-on-map-btn').addEventListener('click', () => {
-    alert("Click on the map to set your location.");
-
-    userMap.off('click'); // remove old
-    userMap.on('click', function(e) {
-      const { lat, lng } = e.latlng;
-      setUserLocation(lat, lng, 'Custom map click');
-      // optional: turn off click once location set
-      userMap.off('click');
-    });
-  });
-
-  /*************************************************************
-   * 3) Distance Slider
-   *************************************************************/
-  const distanceRange = document.getElementById('distance-range');
-  const distanceValueEl = document.getElementById('distance-value');
-
-  distanceRange.addEventListener('input', function() {
-    distanceValueEl.textContent = this.value;
-  });
-
-  /*************************************************************
-   * 4) "Find My Best Hospital Match" Button
-   *************************************************************/
-  document.getElementById('find-hospitals-btn').addEventListener('click', function(e) {
+/* ─── find-hospitals button ────────────────────────────────────── */
+document.getElementById('find-hospitals-btn')
+  .addEventListener('click', async e => {
     e.preventDefault();
+    if (!chosenLocation) { alert('Please choose a location first.'); return; }
 
-    if (!chosenLocation) {
-      alert("Please choose a location first.");
-      return;
-    }
+    const disease   = document.getElementById('medical-issue').value.trim();
+    const priority  = document.getElementById('priority').value;
+    const limit     = parseInt(document.getElementById('num-results').value||'3',10);
+    const radius    = parseInt(distanceRange.value,10);
+    if (!disease) { alert('Select a medical issue.'); return; }
 
-    const diseaseEl = document.getElementById('medical-issue');
-    const priorityEl = document.getElementById('priority');
-    const numResultsEl = document.getElementById('num-results');
-
-    const distance = distanceRange.value;
-    const diseaseText = diseaseEl.options[diseaseEl.selectedIndex].text;
-    const priority = priorityEl.value;
-    const limit = parseInt(numResultsEl.value, 10);
-
-    if (!diseaseText || !priority || !limit) {
-      alert("Please fill out disease, priority, and number of results fields.");
-      return;
-    }
-
-    // Show loading in results
-    const resultsSection = document.getElementById('results');
+    /* ui – loading */
+    const resultsSection   = document.getElementById('results');
     const resultsContainer = document.getElementById('hospital-list');
     resultsSection.classList.remove('hidden');
-    resultsContainer.innerHTML = '<p class="text-gray-600">Loading...</p>';
+    resultsContainer.innerHTML = '<p class="text-gray-600">Loading…</p>';
 
     // Hide old hospital map if any
     const mapContainer = document.getElementById('map');
@@ -403,128 +299,66 @@ menu: nav/home.html
     });
     hospitalMaps = [];
 
-    // Prepare request body
+    /* build payload */
     const payload = {
-      user_lat: chosenLocation.lat,
-      user_lon: chosenLocation.lng,
-      distance: distance,
-      disease: diseaseText,
-      priority: priority,
-      limit: limit
+      disease, priority, limit,
+      lat: chosenLocation.lat, lon: chosenLocation.lng, radius
     };
 
-    // Fetch to your back-end
-    fetch(frontEndAPIURL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    })
-    .then(resp => resp.json())
-    .then(data => {
+    try {
+      const resp  = await fetch(apiURL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await resp.json();
       resultsContainer.innerHTML = '';
 
       if (data.error) {
-        const errP = document.createElement('p');
-        errP.textContent = `Error: ${data.error}`;
-        errP.classList.add('text-red-600', 'font-semibold');
-        resultsContainer.appendChild(errP);
+        resultsContainer.innerHTML = `<p class="text-red-600 font-semibold">
+          Error: ${data.error}</p>`;
         return;
       }
-
-      if (!data.recommended_hospitals || !Array.isArray(data.recommended_hospitals)) {
-        resultsContainer.innerHTML = '<p>No valid hospitals data returned.</p>';
+      if (!Array.isArray(data.recommended_hospitals) ||
+          !data.recommended_hospitals.length) {
+        resultsContainer.innerHTML = '<p>No hospitals returned.</p>';
         return;
       }
 
       data.recommended_hospitals.forEach((hosp, index) => {
         const card = document.createElement('div');
-        card.classList.add('p-4', 'border', 'border-gray-300', 'rounded-md', 'bg-white', 'mb-6');
-
-        const rank = index + 1;
-        const nameEl = document.createElement('h3');
-        nameEl.classList.add('text-lg', 'font-bold');
-        nameEl.textContent = `#${rank} - ${hosp.hospital}`;
-
-        const latLonEl = document.createElement('p');
-        latLonEl.textContent = `Lat: ${hosp.latitude}, Lon: ${hosp.longitude}`;
-
-        // Score
-        let scoreText = '';
-        if (hosp.score !== undefined) {
-          scoreText = ` (Score: ${(hosp.score * 100).toFixed(1)}%)`;
-        }
-
-        const detailsEl = document.createElement('p');
-        detailsEl.classList.add('text-sm', 'text-gray-600');
-        detailsEl.textContent = `Distance: ${hosp.distance} miles${scoreText}`;
-
-        // Create a map container for this hospital
-        const mapDiv = document.createElement('div');
-        mapDiv.id = `hospital-map-${index}`;
-        mapDiv.classList.add('w-full', 'h-64', 'mt-4');
-
-        card.appendChild(nameEl);
-        card.appendChild(latLonEl);
-        card.appendChild(detailsEl);
-        card.appendChild(mapDiv);
+        card.className = 'p-4 border border-gray-300 rounded-md bg-white';
+        card.innerHTML = `
+          <h3 class="text-lg font-bold">#${i+1} – ${h.hospital}</h3>
+          <p class="text-sm text-gray-600">
+            Lat: ${h.latitude}, Lon: ${h.longitude}
+          </p>
+          <p class="text-sm text-gray-600">
+            Distance: ${h.distance_mi} mi | Score: ${h.predicted_score.toFixed(2)}
+          </p>`;
         resultsContainer.appendChild(card);
 
-        // Initialize map for this hospital
-        if (hosp.latitude !== undefined && hosp.longitude !== undefined) {
-          // Create a map centered between user location and hospital
-          const centerLat = (chosenLocation.lat + hosp.latitude) / 2;
-          const centerLng = (chosenLocation.lng + hosp.longitude) / 2;
-          
-          const hospitalMap = L.map(`hospital-map-${index}`).setView([centerLat, centerLng], 10);
-          
-          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19
-          }).addTo(hospitalMap);
-          
-          // Add user marker
-          const userMarker = L.marker([chosenLocation.lat, chosenLocation.lng]).addTo(hospitalMap);
-          userMarker.bindPopup("Your Location").openPopup();
-          
-          // Add hospital marker
-          const hospitalMarker = L.marker([hosp.latitude, hosp.longitude]).addTo(hospitalMap);
-          hospitalMarker.bindPopup(`
-            <strong>${hosp.hospital}</strong><br/>
-            Distance: ${hosp.distance} miles<br/>
-            ${scoreText ? 'Score: ' + (hosp.score * 100).toFixed(1) + '%' : ''}
-          `);
-          
-          // Draw a line between user and hospital
-          const polyline = L.polyline([
-            [chosenLocation.lat, chosenLocation.lng],
-            [hosp.latitude, hosp.longitude]
-          ], {color: 'blue', weight: 3, opacity: 0.7}).addTo(hospitalMap);
-          
-          // Fit bounds to include both markers
-          const bounds = L.latLngBounds([
-            [chosenLocation.lat, chosenLocation.lng],
-            [hosp.latitude, hosp.longitude]
-          ]);
-          hospitalMap.fitBounds(bounds, {padding: [30, 30]});
-          
-          // Store the map reference
-          hospitalMaps.push(hospitalMap);
+        /* pin */
+        if (h.latitude !== undefined && h.longitude !== undefined) {
+          L.marker([h.latitude, h.longitude]).addTo(hospitalsMap)
+            .bindPopup(`<strong>${h.hospital}</strong><br/>
+                        Distance: ${h.distance_mi} mi<br/>
+                        Score: ${h.predicted_score.toFixed(2)}`);
+          bounds.push([h.latitude, h.longitude]);
         }
       });
-    })
-    .catch(err => {
+      hospitalsMap.fitBounds(bounds, {padding:[50,50]});
+
+    } catch (err) {
       console.error(err);
-      resultsContainer.innerHTML = `<p class="text-red-600 font-semibold">Error: ${err}</p>`;
-    });
-  });
+      resultsContainer.innerHTML = `<p class="text-red-600 font-semibold">
+        Error: ${err.message}</p>`;
+    }
+});
 
-  /*************************************************************
-   * DOM Ready
-   *************************************************************/
-  window.addEventListener('DOMContentLoaded', () => {
-    // 1) Initialize user location map
-    initUserMap();
-
-    // 2) Initialize Google Places
-    initAddressAutocomplete();
-  });
+/* ─── init on DOM ready ─────────────────────────────────────────── */
+window.addEventListener('DOMContentLoaded', () => {
+  initUserMap();
+  initAddressAutocomplete();
+});
 </script>
