@@ -32,36 +32,13 @@ menu: nav/home.html
 </div>
 
 <script type="module">
-  import { pythonURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js';
-
-  // Decode the JWT to extract the UID
-  function getDecodedToken() {
-    const token = localStorage.getItem('auth_token');  // Get the JWT token from localStorage
-    if (!token) return null;
-
-    try {
-      const decoded = jwt_decode(token);  // Decode the token (you'll need the 'jwt-decode' library)
-      return decoded;
-    } catch (error) {
-      console.error('Error decoding token:', error);
-      return null;
-    }
-  }
+  import { pythonURI } from '{{site.baseurl}}/assets/js/api/config.js';
 
   document.getElementById("surveyForm").addEventListener("submit", async function(event) {
     event.preventDefault();
 
     const form = event.target;
     const messageDiv = document.getElementById("message");
-
-    // Get the decoded token to access the user's UID
-    const decodedToken = getDecodedToken();
-    if (!decodedToken || !decodedToken.uid) {
-      return showMessage("Unable to retrieve user information. Please login again.", "error");
-    }
-
-    // Get the user's UID from the decoded token
-    const uid = decodedToken.uid;
 
     const age = parseInt(document.getElementById("age").value);
     const weight = parseInt(document.getElementById("weight").value);
@@ -72,7 +49,6 @@ menu: nav/home.html
     if (height < 0 || height > 120) return showMessage("Please enter a valid height between 0 and 120 inches", "error");
 
     const formData = {
-        uid, // Include the UID in the form data
         name: document.getElementById("name").value.trim(),
         username: document.getElementById("username").value.trim(),
         email: document.getElementById("email").value.trim(),
@@ -98,27 +74,23 @@ menu: nav/home.html
         submitButton.disabled = true;
         submitButton.textContent = "Submitting...";
 
-        console.log("Form Data:", formData); // Log the form data before sending
-
-        // Send the POST request with JSON data
         const response = await fetch(`${pythonURI}/api/survey`, {
-            ...fetchOptions,
             method: "POST",
+            credentials: "include",  // ✅ KEY LINE: Send auth cookies!
             headers: {
-                "Content-Type": "application/json", // Ensure the server knows it's JSON
-                ...fetchOptions.headers // Include any additional headers from fetchOptions
+                "Content-Type": "application/json"
             },
-            body: JSON.stringify(formData) // Convert formData to JSON
+            body: JSON.stringify(formData)
         });
 
         if (!response.ok) {
-            const errorDetails = await response.text(); // Get error details from the server
+            const errorDetails = await response.text();
             console.error("Server Response:", errorDetails);
             throw new Error(`Survey submission failed: ${response.status}`);
         }
 
         const result = await response.json();
-        console.log("Server Response:", result); // Log the server's response
+        console.log("Server Response:", result);
         showMessage("Survey completed successfully! Redirecting...", "success");
 
         setTimeout(() => {
@@ -141,6 +113,7 @@ menu: nav/home.html
     messageDiv.classList.remove("hidden");
   }
 </script>
+
 
 <style>
 .input-field {
