@@ -7,75 +7,56 @@ hide: true
 menu: nav/home.html
 ---
 
+<style>
+  html, body {
+    overflow: hidden;
+  }
+</style>
 
-<div class="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
-  <div class="grid grid-cols-1 md:grid-cols-[12rem_1fr] min-h-screen">
-    <!-- Sidebar -->
-    <!-- Sidebar -->
-    <div class="bg-gray-200 dark:bg-gray-800 p-4 shadow-md">
-      <div class="flex justify-center mb-6">
-        <img class="w-24 h-24 rounded-full border-4 border-gray-800 dark:border-gray-100" src="{{site.baseurl}}/images/logo.png" alt="Profile Picture" />
+<div class="min-h-screen bg-indigo-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+  <div class="flex flex-col min-h-screen">
+    <header class="bg-white dark:bg-gray-800 p-4 shadow-sm">
+      <h1 class="text-2xl font-bold text-center text-indigo-900">Hospital Data Analytics</h1>
+    </header>
+
+    <main class="flex-1 flex flex-col p-4 bg-indigo-50 dark:bg-gray-900 overflow-hidden">
+      <div id="status-message" class="hidden p-4 mb-4 rounded-lg"></div>
+
+      <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow mb-4">
+        <div class="flex flex-col space-y-4 md:space-y-0 md:flex-row md:items-end md:gap-4">
+          <div class="flex-1">
+            <label class="block text-sm font-medium mb-1 text-indigo-900">Filter By:</label>
+            <select id="filter-category" class="w-full p-2 border rounded-md bg-white dark:bg-gray-700 border-indigo-200 dark:border-gray-600 text-indigo-900">
+              <option value="all">All Data</option>
+              <option value="hospital">Hospital</option>
+              <option value="procedure">Procedure</option>
+              <option value="rating">Rating</option>
+            </select>
+          </div>
+
+          <div id="filter-value-container" class="flex-1 hidden">
+            <label class="block text-sm font-medium mb-1 text-indigo-900">Value:</label>
+            <select id="filter-value" class="w-full p-2 border rounded-md bg-white dark:bg-gray-700 border-indigo-200 dark:border-gray-600 text-indigo-900">
+            </select>
+          </div>
+
+          <div class="flex gap-2">
+            <button id="apply-filter" class="w-full md:w-auto px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors">Apply</button>
+            <button id="reset-filter" class="w-full md:w-auto px-4 py-2 border border-indigo-200 dark:border-gray-600 rounded-md hover:bg-indigo-50 dark:hover:bg-gray-700 transition-colors text-indigo-900">Reset</button>
+          </div>
+        </div>
       </div>
-      <nav class="space-y-4 text-center md:text-left">
-        <a href="#profile" class="block font-medium hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Profile</a>
-        <a href="#messages" class="block font-medium hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Messages</a>
-        <a href="#settings" class="block font-medium hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Settings</a>
-      </nav>
-    </div>
-    <!-- Main Content Area -->
-    <div class="flex flex-col h-screen">
-      <!-- Header -->
-      <header class="bg-white dark:bg-gray-800 p-4 shadow-sm">
-        <h1 class="text-2xl font-bold text-center">Hospital Data Analytics</h1>
-      </header>
-<!-- Content -->
-      <main class="flex-1 flex flex-col p-4 bg-gray-100 dark:bg-gray-900 overflow-hidden">
-        <!-- Status Message -->
-        <div id="status-message" class="hidden p-4 mb-4 rounded-lg"></div>
 
-  <!-- Filter Controls -->
-        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow mb-4">
-          <div class="flex flex-col md:flex-row md:items-end gap-4">
-            <div class="flex-1">
-              <label class="block text-sm font-medium mb-1">Filter By:</label>
-              <select id="filter-category" class="w-full p-2 border rounded-md bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600">
-                <option value="all">All Data</option>
-                <option value="hospital">Hospital</option>
-                <option value="procedure">Procedure</option>
-                <option value="rating">Rating</option>
-              </select>
-            </div>
-
-            <div id="filter-value-container" class="flex-1 hidden">
-              <label class="block text-sm font-medium mb-1">Value:</label>
-              <select id="filter-value" class="w-full p-2 border rounded-md bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600">
-                <!-- Options populated dynamically -->
-              </select>
-            </div>
-
-            <div class="flex gap-2">
-              <button id="apply-filter" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">Apply</button>
-              <button id="reset-filter" class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">Reset</button>
-            </div>
-          </div>
+      <!-- Scrollable Table Container Only -->
+      <div class="rounded-lg shadow bg-white dark:bg-gray-800 overflow-hidden">
+        <div class="max-h-[60vh] overflow-y-auto overflow-x-auto">
+          <table class="w-full table-auto" id="data-table">
+            <thead class="bg-indigo-50 dark:bg-gray-700 sticky top-0 z-10"></thead>
+            <tbody class="divide-y divide-indigo-100 dark:divide-gray-700"></tbody>
+          </table>
         </div>
-
-        <!-- Table Container -->
-        <div class="flex-1 overflow-hidden flex flex-col">
-          <!-- Table -->
-          <div class="overflow-auto rounded-lg shadow bg-white dark:bg-gray-800 flex-1">
-            <table class="min-w-full" id="data-table">
-              <thead class="bg-gray-50 dark:bg-gray-700 sticky top-0">
-                <!-- Headers -->
-              </thead>
-              <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-                <!-- Rows -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </main>
-    </div>
+      </div>
+    </main>
   </div>
 </div>
 
@@ -98,7 +79,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Show loading state
   function showLoading(message) {
     statusEl.textContent = message;
-    statusEl.className = "p-4 mb-4 text-blue-800 bg-blue-100 dark:bg-blue-200 dark:text-blue-800 rounded-lg";
+    statusEl.className = "p-4 mb-4 text-indigo-800 bg-indigo-100 dark:bg-indigo-200 dark:text-indigo-800 rounded-lg";
     statusEl.classList.remove("hidden");
   }
 
@@ -178,7 +159,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (key.startsWith('_')) return; // Skip internal fields
       
       const th = document.createElement('th');
-      th.className = 'px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider';
+      th.className = 'px-2 sm:px-4 md:px-6 py-2 sm:py-3 text-left text-xs sm:text-sm font-medium text-indigo-900 dark:text-indigo-300 uppercase tracking-wider whitespace-nowrap';
       th.textContent = formatHeader(key);
       headerRow.appendChild(th);
     });
@@ -187,13 +168,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Create table rows
     data.forEach(item => {
       const row = document.createElement('tr');
-      row.className = 'hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors';
+      row.className = 'hover:bg-indigo-50 dark:hover:bg-gray-700 transition-colors';
       
       Object.entries(item).forEach(([key, value]) => {
         if (key.startsWith('_')) return;
         
         const td = document.createElement('td');
-        td.className = 'px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300';
+        // Add truncate class for hospital names
+        const isHospitalName = key === 'HOSPITAL' || key === 'HOSPITAL_NAME';
+        td.className = `px-2 sm:px-4 md:px-6 py-2 sm:py-4 text-xs sm:text-sm text-indigo-900 dark:text-indigo-300 ${isHospitalName ? 'max-w-[200px] truncate' : 'whitespace-nowrap'}`;
 
         td.textContent = value !== null ? value : '';
         row.appendChild(td);
@@ -227,7 +210,19 @@ document.addEventListener('DOMContentLoaded', async () => {
       const uniqueValues = [...new Set(allData.map(item => {
         if (category === 'hospital') return item.HOSPITAL || item.HOSPITAL_NAME;
         if (category === 'procedure') return item.PROCEDURE || item.PERFORMANCE_MEASURE;
-        if (category === 'rating') return item.RATING;
+        if (category === 'rating') {
+          // Handle rating values - check both RATING and RATING_TEXT fields
+          const rating = item.RATING || item.RATING_TEXT;
+          if (rating) {
+            // Normalize rating values
+            const normalizedRating = rating.toString().trim();
+            if (normalizedRating.includes('Better')) return 'Better';
+            if (normalizedRating.includes('Expected')) return 'As Expected';
+            if (normalizedRating.includes('Worse')) return 'Worse';
+            return normalizedRating;
+          }
+          return null;
+        }
         return item[category.toUpperCase()];
       }))].filter(Boolean).sort();
       
@@ -253,10 +248,24 @@ document.addEventListener('DOMContentLoaded', async () => {
       
       // Filter the data
       filteredData = allData.filter(item => {
-        const itemValue = category === 'hospital' ? (item.HOSPITAL || item.HOSPITAL_NAME) :
-                         category === 'procedure' ? (item.PROCEDURE || item.PERFORMANCE_MEASURE) :
-                         item[category.toUpperCase()];
-        return itemValue === value;
+        if (category === 'hospital') {
+          return (item.HOSPITAL || item.HOSPITAL_NAME) === value;
+        }
+        if (category === 'procedure') {
+          return (item.PROCEDURE || item.PERFORMANCE_MEASURE) === value;
+        }
+        if (category === 'rating') {
+          // Handle rating comparison - check both RATING and RATING_TEXT fields
+          const itemRating = item.RATING || item.RATING_TEXT;
+          if (!itemRating) return false;
+          
+          const normalizedRating = itemRating.toString().trim();
+          if (value === 'Better') return normalizedRating.includes('Better');
+          if (value === 'As Expected') return normalizedRating.includes('Expected');
+          if (value === 'Worse') return normalizedRating.includes('Worse');
+          return normalizedRating === value;
+        }
+        return item[category.toUpperCase()] === value;
       });
       
       renderTable();
