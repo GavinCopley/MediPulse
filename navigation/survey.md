@@ -10,8 +10,7 @@ menu: nav/home.html
   <div class="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
     <h2 class="text-xl font-bold text-gray-800 mb-4">Required Health Information</h2>
     <form id="surveyForm" class="space-y-4">
-      <!-- Hidden UID Field -->
-      <input type="hidden" id="uid" value="USER_UID_HERE" />
+      <!-- Removed hidden UID input field -->
 
       <input type="text" id="name" placeholder="First and Last Name" required class="input-field">
       <input type="text" id="username" placeholder="Username" required class="input-field">
@@ -35,13 +34,35 @@ menu: nav/home.html
 <script type="module">
   import { pythonURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js';
 
+  // Decode the JWT to extract the UID
+  function getDecodedToken() {
+    const token = localStorage.getItem('auth_token');  // Get the JWT token from localStorage
+    if (!token) return null;
+
+    try {
+      const decoded = jwt_decode(token);  // Decode the token (you'll need the 'jwt-decode' library)
+      return decoded;
+    } catch (error) {
+      console.error('Error decoding token:', error);
+      return null;
+    }
+  }
+
   document.getElementById("surveyForm").addEventListener("submit", async function(event) {
     event.preventDefault();
 
     const form = event.target;
     const messageDiv = document.getElementById("message");
 
-    const uid = document.getElementById("uid").value;
+    // Get the decoded token to access the user's UID
+    const decodedToken = getDecodedToken();
+    if (!decodedToken || !decodedToken.uid) {
+      return showMessage("Unable to retrieve user information. Please login again.", "error");
+    }
+
+    // Get the user's UID from the decoded token
+    const uid = decodedToken.uid;
+
     const age = parseInt(document.getElementById("age").value);
     const weight = parseInt(document.getElementById("weight").value);
     const height = parseInt(document.getElementById("height").value);
@@ -62,7 +83,7 @@ menu: nav/home.html
         allergies: document.getElementById("allergies").value.trim(),
         conditions: document.getElementById("conditions").value.trim(),
         ethnicity: document.getElementById("ethnicity").value.trim(),
-        survey_completed: true
+        survey_completed: false
     };
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
