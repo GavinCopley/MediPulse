@@ -171,7 +171,7 @@ menu: nav/home.html
       }
       
       // Make API request
-      fetch(`${pythonURI}/api/hospitals?${params.toString()}`)
+      fetch(`${pythonURI}/api/hospital-search?${params.toString()}`)
         .then(response => {
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -353,7 +353,7 @@ menu: nav/home.html
       modalTitle.textContent = hospitalName;
       
       // Make API request for hospital details
-      fetch(`${pythonURI}/api/hospitals/${encodeURIComponent(hospitalName)}`)
+      fetch(`${pythonURI}/api/hospital-search/${encodeURIComponent(hospitalName)}`)
         .then(response => {
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
