@@ -422,7 +422,6 @@ if (profileNameEl) {
         } catch (error) {
             console.error('Error loading dashboard:', error);
         }
-    }
 
     // Check auth status when page loads
     document.addEventListener('DOMContentLoaded', checkAuth);
