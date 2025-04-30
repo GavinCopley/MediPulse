@@ -403,8 +403,6 @@ if (profileNameEl) {
     }
 }
 
-}
-
             // Load recent posts
             const posts = await getPostsByUser(userData.id);
             const postsContainer = document.getElementById('recent-posts');
