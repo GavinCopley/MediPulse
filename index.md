@@ -368,17 +368,16 @@ if (profileNameEl) {
     profileNameEl.textContent = userData.name;
 }
 
-         async function loadUserSurvey() {
+   async function loadUserSurvey() {
     try {
-        // Get the currently logged-in user (will return { uid: "toby", ... })
-        const userResponse = await fetch(`${pythonURI}/api/auth/user`, fetchOptions);
-        if (!userResponse.ok) throw new Error("Failed to fetch authenticated user");
+        const surveyResponse = await fetch(`${pythonURI}/api/survey/self`, {
+            method: 'GET',
+            credentials: 'include', // Send auth cookies
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
 
-        const { uid } = await userResponse.json();
-        console.log("Logged-in uid:", uid); // Debugging log
-
-        // Fetch that user's survey data using their UID (which matches username in DB)
-        const surveyResponse = await fetch(`${pythonURI}/api/survey/username/${uid}`, fetchOptions);
         if (!surveyResponse.ok) {
             const errorDetails = await surveyResponse.text();
             console.error("Survey fetch error details:", errorDetails);
@@ -402,6 +401,8 @@ if (profileNameEl) {
         ['user-age', 'user-height', 'user-weight', 'user-ethnicity', 'user-allergies', 'user-conditions']
             .forEach(id => document.getElementById(id).textContent = errorMessage);
     }
+}
+
 }
 
             // Load recent posts
