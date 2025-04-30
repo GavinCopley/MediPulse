@@ -355,7 +355,7 @@ menu: nav/home.html
         }
     }
 
-    async function loadDashboard() {
+    async function loadDashboard()
         try {
             // Get user data
             const userResponse = await fetch(`${pythonURI}/api/user`, fetchOptions);
