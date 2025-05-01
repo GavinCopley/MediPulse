@@ -294,7 +294,7 @@ menu: nav/home.html
             ${emergencyBadge}
             <div class="md:flex">
               <div class="md:flex-shrink-0">
-                <img class="h-48 w-full object-cover md:w-48" src="${hospital.image_url || 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'}" alt="${hospital.name}">
+                <img class="h-48 w-full object-cover md:w-48" src="${hospital.image || `${pythonURI}/api/hospital-search/image/${encodeURIComponent(hospital.name)}`}" alt="${hospital.name}" onerror="this.src='https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
               </div>
               <div class="p-6">
                 <div class="flex justify-between items-start">
@@ -437,9 +437,10 @@ menu: nav/home.html
       modalContent.innerHTML = `
         <div class="flex flex-col md:flex-row">
           <div class="md:w-1/2 pr-0 md:pr-6">
-            <img src="${hospital.image_url || 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'}" 
+            <img src="${hospital.image || `${pythonURI}/api/hospital-search/image/${encodeURIComponent(hospital.name)}`}" 
                  alt="${hospital.name}" 
-                 class="rounded-lg w-full h-64 object-cover mb-6">
+                 class="rounded-lg w-full h-64 object-cover mb-6"
+                 onerror="this.src='https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
             
             <div class="mb-6">
               <h4 class="font-medium text-gray-900 mb-2">About</h4>
