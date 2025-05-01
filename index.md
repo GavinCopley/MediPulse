@@ -355,19 +355,25 @@ menu: nav/home.html
         }
     }
 
-    async function loadDashboard()
+    async function loadDashboard() {
         try {
             // Get user data
             const userResponse = await fetch(`${pythonURI}/api/user`, fetchOptions);
             const userData = await userResponse.json();
             
-            // Update welcome message and profile name
-            document.getElementById('welcome-message').textContent = `Welcome back, ${userData.name}!`;
-          const profileNameEl = document.getElementById('profile-name');
-if (profileNameEl) {
-    profileNameEl.textContent = userData.name;
+        document.getElementById('welcome-message').textContent = `Welcome back, ${userData.name}!`;
+        const profileNameEl = document.getElementById('profile-name');
+        if (profileNameEl) {
+            profileNameEl.textContent = userData.name;
+        }
+
+        await loadUserSurvey();
+    } catch (error) {
+        console.error('Error loading dashboard:', error);
+    }
 }
 
+async function loadUserSurvey() {
    async function loadUserSurvey() {
     try {
         const surveyResponse = await fetch(`${pythonURI}/api/survey/self`, {
@@ -403,23 +409,7 @@ if (profileNameEl) {
     }
 }
 
-            // Load recent posts
-            const posts = await getPostsByUser(userData.id);
-            const postsContainer = document.getElementById('recent-posts');
-            if (posts && posts.length > 0) {
-                postsContainer.innerHTML = posts.slice(0, 3).map(post => 
-                    `<div class="text-gray-700">${post.title}</div>`
-                ).join('');
-            } else {
-                postsContainer.innerHTML = '<p class="text-gray-500">No posts yet</p>';
-            }
-
-            // Update activity feed
-            document.getElementById('activity-feed').innerHTML = '<p class="text-gray-500">No recent activity</p>';
-
-        } catch (error) {
-            console.error('Error loading dashboard:', error);
-        }
+}
 
     // Check auth status when page loads
     document.addEventListener('DOMContentLoaded', checkAuth);
