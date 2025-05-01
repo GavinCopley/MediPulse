@@ -7,6 +7,7 @@ hide: true
 menu: nav/home.html
 ---
 
+
 <style>
   html, body {
     overflow: hidden;
@@ -30,7 +31,6 @@ menu: nav/home.html
               <option value="all">All Data</option>
               <option value="hospital">Hospital</option>
               <option value="procedure">Procedure</option>
-              <option value="rating">Rating</option>
             </select>
           </div>
 
@@ -76,26 +76,22 @@ document.addEventListener('DOMContentLoaded', async () => {
   let allData = [];
   let filteredData = [];
 
-  // Show loading state
   function showLoading(message) {
     statusEl.textContent = message;
     statusEl.className = "p-4 mb-4 text-indigo-800 bg-indigo-100 dark:bg-indigo-200 dark:text-indigo-800 rounded-lg";
     statusEl.classList.remove("hidden");
   }
 
-  // Show error message
   function showError(message) {
     statusEl.textContent = message;
     statusEl.className = "p-4 mb-4 text-red-800 bg-red-100 dark:bg-red-200 dark:text-red-800 rounded-lg";
     statusEl.classList.remove("hidden");
   }
 
-  // Hide status message
   function hideStatus() {
     statusEl.classList.add("hidden");
   }
 
-  // Fetch data from backend API
   async function fetchData() {
     showLoading("Loading hospital data...");
     tableHead.innerHTML = '';
@@ -138,7 +134,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  // Render the data table
   function renderTable(data = filteredData) {
     tableHead.innerHTML = '';
     tableBody.innerHTML = '';
@@ -152,81 +147,59 @@ document.addEventListener('DOMContentLoaded', async () => {
         </tr>`;
       return;
     }
-    
-    // Create headers from first item's keys
+
     const headerRow = document.createElement('tr');
     Object.keys(data[0]).forEach(key => {
-      if (key.startsWith('_')) return; // Skip internal fields
-      
+      if (key.startsWith('_')) return;
       const th = document.createElement('th');
       th.className = 'px-2 sm:px-4 md:px-6 py-2 sm:py-3 text-left text-xs sm:text-sm font-medium text-indigo-900 dark:text-indigo-300 uppercase tracking-wider whitespace-nowrap';
       th.textContent = formatHeader(key);
       headerRow.appendChild(th);
     });
     tableHead.appendChild(headerRow);
-    
-    // Create table rows
+
     data.forEach(item => {
       const row = document.createElement('tr');
       row.className = 'hover:bg-indigo-50 dark:hover:bg-gray-700 transition-colors';
-      
+
       Object.entries(item).forEach(([key, value]) => {
         if (key.startsWith('_')) return;
-        
         const td = document.createElement('td');
-        // Add truncate class for hospital names
         const isHospitalName = key === 'HOSPITAL' || key === 'HOSPITAL_NAME';
         td.className = `px-2 sm:px-4 md:px-6 py-2 sm:py-4 text-xs sm:text-sm text-indigo-900 dark:text-indigo-300 ${isHospitalName ? 'max-w-[200px] truncate' : 'whitespace-nowrap'}`;
-
         td.textContent = value !== null ? value : '';
         row.appendChild(td);
       });
-      
+
       tableBody.appendChild(row);
     });
   }
 
   function formatHeader(key) {
     return key
-      .replace(/_/g, ' ')                      // Replace underscores with spaces
-      .replace(/([a-z])([A-Z])/g, '$1 $2')     // Add space before capital letters
-      .replace(/\b\w/g, l => l.toUpperCase())  // Capitalize first letter of each word
+      .replace(/_/g, ' ')
+      .replace(/([a-z])([A-Z])/g, '$1 $2')
+      .replace(/\b\w/g, l => l.toUpperCase())
       .trim();
   }
 
-  // Set up filter controls
   function setupFilters() {
     filterCategory.addEventListener('change', () => {
       const category = filterCategory.value;
-      
+
       if (category === 'all') {
         filterValueContainer.classList.add('hidden');
         return;
       }
-      
+
       filterValueContainer.classList.remove('hidden');
-      
-      // Get unique values for the selected category
+
       const uniqueValues = [...new Set(allData.map(item => {
         if (category === 'hospital') return item.HOSPITAL || item.HOSPITAL_NAME;
         if (category === 'procedure') return item.PROCEDURE || item.PERFORMANCE_MEASURE;
-        if (category === 'rating') {
-          // Handle rating values - check both RATING and RATING_TEXT fields
-          const rating = item.RATING || item.RATING_TEXT;
-          if (rating) {
-            // Normalize rating values
-            const normalizedRating = rating.toString().trim();
-            if (normalizedRating.includes('Better')) return 'Better';
-            if (normalizedRating.includes('Expected')) return 'As Expected';
-            if (normalizedRating.includes('Worse')) return 'Worse';
-            return normalizedRating;
-          }
-          return null;
-        }
         return item[category.toUpperCase()];
       }))].filter(Boolean).sort();
-      
-      // Populate value dropdown
+
       filterValue.innerHTML = '';
       uniqueValues.forEach(value => {
         const option = document.createElement('option');
@@ -235,18 +208,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         filterValue.appendChild(option);
       });
     });
-    
+
     applyFilter.addEventListener('click', () => {
       const category = filterCategory.value;
       const value = filterValue.value;
-      
+
       if (category === 'all') {
         filteredData = [...allData];
         renderTable();
         return;
       }
-      
-      // Filter the data
+
       filteredData = allData.filter(item => {
         if (category === 'hospital') {
           return (item.HOSPITAL || item.HOSPITAL_NAME) === value;
@@ -254,23 +226,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (category === 'procedure') {
           return (item.PROCEDURE || item.PERFORMANCE_MEASURE) === value;
         }
-        if (category === 'rating') {
-          // Handle rating comparison - check both RATING and RATING_TEXT fields
-          const itemRating = item.RATING || item.RATING_TEXT;
-          if (!itemRating) return false;
-          
-          const normalizedRating = itemRating.toString().trim();
-          if (value === 'Better') return normalizedRating.includes('Better');
-          if (value === 'As Expected') return normalizedRating.includes('Expected');
-          if (value === 'Worse') return normalizedRating.includes('Worse');
-          return normalizedRating === value;
-        }
         return item[category.toUpperCase()] === value;
       });
-      
+
       renderTable();
     });
-    
+
     resetFilter.addEventListener('click', () => {
       filterCategory.value = 'all';
       filterValueContainer.classList.add('hidden');
@@ -279,7 +240,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  // Initial data load
   await fetchData();
 });
 </script>
