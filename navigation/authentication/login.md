@@ -119,7 +119,7 @@ menu: nav/home.html
         if (data.survey_completed) {
             window.location.href = '{{site.baseurl}}/'; // Already took survey
         } else {
-            window.location.href = '{{site.baseurl}}/survey'; // Needs to take survey
+            window.location.href = '{{site.baseurl}}/profile'; // Needs to take survey
         }
     })
     .catch(error => {

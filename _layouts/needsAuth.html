@@ -16,7 +16,7 @@ layout: tailwind
                 if (data) {
                     // Check if survey is completed
                     if (!data.survey_completed && !window.location.href.includes("survey")) {
-                        window.location.href = "{{site.baseurl}}/survey";
+                        window.location.href = "{{site.baseurl}}/profile";
                     }
                 } else {
                     //USER IS NOT AUTHENTICATED/LOGGED IN
