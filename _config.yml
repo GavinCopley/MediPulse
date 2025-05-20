@@ -20,6 +20,7 @@ header_pages:
   - navigation/authentication/MLhospital.md
   - navigation/dataAnalytics.md
 
-Server: http://127.0.0.1:8115
-Domain: http://127.0.0.1:8115
-Subdomain: medipulse
+Server: https://medipulse-832734119496.us-west2.run.app
+Domain: medipulse-832734119496.us-west2.run.app
+Subdomain: medipulse-832734119496.us-west2
+
