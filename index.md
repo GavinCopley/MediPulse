@@ -224,8 +224,8 @@ menu: nav/home.html
     <!-- Call to Action -->
     <section class="py-24 bg-indigo-600 fade-in-section">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-4xl font-bold text-white mb-6 slide-in-bottom">Find the Best Care for Your Needs</h2>
-            <p class="text-2xl text-indigo-100 mb-12 slide-in-bottom delay-1">Access comprehensive hospital performance data and make informed healthcare decisions</p>
+            <h2 class="text-4xl font-bold text-white mb-6 slide-in-bottom">Make your social media site the best it can be</h2>
+            <p class="text-2xl text-indigo-100 mb-12 slide-in-bottom delay-1">Access comprehensive youtube performance data and make informed decisions</p>
             <a href="noauth" class="inline-block bg-white text-indigo-600 px-8 py-4 rounded-xl text-xl font-semibold hover:bg-indigo-50 transition-all duration-300 hover:scale-105 hover:shadow-xl slide-in-bottom delay-2">Explore Hospital Data</a>
         </div>
     </section>
