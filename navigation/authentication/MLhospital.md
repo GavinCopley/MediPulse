@@ -155,22 +155,22 @@ input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.15)}
 <script>
 /*==== DATA & CONSTANTS (unchanged) ====*/
 const issuesData = {
-  "AAA Repair Endo Unrupture": "Elective endovascular aortic aneurysm repair.",
-  "AAA Repair Open Unrupture": "Open surgical repair of an unruptured abdominal aortic aneurysm.",
-  "Acute Stroke": "Emergency treatment for any stroke type (bleed or clot).",
-  "Acute Stroke Hemorrhagic": "Bleeding stroke requiring neuro-critical care.",
-  "Acute Stroke Ischemic": "Clot-related stroke (tPA / thrombectomy).",
-  "Acute Stroke Subarachnoid": "Bleed around the brain from ruptured aneurysm.",
-  "AMI": "Acute myocardial infarction (“heart attack”).",
-  "Carotid Endarterectomy": "Surgery to clear carotid-artery plaque.",
-  "GI Hemorrhage": "Life-threatening gastrointestinal bleeding.",
-  "Heart Failure": "Inpatient care for acute heart-failure decompensation.",
-  "Hip Fracture": "Emergency repair of fractured hip.",
-  "Isolated CABG Operative Mor": "Coronary-artery bypass graft.",
-  "Pancreatic Resection": "Partial / total pancreas removal.",
-  "PCI": "Percutaneous coronary intervention (stent).",
-  "Pneumonia": "Severe pneumonia management.",
-  "Postoperative Sepsis": "Septic complication after surgery."
+  "Early Stage Skin Cancer": "Outpatient diagnosis and excision of localized skin lesions.",
+  "Chronic Knee Pain": "Management of persistent knee discomfort due to arthritis or overuse.",
+  "Mild Asthma": "Routine monitoring and inhaler management for mild asthma symptoms.",
+  "Scoliosis": "Non-surgical monitoring and physical therapy for spinal curvature.",
+  "Hypertension": "Long-term blood pressure control and medication adjustment.",
+  "Osteoarthritis": "Joint pain management using medication, lifestyle changes, and PT.",
+  "ACL Tear": "Orthopedic consultation and rehab planning for ACL injury.",
+  "Sleep Apnea": "Diagnosis and management of obstructive sleep apnea, including CPAP.",
+  "Chronic Migraines": "Outpatient treatment and prevention for recurring headaches.",
+  "Shoulder Impingement": "Physical therapy and rehab for shoulder mobility issues.",
+  "Insomnia": "Behavioral and pharmacologic strategies for sleep disturbances.",
+  "Bulimia": "Outpatient care for disordered eating involving purging or binging.",
+  "Low Back Pain": "Non-surgical management of lumbar discomfort and stiffness.",
+  "Cataracts": "Pre-surgical evaluation and follow-up for cloudy vision due to lens opacity.",
+  "Broken Bone": "Non-emergency fracture treatment and follow-up care.",
+  "Concussion": "Monitoring and outpatient management of mild traumatic brain injury."
 };
 const landmarks = [
   { name: "Petco Park",     lat: 32.7073, lng: -117.1566 },
