@@ -251,39 +251,6 @@ menu: nav/home.html
                 <p class="text-gray-600 mt-2" id="user-stats">Loading your stats...</p>
             </div>
 
-            <!-- Quick Actions -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                <!-- Health Information Section -->
-                <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
-                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Your Health Profile</h2>
-                    <div id="health-info" class="space-y-2">
-                        <div class="grid grid-cols-2 gap-2">
-                            <p class="text-gray-600">Age:</p>
-                            <p class="font-medium" id="user-age">Loading...</p>
-                        </div>
-                        <div class="grid grid-cols-2 gap-2">
-                            <p class="text-gray-600">Height:</p>
-                            <p class="font-medium" id="user-height">Loading...</p>
-                        </div>
-                        <div class="grid grid-cols-2 gap-2">
-                            <p class="text-gray-600">Weight:</p>
-                            <p class="font-medium" id="user-weight">Loading...</p>
-                        </div>
-                        <div class="grid grid-cols-2 gap-2">
-                            <p class="text-gray-600">Ethnicity:</p>
-                            <p class="font-medium" id="user-ethnicity">Loading...</p>
-                        </div>
-                        <div class="mt-4">
-                            <p class="text-gray-600 mb-2">Allergies:</p>
-                            <p class="font-medium" id="user-allergies">Loading...</p>
-                        </div>
-                        <div class="mt-4">
-                            <p class="text-gray-600 mb-2">Medical Conditions:</p>
-                            <p class="font-medium" id="user-conditions">Loading...</p>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Posts Section -->
                 <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
                     <h2 class="text-xl font-semibold text-gray-800 mb-4">Recent Posts</h2>
