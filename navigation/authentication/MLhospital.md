@@ -184,7 +184,7 @@ const landmarks = [
 let userMap, userMarker, chosen;
 let landmarkMap, landmarkTemp, pickMap, pickMarker, hospMap, routeCtl;
 let selectedIssue = "";
-const apiURL = "http://127.0.0.1:https://medipulse-832734119496.us-west2.run.app/api/predict";
+const apiURL = "https://medipulse-832734119496.us-west2.run.app/api/predict";
 
 /*==== UTIL ====*/
 const $ = id => document.getElementById(id);
