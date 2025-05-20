@@ -397,6 +397,18 @@ menu: nav/home.html
     ::-webkit-scrollbar-thumb:hover {
       background: var(--primary-color);
     }
+    
+    .tip-box {
+      background: #f9fafb;
+      border-left: 4px solid #48c78e;
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 0.5rem;
+      transition: box-shadow 0.2s;
+    }
+    .tip-box:hover {
+      box-shadow: 0 4px 16px rgba(50,115,220,0.12);
+    }
   </style>
 </head>
 
@@ -620,13 +632,18 @@ menu: nav/home.html
           </div>
         </div>
 
-        <!-- Improvement Tips Accordion -->
+        <!-- Improvement Tips Dropdown -->
         <div class="box">
           <h3 class="title is-5 mb-4">
             <i class="fas fa-lightbulb mr-2 has-text-warning"></i> 
-            Improvement Tips <span class="is-size-7 has-text-grey">(click "+" to add to outline)</span>
+            Improvement Tips <span class="is-size-7 has-text-grey">(click to expand)</span>
           </h3>
-          <div class="accordion" id="tipsAccordion"></div>
+          <details id="allTipsDropdown">
+            <summary style="cursor:pointer; font-weight:600; color:#f59e42;">
+              Show All Tips
+            </summary>
+            <ul id="allTipsList" class="mt-3 pl-4"></ul>
+          </details>
         </div>
 
         <!-- Similar Videos Filter + Cards -->
@@ -848,20 +865,34 @@ menu: nav/home.html
             }
           }
 
-          // tips accordion with "+"
-          const acc = document.getElementById("tipsAccordion");
-          if (acc) {
-            acc.innerHTML = "";
-            if(result.gemini_tips.tips){
-              tipsArray.forEach((tip, i)=>{
-                const detail = document.createElement("details");
-                if(i===0) detail.open=true;
-                detail.innerHTML = `<summary>Tip ${i+1}</summary><p class="mt-2">${tip}</p>`;
-                detail.querySelector("summary").appendChild(makePlusBtn(i));
-                acc.appendChild(detail);
+          // Instead of rendering each tip as its own <details>, render all in one <ul>
+          const tipsList = document.getElementById("allTipsList");
+          if (tipsList) {
+            tipsList.innerHTML = "";
+            if (result.gemini_tips.tips) {
+              tipsArray.forEach((tip, i) => {
+                const li = document.createElement("li");
+                li.className = "mb-3";
+                li.innerHTML = `
+                  <div class="box tip-box" style="display:flex;align-items:flex-start;gap:1rem;box-shadow:0 2px 8px rgba(50,115,220,0.07);">
+                    <div style="flex:1;">${tip}</div>
+                    <button class="button is-small is-success" style="flex-shrink:0;">
+                      <i class="fas fa-plus"></i>
+                    </button>
+                  </div>
+                `;
+                // Add "+" button functionality
+                li.querySelector("button").onclick = () => {
+                  const active = outlineTabs.querySelector("li.is-active").dataset.index;
+                  const outlineLi = document.createElement("li");
+                  outlineLi.contentEditable = "true";
+                  outlineLi.textContent = tip;
+                  document.getElementById("outlineList" + active).appendChild(outlineLi);
+                };
+                tipsList.appendChild(li);
               });
             } else {
-              acc.innerHTML = `<div class="notification is-danger">${result.gemini_tips.error || "Failed to generate tips"}</div>`;
+              tipsList.innerHTML = `<div class="notification is-danger">${result.gemini_tips.error || "Failed to generate tips"}</div>`;
             }
           }
 
