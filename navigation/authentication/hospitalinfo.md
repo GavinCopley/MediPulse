@@ -84,7 +84,7 @@ menu: nav/home.html
 </div>
 
 <script>
-  const pythonURI = "http://127.0.0.1:8115";
+  const pythonURI = "http://127.0.0.1:https://medipulse-832734119496.us-west2.run.app";
   
   document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('search-form');

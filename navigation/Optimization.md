@@ -665,7 +665,7 @@ menu: nav/home.html
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      const API_BASE_URL = "http://127.0.0.1:8115";
+      const API_BASE_URL = "http://127.0.0.1:https://medipulse-832734119496.us-west2.run.app";
       const form = document.getElementById("videoForm");
       const step1 = document.getElementById("step1");
       const step2 = document.getElementById("step2");
