@@ -25,32 +25,151 @@ menu: nav/home.html
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
+    :root {
+      --bg-gradient-light: linear-gradient(135deg, #f8f9fa 0%, #e9f2ff 100%);
+      --bg-gradient-dark: linear-gradient(135deg, #1a1d21 0%, #111827 100%);
+      --text-primary-light: #333;
+      --text-primary-dark: #e2e8f0;
+      --text-secondary-light: #6b7280;
+      --text-secondary-dark: #9ca3af;
+      --bg-card-light: #fff;
+      --bg-card-dark: #1e293b;
+      --border-color-light: #e1e4e8;
+      --border-color-dark: #2d3748;
+      --primary-color: #3273dc;
+      --primary-color-dark: #4e7dd9;
+      --shadow-light: 0 4px 20px rgba(0, 0, 0, 0.05);
+      --shadow-dark: 0 4px 20px rgba(0, 0, 0, 0.25);
+    }
+    
+    body.dark-mode {
+      --bg-gradient: var(--bg-gradient-dark);
+      --text-primary: var(--text-primary-dark);
+      --text-secondary: var(--text-secondary-dark);
+      --bg-card: var(--bg-card-dark);
+      --border-color: var(--border-color-dark);
+      --shadow: var(--shadow-dark);
+      color-scheme: dark;
+    }
+    
+    body.light-mode {
+      --bg-gradient: var(--bg-gradient-light);
+      --text-primary: var(--text-primary-light);
+      --text-secondary: var(--text-secondary-light);
+      --bg-card: var(--bg-card-light);
+      --border-color: var(--border-color-light);
+      --shadow: var(--shadow-light);
+      color-scheme: light;
+    }
+    
     html, body { 
       height: 100%; 
-      background: linear-gradient(135deg, #f8f9fa 0%, #e9f2ff 100%);
-      color: #333;
+      background: var(--bg-gradient);
+      color: var(--text-primary);
+      transition: background 0.3s ease, color 0.3s ease;
     }
     
     .loading-overlay {
       position: fixed; top: 0; left: 0;
       width: 100%; height: 100%;
-      background: rgba(255,255,255,0.9);
+      background: rgba(var(--bg-card-rgb, 255, 255, 255), 0.9);
       display: none; align-items: center; justify-content: center;
-      font-size: 1.75rem; color: #3273dc; z-index: 1000; font-weight: 600;
+      font-size: 1.75rem; color: var(--primary-color); z-index: 1000; font-weight: 600;
       backdrop-filter: blur(3px);
     }
     
+    /* Instructions header */
+    .instructions-header {
+      background: var(--bg-card);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border-color);
+      position: relative;
+    }
+    
+    .instructions-steps {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      margin: 1rem 0;
+    }
+    
+    .instruction-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      flex: 1;
+    }
+    
+    .instruction-step:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      top: 2rem;
+      right: -45%;
+      width: 90%;
+      height: 2px;
+      background: var(--border-color);
+    }
+    
+    .instruction-number {
+      width: 4rem;
+      height: 4rem;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 2px solid var(--primary-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .instruction-step.active .instruction-number {
+      background: var(--primary-color);
+      color: white;
+    }
+    
+    .instruction-text {
+      font-weight: 600;
+      text-align: center;
+      color: var(--text-primary);
+    }
+    
+    .dark-mode-toggle {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      cursor: pointer;
+      background: transparent;
+      border: none;
+      color: var(--text-primary);
+      font-size: 1.5rem;
+      transition: transform 0.3s ease;
+    }
+    
+    .dark-mode-toggle:hover {
+      transform: rotate(30deg);
+    }
+    
+    /* Other styles from previous version */
     .steps { 
       margin-bottom: 2rem; 
     }
     
     .accordion details {
       margin-bottom: 1rem; 
-      border: 1px solid #e1e4e8;
+      border: 1px solid var(--border-color);
       border-radius: 12px; 
       padding: 0.75rem 1rem; 
-      background: #fff;
-      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.03);
+      background: var(--bg-card);
+      box-shadow: var(--shadow);
       transition: box-shadow 0.3s, transform 0.2s;
     }
     
@@ -65,6 +184,7 @@ menu: nav/home.html
       display: flex;
       align-items: center;
       justify-content: space-between;
+      color: var(--text-primary);
     }
     
     .video-card { 
@@ -72,7 +192,8 @@ menu: nav/home.html
       height: 100%;
       border-radius: 12px;
       overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      box-shadow: var(--shadow);
+      background: var(--bg-card);
     }
     
     .video-card:hover { 
@@ -81,21 +202,22 @@ menu: nav/home.html
     }
     
     .outline-box {
-      background: #fff; 
+      background: var(--bg-card); 
       padding: 2rem; 
       border-radius: 12px; 
       margin-bottom: 1.5rem;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border-color);
     }
     
     .upload-placeholder {
-      border: 2px dashed #ccc; 
+      border: 2px dashed var(--border-color);
       border-radius: 12px;
       height: 150px; 
       display: flex; 
       align-items: center; 
       justify-content: center;
-      color: #888; 
+      color: var(--text-secondary); 
       cursor: pointer; 
       margin-bottom: 0.5rem;
       transition: all 0.2s;
@@ -103,8 +225,7 @@ menu: nav/home.html
     }
     
     .upload-placeholder:hover {
-      border-color: #3273dc;
-      background: rgba(240, 245, 255, 0.5);
+      border-color: var(--primary-color);
     }
     
     .tabs.is-centered { 
@@ -113,15 +234,21 @@ menu: nav/home.html
     }
     
     .tabs li.is-active a { 
-      border-bottom-color: #3273dc; 
-      color: #3273dc;
+      border-bottom-color: var(--primary-color); 
+      color: var(--primary-color);
       font-weight: 600;
+    }
+    
+    .tabs li a {
+      color: var(--text-primary);
     }
     
     .box {
       border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      box-shadow: var(--shadow);
       transition: transform 0.2s, box-shadow 0.2s;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
     }
     
     .box:hover {
@@ -129,20 +256,20 @@ menu: nav/home.html
     }
     
     .title {
-      color: #2c3e50;
+      color: var(--text-primary);
     }
     
     .subtitle {
-      color: #34495e;
+      color: var(--text-secondary);
     }
     
     .button.is-primary {
-      background-color: #3273dc;
+      background-color: var(--primary-color);
       transition: background-color 0.3s, transform 0.1s;
     }
     
     .button.is-primary:hover {
-      background-color: #2366d1;
+      background-color: var(--primary-color-dark);
       transform: translateY(-2px);
     }
     
@@ -160,23 +287,25 @@ menu: nav/home.html
     
     #outlinesContainer ul li {
       padding: 0.5rem 0;
-      border-bottom: 1px solid #f0f0f0;
+      border-bottom: 1px solid var(--border-color);
       transition: background-color 0.2s;
+      color: var(--text-primary);
     }
     
     #outlinesContainer ul li:hover {
-      background-color: #f8f9fa;
+      background-color: rgba(0, 0, 0, 0.03);
       padding-left: 0.25rem;
     }
     
     #outlinesContainer ul li:focus {
       outline: none;
-      background-color: #f0f7ff;
+      background-color: rgba(50, 115, 220, 0.1);
       padding-left: 0.5rem;
     }
     
     .card-content {
       padding: 1.25rem;
+      color: var(--text-primary);
     }
     
     .progress.is-primary {
@@ -185,22 +314,25 @@ menu: nav/home.html
     
     input.input, select.select, textarea.textarea {
       border-radius: 8px;
-      border-color: #e1e4e8;
+      border-color: var(--border-color);
       box-shadow: none;
       transition: all 0.2s;
+      background-color: var(--bg-card);
+      color: var(--text-primary);
     }
     
     input.input:focus, select.select:focus, textarea.textarea:focus {
-      border-color: #3273dc;
+      border-color: var(--primary-color);
       box-shadow: 0 0 0 2px rgba(50, 115, 220, 0.25);
     }
     
     .label {
-      color: #34495e;
+      color: var(--text-primary);
     }
     
     .help {
       font-style: italic;
+      color: var(--text-secondary);
     }
     
     .notification {
@@ -213,7 +345,7 @@ menu: nav/home.html
     }
     
     .step-item.is-active .step-marker {
-      background-color: #3273dc;
+      background-color: var(--primary-color);
       animation: pulse 2s infinite;
     }
     
@@ -253,22 +385,22 @@ menu: nav/home.html
     }
     
     ::-webkit-scrollbar-track {
-      background: #f1f1f1;
+      background: var(--border-color);
       border-radius: 10px;
     }
     
     ::-webkit-scrollbar-thumb {
-      background: #bbb;
+      background: var(--text-secondary);
       border-radius: 10px;
     }
     
     ::-webkit-scrollbar-thumb:hover {
-      background: #3273dc;
+      background: var(--primary-color);
     }
   </style>
 </head>
 
-<body>
+<body class="light-mode">
   <div class="loading-overlay" id="loadingOverlay">
     <div class="has-text-centered">
       <i class="fas fa-circle-notch fa-spin fa-2x mb-3"></i>
@@ -282,18 +414,27 @@ menu: nav/home.html
       <h1 class="title has-text-centered is-2 mb-5">
         <i class="fa-solid fa-chart-line has-text-primary"></i> Hospital Video Optimiser
       </h1>
-      <p class="subtitle has-text-centered is-5 mb-6">Enhance your hospital's video content with AI-powered insights</p>
-
-      <!-- Step Wizard -->
-      <div class="steps is-centered">
-        <div class="step-item is-active" data-step="1">
-          <div class="step-marker">1</div>
-          <div class="step-details"><p class="step-title">Describe Video</p></div>
+      <p class="subtitle has-text-centered is-5 mb-5">Enhance your hospital's video content with AI-powered insights</p>
+      
+      <!-- New Instructions Header -->
+      <div class="instructions-header">
+        <button id="darkModeToggle" class="dark-mode-toggle">
+          <i class="fas fa-moon"></i>
+        </button>
+        <h3 class="title is-5 has-text-centered mb-3">How It Works</h3>
+        <div class="instructions-steps">
+          <div class="instruction-step active" id="instructionStep1">
+            <div class="instruction-number">1</div>
+            <div class="instruction-text">Describe Video</div>
+          </div>
+          <div class="instruction-step" id="instructionStep2">
+            <div class="instruction-number">2</div>
+            <div class="instruction-text">See Results</div>
+          </div>
         </div>
-        <div class="step-item" data-step="2">
-          <div class="step-marker">2</div>
-          <div class="step-details"><p class="step-title">See Results</p></div>
-        </div>
+        <p class="has-text-centered mt-3">
+          <span id="instructionDetail" class="has-text-grey">Enter the details of your hospital video to receive AI-powered optimization suggestions</span>
+        </p>
       </div>
 
       <!-- FORM (Step 1) -->
@@ -511,6 +652,7 @@ menu: nav/home.html
           <div class="columns is-multiline" id="videoCards"></div>
         </div>
         
+        <!-- Add back button -->
         <div class="has-text-centered mt-5">
           <button id="goBackBtn" class="button is-light">
             <span class="icon"><i class="fas fa-arrow-left"></i></span>
@@ -529,21 +671,61 @@ menu: nav/home.html
       const step2 = document.getElementById("step2");
       const steps = document.querySelectorAll(".step-item");
       const loading = document.getElementById("loadingOverlay");
+      const instructionStep1 = document.getElementById("instructionStep1");
+      const instructionStep2 = document.getElementById("instructionStep2");
+      const instructionDetail = document.getElementById("instructionDetail");
+      
+      // Dark mode toggle
+      const darkModeToggle = document.getElementById("darkModeToggle");
+      
+      // Check for saved preference
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme) {
+        document.body.className = savedTheme === 'dark' ? 'dark-mode' : 'light-mode';
+        updateThemeIcon();
+      }
+      
+      darkModeToggle.addEventListener('click', () => {
+        if (document.body.classList.contains('dark-mode')) {
+          document.body.classList.remove('dark-mode');
+          document.body.classList.add('light-mode');
+          localStorage.setItem('theme', 'light');
+        } else {
+          document.body.classList.remove('light-mode');
+          document.body.classList.add('dark-mode');
+          localStorage.setItem('theme', 'dark');
+        }
+        updateThemeIcon();
+      });
+      
+      function updateThemeIcon() {
+        const icon = darkModeToggle.querySelector('i');
+        if (document.body.classList.contains('dark-mode')) {
+          icon.className = 'fas fa-sun';
+        } else {
+          icon.className = 'fas fa-moon';
+        }
+      }
 
       // Add clear filter functionality
-      document.querySelector('.video-filter-clear').addEventListener('click', () => {
-        const filterInput = document.getElementById('videoFilter');
-        filterInput.value = '';
-        filterInput.dispatchEvent(new Event('input'));
-      });
+      if (document.querySelector('.video-filter-clear')) {
+        document.querySelector('.video-filter-clear').addEventListener('click', () => {
+          const filterInput = document.getElementById('videoFilter');
+          filterInput.value = '';
+          filterInput.dispatchEvent(new Event('input'));
+        });
+      }
       
       // Add back button functionality
       if (document.getElementById('goBackBtn')) {
         document.getElementById('goBackBtn').addEventListener('click', () => {
           step2.classList.add('is-hidden');
-          steps[1].classList.remove('is-active');
-          steps[0].classList.add('is-active');
           step1.classList.remove('is-hidden');
+          
+          // Update instruction steps
+          instructionStep1.classList.add('active');
+          instructionStep2.classList.remove('active');
+          instructionDetail.textContent = 'Enter the details of your hospital video to receive AI-powered optimization suggestions';
         });
       }
 
@@ -569,14 +751,16 @@ menu: nav/home.html
 
       // handle outline tabs
       const outlineTabs = document.getElementById("outlineTabs");
-      outlineTabs.onclick = e => {
-        if(!e.target.closest("li")) return;
-        outlineTabs.querySelectorAll("li").forEach(li=>li.classList.remove("is-active"));
-        e.target.closest("li").classList.add("is-active");
-        const idx = e.target.closest("li").dataset.index;
-        document.querySelectorAll("#outlinesContainer .content")
-          .forEach(div=>div.style.display = div.dataset.index===idx?"block":"none");
-      };
+      if (outlineTabs) {
+        outlineTabs.onclick = e => {
+          if(!e.target.closest("li")) return;
+          outlineTabs.querySelectorAll("li").forEach(li=>li.classList.remove("is-active"));
+          e.target.closest("li").classList.add("is-active");
+          const idx = e.target.closest("li").dataset.index;
+          document.querySelectorAll("#outlinesContainer .content")
+            .forEach(div=>div.style.display = div.dataset.index===idx?"block":"none");
+        };
+      }
 
       // add "+" to tip
       function makePlusBtn(tipIndex){
@@ -596,6 +780,11 @@ menu: nav/home.html
       let currentPayload = null, tipsArray = [];
 
       async function runOptimize(){
+        // Update instructions
+        instructionStep1.classList.remove('active');
+        instructionStep2.classList.add('active');
+        instructionDetail.textContent = 'View AI-powered suggestions and compare with similar high-performing videos';
+        
         // same as submit logic
         loading.style.display = "flex";
         const fd = new FormData(form);
@@ -618,111 +807,126 @@ menu: nav/home.html
         }
         currentPayload = data;
 
-        const res = await fetch(`${API_BASE_URL}/api/optimize`, {
-          method: "POST",
-          headers: {"Content-Type":"application/json"},
-          body: JSON.stringify(data)
-        });
-        const raw = await res.text();
-        const result = JSON.parse(raw.replace(/\bNaN\b/g,"null"));
-        loading.style.display = "none";
-
-        // switch to step2
-        step1.classList.add("is-hidden");
-        steps[0].classList.remove("is-active");
-        steps[1].classList.add("is-active");
-        step2.classList.remove("is-hidden");
-
-        // predicted engagement animate
-        const pred = clamp(result.predicted_engagement);
-        engagementChart.data.datasets[0].data = [pred,100-pred];
-        engagementChart.update({duration:800});
-        document.getElementById("engagementScore").textContent = result.predicted_engagement.toFixed(2);
-        document.getElementById("engagementProgress").value = pred;
-
-        // set up three outlines from tips (first 3 tips each)
-        tipsArray = result.gemini_tips.tips
-          ? result.gemini_tips.tips.split("\n").filter(l=>l.trim())
-          : [];
-        for(let i=0;i<3;i++){
-          const outlineUl = document.getElementById("outlineList"+i);
-          outlineUl.innerHTML = "";
-          if(tipsArray[i]) {
-            const parts = tipsArray[i].split(/[:\-–]/).slice(1).join("");
-            const li = document.createElement("li");
-            li.contentEditable="true";
-            li.textContent = parts || tipsArray[i];
-            outlineUl.appendChild(li);
-          }
-        }
-
-        // tips accordion with "+"
-        const acc = document.getElementById("tipsAccordion");
-        acc.innerHTML = "";
-        if(result.gemini_tips.tips){
-          tipsArray.forEach((tip, i)=>{
-            const detail = document.createElement("details");
-            if(i===0) detail.open=true;
-            detail.innerHTML = `<summary>Tip ${i+1}</summary><p class="mt-2">${tip}</p>`;
-            detail.querySelector("summary").appendChild(makePlusBtn(i));
-            acc.appendChild(detail);
+        try {
+          const res = await fetch(`${API_BASE_URL}/api/optimize`, {
+            method: "POST",
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify(data)
           });
-        } else {
-          acc.innerHTML = `<div class="notification is-danger">${result.gemini_tips.error}</div>`;
-        }
-
-        // video cards
-        const cards = document.getElementById("videoCards");
-        cards.innerHTML = "";
-        (result.reference_videos||[]).forEach(v=>{
-          const col = document.createElement("div");
-          col.className="column is-4";
-          col.innerHTML=`
-            <div class="card video-card">
-              <div class="card-image">
-                <figure class="image is-16by9">
-                  <img src="https://img.youtube.com/vi/${v["video id"] || ""}/hqdefault.jpg" alt="Thumbnail">
-                  <div class="play-button" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:50px; height:50px; background:rgba(255,0,0,0.8); border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer;">
-                    <i class="fas fa-play" style="color:white; font-size:20px;"></i>
-                  </div>
-                </figure>
-              </div>
-              <div class="card-content">
-                <p class="title is-6">${v["video title"]}</p>
-                <p class="subtitle is-7">
-                  <i class="fas fa-eye"></i> ${v["view count"]} &nbsp;
-                  <i class="fas fa-thumbs-up"></i> ${v["like count"]} &nbsp;
-                  <i class="fas fa-comment"></i> ${v["comment count"]}
-                </p>
-                <p class="is-size-7"><strong>Length:</strong> ${v["length_sec"]}s</p>
-                <div class="tags are-small mt-2">
-                  ${(v["tags"] || "").split('|').slice(0,3).map(tag => 
-                    `<span class="tag is-info is-light">${tag}</span>`
-                  ).join('')}
-                  ${v["tags"] && v["tags"].split('|').length > 3 ? 
-                    `<span class="tag is-light">+${v["tags"].split('|').length - 3} more</span>` : ''}
-                </div>
-              </div>
-            </div>`;
-          cards.appendChild(col);
           
-          // Make entire card clickable to YouTube
-          if (v["video id"]) {
-            const videoCard = col.querySelector('.video-card');
-            videoCard.style.cursor = 'pointer';
-            videoCard.addEventListener('click', () => {
-              window.open(`https://www.youtube.com/watch?v=${v["video id"]}`, '_blank');
+          const raw = await res.text();
+          const result = JSON.parse(raw.replace(/\bNaN\b/g,"null"));
+          loading.style.display = "none";
+
+          // switch to step2
+          step1.classList.add("is-hidden");
+          step2.classList.remove("is-hidden");
+
+          // predicted engagement animate
+          const pred = clamp(result.predicted_engagement);
+          engagementChart.data.datasets[0].data = [pred,100-pred];
+          engagementChart.update({duration:800});
+          document.getElementById("engagementScore").textContent = result.predicted_engagement.toFixed(2);
+          document.getElementById("engagementProgress").value = pred;
+
+          // set up three outlines from tips (first 3 tips each)
+          tipsArray = result.gemini_tips.tips
+            ? result.gemini_tips.tips.split("\n").filter(l=>l.trim())
+            : [];
+            
+          for(let i=0;i<3;i++){
+            const outlineUl = document.getElementById("outlineList"+i);
+            if (outlineUl) {
+              outlineUl.innerHTML = "";
+              if(tipsArray[i]) {
+                const parts = tipsArray[i].split(/[:\-–]/).slice(1).join("");
+                const li = document.createElement("li");
+                li.contentEditable="true";
+                li.textContent = parts || tipsArray[i];
+                outlineUl.appendChild(li);
+              }
+            }
+          }
+
+          // tips accordion with "+"
+          const acc = document.getElementById("tipsAccordion");
+          if (acc) {
+            acc.innerHTML = "";
+            if(result.gemini_tips.tips){
+              tipsArray.forEach((tip, i)=>{
+                const detail = document.createElement("details");
+                if(i===0) detail.open=true;
+                detail.innerHTML = `<summary>Tip ${i+1}</summary><p class="mt-2">${tip}</p>`;
+                detail.querySelector("summary").appendChild(makePlusBtn(i));
+                acc.appendChild(detail);
+              });
+            } else {
+              acc.innerHTML = `<div class="notification is-danger">${result.gemini_tips.error || "Failed to generate tips"}</div>`;
+            }
+          }
+
+          // video cards
+          const cards = document.getElementById("videoCards");
+          if (cards) {
+            cards.innerHTML = "";
+            (result.reference_videos||[]).forEach(v=>{
+              const col = document.createElement("div");
+              col.className="column is-4";
+              col.innerHTML=`
+                <div class="card video-card">
+                  <div class="card-image">
+                    <figure class="image is-16by9">
+                      <img src="https://img.youtube.com/vi/${v["video id"] || ""}/hqdefault.jpg" alt="Thumbnail">
+                      <div class="play-button" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:50px; height:50px; background:rgba(255,0,0,0.8); border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer;">
+                        <i class="fas fa-play" style="color:white; font-size:20px;"></i>
+                      </div>
+                    </figure>
+                  </div>
+                  <div class="card-content">
+                    <p class="title is-6">${v["video title"]}</p>
+                    <p class="subtitle is-7">
+                      <i class="fas fa-eye"></i> ${v["view count"]} &nbsp;
+                      <i class="fas fa-thumbs-up"></i> ${v["like count"]} &nbsp;
+                      <i class="fas fa-comment"></i> ${v["comment count"]}
+                    </p>
+                    <p class="is-size-7"><strong>Length:</strong> ${v["length_sec"]}s</p>
+                    <div class="tags are-small mt-2">
+                      ${(v["tags"] || "").split('|').slice(0,3).map(tag => 
+                        `<span class="tag is-info is-light">${tag}</span>`
+                      ).join('')}
+                      ${v["tags"] && v["tags"].split('|').length > 3 ? 
+                        `<span class="tag is-light">+${v["tags"].split('|').length - 3} more</span>` : ''}
+                    </div>
+                  </div>
+                </div>`;
+              cards.appendChild(col);
+              
+              // Make entire card clickable to YouTube
+              if (v["video id"]) {
+                const videoCard = col.querySelector('.video-card');
+                videoCard.style.cursor = 'pointer';
+                videoCard.addEventListener('click', () => {
+                  window.open(`https://www.youtube.com/watch?v=${v["video id"]}`, '_blank');
+                });
+              }
             });
           }
-        });
 
-        // filter
-        document.getElementById("videoFilter").oninput = ev=>{
-          const q = ev.target.value.toLowerCase();
-          cards.childNodes.forEach(col=>{
-            col.style.display = col.textContent.toLowerCase().includes(q) ? "" : "none";
-          });
-        };
+          // filter
+          const videoFilter = document.getElementById("videoFilter");
+          if (videoFilter && cards) {
+            videoFilter.oninput = ev => {
+              const q = ev.target.value.toLowerCase();
+              cards.childNodes.forEach(col => {
+                col.style.display = col.textContent.toLowerCase().includes(q) ? "" : "none";
+              });
+            };
+          }
+        } catch (error) {
+          console.error("Optimization failed:", error);
+          loading.style.display = "none";
+          alert("Sorry, there was an error connecting to the optimization service. Please try again later.");
+        }
       }
 
       // initial form submit
@@ -732,24 +936,32 @@ menu: nav/home.html
       });
 
       // re-evaluate button
-      document.getElementById("reEvalBtn").onclick = () => {
-        // animate from current predicted to improved
-        loading.style.display = "flex";
-        fetch(`${API_BASE_URL}/api/optimize`, {
-          method:"POST",
-          headers:{"Content-Type":"application/json"},
-          body: JSON.stringify(currentPayload)
-        })
-        .then(r=>r.json())
-        .then(result=>{
-          loading.style.display = "none";
-          const imp = clamp(result.improved_engagement);
-          engagementChart.data.datasets[0].data = [imp,100-imp];
-          engagementChart.update({duration:800});
-          document.getElementById("engagementScore").textContent = result.improved_engagement.toFixed(2);
-          document.getElementById("engagementProgress").value = imp;
-        });
-      };
+      const reEvalBtn = document.getElementById("reEvalBtn");
+      if (reEvalBtn) {
+        reEvalBtn.onclick = () => {
+          // animate from current predicted to improved
+          loading.style.display = "flex";
+          fetch(`${API_BASE_URL}/api/optimize`, {
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body: JSON.stringify(currentPayload)
+          })
+          .then(r=>r.json())
+          .then(result=>{
+            loading.style.display = "none";
+            const imp = clamp(result.improved_engagement);
+            engagementChart.data.datasets[0].data = [imp,100-imp];
+            engagementChart.update({duration:800});
+            document.getElementById("engagementScore").textContent = result.improved_engagement.toFixed(2);
+            document.getElementById("engagementProgress").value = imp;
+          })
+          .catch(error => {
+            console.error("Re-evaluation failed:", error);
+            loading.style.display = "none";
+            alert("Sorry, there was an error processing your request.");
+          });
+        };
+      }
     });
   </script>
 </body>
