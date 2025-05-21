@@ -301,6 +301,29 @@ menu: nav/home.html
                         </a>
                     </div>
                 </div>
+
+                <!-- Video Optimization Card -->
+                <div class="bg-white rounded-2xl shadow-lg p-8 flex flex-col justify-between hover:shadow-2xl transition">
+                    <div>
+                        <div class="flex items-center mb-4">
+                            <span class="inline-block bg-purple-100 p-3 rounded-full mr-3">
+                                <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                </svg>
+                            </span>
+                            <h2 class="text-xl font-bold text-purple-900">Video Optimization</h2>
+                        </div>
+                        <p class="text-gray-600 mb-6">Get AI-powered suggestions to improve your hospital's YouTube videos and increase engagement.</p>
+                    </div>
+                    <div class="flex justify-end">
+                        <a href="{{site.baseurl}}/optimize" class="inline-flex items-center bg-purple-600 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-purple-700 transition">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                            </svg>
+                            Optimize Videos
+                        </a>
+                    </div>
+                </div>
             </div>
 
             <!-- Recent Activity Card -->
