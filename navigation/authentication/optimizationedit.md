@@ -59,12 +59,35 @@ menu: nav/home.html
     border-radius: 8px;
     overflow: hidden;
     box-shadow: var(--shadow-light);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
     border: 1px solid #eaedf1;
+    cursor: pointer;
+    position: relative;
     }
     .video-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.08);
+    }
+    .video-card.selected {
+    border: 2px solid var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(50, 115, 220, 0.2);
+    }
+    .video-card.selected:before {
+    content: "\f058"; /* Font Awesome check-circle icon */
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: var(--primary-color);
+    color: white;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
     }
     .thumbnail-container {
     position: relative;
@@ -186,6 +209,19 @@ menu: nav/home.html
     margin: 2rem 0;
     display: flex;
     justify-content: center;
+    }
+    .pagination-link.is-current {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: #ffffff;
+    }
+
+    .pagination-link:hover {
+    border-color: var(--primary-color);
+    }
+
+    .pagination-previous:hover, .pagination-next:hover {
+    background-color: #f5f5f5;
     }
     </style>
 </head>
@@ -688,12 +724,13 @@ menu: nav/home.html
           
           const videoCard = document.createElement('div');
           videoCard.className = 'video-card';
+          videoCard.dataset.videoId = video.id; // Store the video ID in the dataset
           videoCard.innerHTML = `
             <div class="thumbnail-container">
               <img src="${video.thumbnail}" alt="${video.title}" class="thumbnail">
               <div class="play-overlay">
                 <div class="play-button">
-                  <i class="fas fa-play" style="color: white; font-size: 20px;"></i>
+                  <i class="fas fa-check" style="color: white; font-size: 20px;"></i>
                 </div>
               </div>
             </div>
@@ -706,8 +743,14 @@ menu: nav/home.html
             </div>
           `;
           
+          // Add selection functionality instead of YouTube link
           videoCard.addEventListener('click', () => {
-            window.open(`https://www.youtube.com/watch?v=${video.id}`, '_blank');
+            // Toggle selection state
+            videoCard.classList.toggle('selected');
+            
+            // You can add code here to track selected videos
+            // e.g., store in an array, update a counter, etc.
+            console.log(`Video ${video.id} selection toggled`);
           });
           
           videoGrid.appendChild(videoCard);
@@ -811,10 +854,13 @@ menu: nav/home.html
             pageList.appendChild(ellipsisItem);
           } else {
             const pageItem = document.createElement('li');
-            pageItem.className = `pagination-item ${page === currentPage ? 'is-current' : ''}`;
-            pageItem.innerHTML = `<a class="pagination-link" aria-label="Page ${page}">${page}</a>`;
+            pageItem.className = 'pagination-item';
+            pageItem.innerHTML = `
+              <a class="pagination-link ${currentPage === page ? 'is-current' : ''}" aria-label="Page ${page}">
+                ${page}
+              </a>
+            `;
             
-            // Page number click event
             pageItem.addEventListener('click', () => {
               currentPage = page;
               renderVideos();
