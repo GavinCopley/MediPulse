@@ -1,83 +1,62 @@
 # Introduction
 
-Nighthawk Pages is a project designed to support students in their Computer Science and Software Engineering education. It offers a wide range of resources including tech talks, code examples, and educational blogs.
+MediPulse is an advanced social media optimization solution designed particularly to help Palomar Health achieve its maximum YouTube visibility and audience engagement. Data-driven and AI-powered, MediPulse analyzes video performance, audience engagement, content trends, and publishing habits to offer actionable insights that enhance visibility, stimulate engagement, and maximize the hospital's digital outreach.
 
-GitHub Pages can be customized by the blogger to support computer science learnings as the student works through the pathway of using Javascript, Python/Flask, Java/Spring.  
+By converting raw YouTube analytics into action, MediPulse empowers Palomar Health's marketing team to make more efficient videos, target the right audience, and have a stronger connection with the community. With a minimalistic dashboard and simple design, the platform makes optimizing content easier even for non-technical teams.
 
-## Student Requirements
+## Project Overview
 
-Del Norte HS students will be required to review their personal GitHub Pages at each midterm and final.  This review will contain a compilation of personal work performed within each significant grading period.
+MediPulse is built using modern web technologies and follows best practices for data analysis and visualization. The project leverages GitHub Pages for hosting and documentation, making it easy for the team to maintain and update the platform.
 
-In general, Students and Teachers are expected to use GitHub pages to build lessons, complete classroom hacks, perform work on JavaScript games, and serve as a frontend to full-stack applications.
+## Key Features
 
-Exchange of information could be:
+- **YouTube Analytics Integration**: Seamless connection with YouTube's API for real-time data analysis
+- **Performance Dashboard**: Interactive visualization of key metrics and KPIs
+- **Content Optimization**: AI-powered insights for improving video content and engagement
+- **Audience Analysis**: Deep dive into viewer demographics and behavior patterns
+- **Publishing Optimization**: Data-driven recommendations for optimal posting times and frequency
+- **Technical Infrastructure**: Built with modern web technologies and scalable architecture
 
-1. sharing a file:  `wget "raw-link.ipynb"
-2. creating a template from this repository
-3. sharing a fork among team members
-4. etc.
+## Development Requirements
 
----
+The MediPulse platform requires a modern development environment with the following components:
 
-## History
+- Node.js and npm for frontend development
+- Python for data analysis and AI components
+- YouTube Data API credentials
+- GitHub account for version control and deployment
 
-This project is in its 3rd revision (aka 3.0).
+## GitHub Pages Setup
 
-The project was initially based on Fastpages. But this project has diverged from those roots into an independent entity.  The decision to separate from Fastpages was influenced by the deprecation of Fastpages by authors.  It is believed by our community that the authors of fastpages turned toward Quatro.  After that change of direction fastpages did not align with the Teacher's goals and student needs. The Nighthawk Pages project has more of a raw development blogging need.
+The project uses GitHub Pages for hosting and documentation. Follow these steps to set up your development environment:
 
-### License
-
-The Apache license has its roots in Fastpages.  Thus, it carries its license forward.  However, most of the code is likely unrecognizable from those roots.
-
-### Key Features
-
-- **Code Examples**: Provides practical coding examples in JavaScript, including a platformer game, and frontend code for user databases using Python and Java backends.
-- **Educational Blogs**: Offers instructional content on various topics such as developer tools setup, deployment on AWS, SQL databases, machine learning, and data structures. It utilizes Jupyter Notebooks for interactive lessons and coding challenges.
-- **Tools and Integrations**: Features GitHub actions for blog publishing, Utterances for blog commenting, local development support via Makefile and scripts, and styling with the Minima Theme and SASS. It also includes a new integration with GitHub Projects and Issues.
-
-### Contributions
-
-- **Notable Contributions**: Highlights significant contributions to the project, including theme development, search and tagging functionality, GitHub API integration, and the incorporation of GitHub Projects into GitHub pages. Contributors such as Tirth Thakker, Mirza Beg, and Toby Ledder have played crucial roles in these developments.
-
-- **Blog Contributions**:  Often students contribute articles and blogs to this project.  Their names are typically listed in the front matter of their contributing post.
-
----
-
-## GitHub Pages setup
-
-The absolutes in setup up...
-
-**Activate GitHub Pages Actions**: This step involves enabling GitHub Pages Actions for your project. By doing so, your project will be automatically deployed using GitHub Pages Actions, ensuring that your project is always up to date with the latest changes you push to your repository.
-
+**Activate GitHub Pages Actions**: 
 - On the GitHub website for the repository go to the menu: Settings -> Pages ->Build
-- Under the Deployment location on the page, select "GitHub Actions".
+- Under the Deployment location on the page, select "GitHub Actions"
 
-**Update `_config.yml`**: You need to modify the `_config.yml` file to reflect your repository's name. This configuration is crucial because it ensures that your project's styling is correctly applied, making your deployed site look as intended rather than unstyled or broken.
-
+**Update `_config.yml`**: 
 ```text
-github_repo: "portfolio_2025" 
-baseurl: "/portfolio_2025"
+github_repo: "medipulse" 
+baseurl: "/medipulse"
 ```
 
-**Set Repository Name in Makefile**: Adjust the `REPO_NAME` variable in your Makefile to match your GitHub repository's name. This action facilitates the automatic updating of posts and notebooks on your local development server, improving the development process.
-
+**Set Repository Name in Makefile**: 
 ```make
 # Configuration, override port with usage: make PORT=4200
 PORT ?= 4887
-REPO_NAME ?= flocker_frontend 
+REPO_NAME ?= medipulse
 LOG_FILE = /tmp/jekyll$(PORT).log
 ```
 
-### Tool requirements
+### Tool Requirements
 
-All `GitHub Pages` websites are managed on GitHub infrastructure and use GitHub version control.  Each time we change files in GitHub it initiates a GitHub Action, a continuous integration and development toolset, that rebuilds and publishes the site with Jekyll.  
+- **Node.js**: Required for frontend development and package management
+- **Python**: Used for data analysis and AI components
+- **Git**: Version control system
+- **Visual Studio Code**: Recommended IDE with extensions for JavaScript, Python, and Git
+- **YouTube Data API**: Required for accessing YouTube analytics data
 
-- GitHub uses `Jekyll` to transform your markdown and HTML content into static websites and blogs. [Jekyll](https://jekyllrb.com/).
-- A Linux shell is required to work with this project integration with GitHub Pages, GitHub and VSCode.  Ubuntu is the preferred shell, though MacOS shell is supported as well.  There will be some key setup scripts that follow in the README.
-- Visual Studio Code is the Nighthawk Pages author's preferred code editor and extensible development environment.  VSCode has a rich ecosystem of developer extensions that ease working with GitHub Pages, GitHub, and many programming languages.  Setting up VSCode and extensions will be elaborated upon in this document.
-- An anatomy section in this README will describe GitHub Pages and conventions that are used to organize content and files.  This includes file names, key coding files, metadata tagging of blogs, styling tooling for blogs, etc.
-
-### Development Environment Setup
+## Development Environment Setup
 
 Comprehensive start. A topic-by-topic guide to getting this project running is published [here](https://nighthawkcoders.github.io/portfolio_2025/devops/tools/home).
 
@@ -172,8 +151,6 @@ Test Jupyter Notebook conversions (ie .ipynb -> .md), this is the best choice to
   make convert
   ```
 
----
-
 ## Development Support
 
 ### File Names in "_posts", "_notebooks"
@@ -222,7 +199,7 @@ To find a new theme search for "Github Pages Themes".
 
 ### Includes
 
-- Nighthawk Pages uses liquid syntax to import many common page elements that are present throughout the repository. These common elements are imported from the _includes directory. If you want to add one of these common elements, use liquid syntax to import the desired element to your file. Here’s an example of the liquid syntax used to import: `{%- include post_list.html -%}` Note that the liquid syntax is surrounded by curly braces and percent signs. This can be used anywhere in the repository.
+- Nighthawk Pages uses liquid syntax to import many common page elements that are present throughout the repository. These common elements are imported from the _includes directory. If you want to add one of these common elements, use liquid syntax to import the desired element to your file. Here's an example of the liquid syntax used to import: `{%- include post_list.html -%}` Note that the liquid syntax is surrounded by curly braces and percent signs. This can be used anywhere in the repository.
 
 ### Layouts
 
