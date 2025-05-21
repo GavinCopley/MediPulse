@@ -24,8 +24,6 @@ show_reading_time: false
             <div id="profile-content" class="hidden">
                 <div class="flex items-center justify-between mb-8">
                     <div class="flex items-center space-x-8">
-                        <img id="profile-picture" src="{{site.baseurl}}/assets/images/default-profile.jpg" alt="Profile Picture" class="w-36 h-36 rounded-full object-cover border-4 border-gray-300">
-                        <div>
                             <h2 class="text-3xl font-bold" id="username">Username</h2>
                             <p class="text-gray-600">MediPulse User</p>
                             <button class="mt-4 bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-6 py-2 rounded-lg shadow-md hover:from-blue-600 hover:to-cyan-600 transition" onclick="location.href='{{site.baseurl}}/settings'">Edit Profile</button>
