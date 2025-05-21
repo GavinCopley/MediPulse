@@ -318,6 +318,7 @@ menu: nav/home.html
       let currentCategory = 'all';
       let searchQuery = '';
       let selectedVideoId = null; // Add a state variable to track the currently selected video
+      let csvData = []; // Make csvData a global variable accessible to all functions
       
       // Initialize - fetch videos immediately
       // fetchVideos();
@@ -341,7 +342,7 @@ menu: nav/home.html
       // Load videos from CSV data
       function loadVideosFromCSV() {
         // CSV data from PalomarHealth.csv
-        const csvData = [
+        csvData = [ // Remove the 'const' declaration to update the global variable
           {
             channelId: "UC6Q40pg5uRNk4rXm375-68w",
             channelTitle: "Palomar Health",
@@ -923,7 +924,507 @@ menu: nav/home.html
         nav.appendChild(nextButton);
         paginationEl.appendChild(nav);
       }
+      
+      // Add optimize button click handler
+      document.getElementById('optimize-button').addEventListener('click', function() {
+        if (selectedVideoId) {
+          // Show loading state
+          const optimizeButton = document.getElementById('optimize-button');
+          optimizeButton.disabled = true;
+          optimizeButton.innerHTML = '<span class="icon"><i class="fas fa-circle-notch fa-spin"></i></span><span>Processing...</span>';
+          
+          // Find the selected video data from the csvData
+          const selectedVideoEntry = csvData.find(video => video.videoId === selectedVideoId);
+          
+          if (selectedVideoEntry) {
+            // Extract and format the data for the API from the CSV entry
+            const publishDate = new Date(selectedVideoEntry.publishedAt);
+            
+            // Prepare data for the optimization API using the format expected by the API
+            const videoData = {
+              title: selectedVideoEntry.videoTitle,
+              description: selectedVideoEntry.videoDescription || "",
+              duration_sec: parseInt(selectedVideoEntry.durationSec || "0"),
+              tags: selectedVideoEntry.tags || "",
+              category_id: parseInt(selectedVideoEntry.videoCategoryId || "22"), // Default to "People & Blogs" if not available
+              is_hd: selectedVideoEntry.definition === 'hd' ? 1 : 0,
+              has_captions: selectedVideoEntry.caption === 'true' ? 1 : 0,
+              publish_dow: publishDate.getDay() === 0 ? 6 : publishDate.getDay() - 1,
+              publish_hour: publishDate.getHours()
+            };
+            
+            console.log("Sending data to optimization API:", videoData);
+            
+            // Make API request to the optimization service
+            fetch("https://medipulse-832734119496.us-west2.run.app/api/optimize", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(videoData)
+            })
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('API request failed');
+              }
+              return response.text();
+            })
+            .then(rawText => {
+              // Handle potential NaN values in the response
+              const processedText = rawText.replace(/\bNaN\b/g, "null");
+              return JSON.parse(processedText);
+            })
+            .then(result => {
+              console.log("API response:", result);
+              
+              // Instead of redirecting, replace the current page content with optimization results
+              renderOptimizationResults(result, selectedVideoEntry);
+            })
+            .catch(error => {
+              console.error("Error optimizing video:", error);
+              alert("There was an error optimizing this video. Please try again.");
+              
+              // Reset button
+              optimizeButton.disabled = false;
+              optimizeButton.innerHTML = '<span class="icon"><i class="fas fa-magic"></i></span><span>Optimize Selected Video</span>';
+            });
+          } else {
+            alert("Could not find complete metadata for this video.");
+            optimizeButton.disabled = false;
+            optimizeButton.innerHTML = '<span class="icon"><i class="fas fa-magic"></i></span><span>Optimize Selected Video</span>';
+          }
+        }
+      });
     });
   </script>
 </body>
 </html>
+
+<!-- Add this script at the end of the file, outside the HTML document -->
+<script>
+  // Function to render optimization results similar to Optimization.md
+  function renderOptimizationResults(result, videoData) {
+    // Get container element
+    const container = document.querySelector('.container');
+    
+    // Store current HTML to be able to go back
+    const originalHTML = container.innerHTML;
+    
+    // Create new HTML based on Optimization.md template
+    const newHTML = `
+      <div class="header-container">
+        <h1 class="title is-2" style="color: #4f46e5;">
+          <i class="fas fa-chart-line mr-2"></i> Hospital Video Optimiser
+        </h1>
+        <p class="subtitle is-5">Enhance your hospital's video content with AI-powered insights</p>
+      </div>
+      
+      <!-- Instructions Header -->
+      <div class="box mb-6">
+        <h3 class="has-text-centered is-size-5 has-text-weight-semibold mb-3">How It Works</h3>
+        
+        <div class="is-flex is-justify-content-space-around is-align-items-center my-4">
+          <div class="is-flex is-flex-direction-column is-align-items-center is-relative" style="flex: 1">
+            <div class="is-flex is-align-items-center is-justify-content-center has-background-primary has-text-white" 
+                 style="width: 40px; height: 40px; border-radius: 50%; margin-bottom: 1rem;">1</div>
+            <div class="has-text-weight-semibold has-text-centered">Describe Video</div>
+          </div>
+          <div style="width: 33%; height: 2px; background-color: #eaeaea;"></div>
+          <div class="is-flex is-flex-direction-column is-align-items-center is-relative" style="flex: 1">
+            <div class="is-flex is-align-items-center is-justify-content-center has-background-primary has-text-white" 
+                 style="width: 40px; height: 40px; border-radius: 50%; margin-bottom: 1rem;">2</div>
+            <div class="has-text-weight-semibold has-text-centered">See Results</div>
+          </div>
+        </div>
+        
+        <p class="has-text-centered has-text-grey-light mt-3">
+          View AI-powered suggestions and compare with similar high-performing videos
+        </p>
+      </div>
+
+      <!-- Engagement Score Card -->
+      <div class="box mb-6">
+        <h3 class="is-size-5 has-text-weight-semibold mb-4">
+          <i class="fas fa-gauge-high mr-2 has-text-primary"></i> 
+          Predicted Engagement
+        </h3>
+        <div class="columns is-vcentered">
+          <div class="column is-one-third">
+            <canvas id="engagementChart"></canvas>
+          </div>
+          <div class="column is-two-thirds">
+            <progress id="engagementProgress" class="progress is-primary" value="0" max="100"></progress>
+            <p class="has-text-centered">
+              Engagement Score: <strong id="engagementScore" class="is-size-3 has-text-primary">${result.predicted_engagement ? result.predicted_engagement.toFixed(2) : 'N/A'}</strong> / 100
+            </p>
+            <p class="has-text-centered is-size-7 has-text-grey">
+              Based on machine learning analysis of similar content
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sample Outlines Tabs -->
+      <div class="box mb-6 p-5">
+        <h3 class="is-size-5 has-text-weight-semibold mb-4">
+          <i class="fas fa-clipboard-list mr-2 has-text-primary"></i> 
+          AI-Generated Outlines
+        </h3>
+        <div class="tabs is-centered">
+          <ul id="outlineTabs">
+            <li class="is-active" data-index="0"><a>Outline 1</a></li>
+            <li data-index="1"><a>Outline 2</a></li>
+            <li data-index="2"><a>Outline 3</a></li>
+          </ul>
+        </div>
+        <div id="outlinesContainer" class="px-4 py-4">
+          <div class="is-active" data-index="0">
+            <ul id="outlineList0" class="pl-5 ml-3"></ul>
+          </div>
+          <div class="is-hidden" data-index="1">
+            <ul id="outlineList1" class="pl-5 ml-3"></ul>
+          </div>
+          <div class="is-hidden" data-index="2">
+            <ul id="outlineList2" class="pl-5 ml-3"></ul>
+          </div>
+        </div>
+        <div class="has-text-centered mt-5">
+          <button id="reEvalBtn" class="button is-light is-info">
+            <span class="icon">
+              <i class="fas fa-sync-alt"></i>
+            </span>
+            <span>Re-evaluate with these changes</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Improvement Tips Dropdown -->
+      <div class="box mb-6">
+        <h3 class="is-size-5 has-text-weight-semibold mb-4">
+          <i class="fas fa-lightbulb mr-2 has-text-warning"></i> 
+          Improvement Tips <span class="is-size-7 has-text-grey ml-2">(click to expand)</span>
+        </h3>
+        <details id="allTipsDropdown">
+          <summary class="has-text-warning has-text-weight-semibold has-background-warning-light p-3 is-clickable" 
+                   style="border-radius: 6px; display: inline-block;">
+            <span class="is-flex is-align-items-center">
+              <i class="fas fa-chevron-down mr-2 is-size-7"></i>
+              Show All Tips
+            </span>
+          </summary>
+          <ul id="allTipsList" class="mt-4 space-y-3 pl-0" style="list-style: none;"></ul>
+        </details>
+      </div>
+
+      <!-- Similar Videos Filter + Cards -->
+      <div class="box mb-6">
+        <h3 class="is-size-5 has-text-weight-semibold mb-4">
+          <i class="fas fa-film mr-2 has-text-primary"></i> 
+          Similar High-Performing Videos
+        </h3>
+        <div class="mb-5">
+          <div class="control has-icons-left has-icons-right">
+            <input
+              type="text"
+              id="videoFilter"
+              class="input"
+              placeholder="Filter by title or tag..."
+            />
+            <span class="icon is-small is-left">
+              <i class="fas fa-search"></i>
+            </span>
+            <span class="icon is-small is-right video-filter-clear" style="pointer-events: all; cursor: pointer;">
+              <i class="fas fa-times-circle"></i>
+            </span>
+          </div>
+        </div>
+        <div class="columns is-multiline" id="videoCards"></div>
+      </div>
+      
+      <!-- Add back button -->
+      <div class="has-text-centered mt-6 mb-6">
+        <button id="goBackBtn" class="button is-light">
+          <span class="icon">
+            <i class="fas fa-arrow-left"></i>
+          </span>
+          <span>Back to Video Selection</span>
+        </button>
+      </div>
+    `;
+    
+    // Replace container content
+    container.innerHTML = newHTML;
+    
+    // Now add all the JavaScript for the optimization results functionality
+    
+    // Initialize chart
+    // Need to load Chart.js first if it's not already loaded
+    if (typeof Chart === 'undefined') {
+      const script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+      script.onload = () => initializeOptimizationPage(result, videoData, originalHTML);
+      document.head.appendChild(script);
+    } else {
+      initializeOptimizationPage(result, videoData, originalHTML);
+    }
+  }
+
+  function initializeOptimizationPage(result, videoData, originalHTML) {
+    // Initialize engagement chart
+    const engagementChart = new Chart(document.getElementById("engagementChart"), {
+      type: "doughnut",
+      data: {
+        datasets: [{
+          data: [0, 100],
+          backgroundColor: ["#4f46e5","#e5e7eb"]
+        }]
+      },
+      options: {
+        circumference: Math.PI,
+        rotation: -Math.PI,
+        cutout: "75%",
+        plugins: { legend: { display: false } }
+      }
+    });
+    
+    // Helper function
+    function clamp(x){ return Math.max(0, Math.min(x,100)); }
+    
+    // Animate engagement score
+    const pred = clamp(result.predicted_engagement || 0);
+    engagementChart.data.datasets[0].data = [pred, 100-pred];
+    engagementChart.update({duration: 800});
+    document.getElementById("engagementProgress").value = pred;
+    
+    // Handle outline tabs
+    const outlineTabs = document.getElementById("outlineTabs");
+    if (outlineTabs) {
+      outlineTabs.addEventListener('click', (e) => {
+        if (!e.target.closest("li")) return;
+        
+        // Remove active class from all tabs
+        outlineTabs.querySelectorAll("li").forEach(li => {
+          li.classList.remove("is-active");
+        });
+        
+        // Add active class to clicked tab
+        const selected = e.target.closest("li");
+        selected.classList.add("is-active");
+        
+        // Show/hide corresponding content
+        const idx = selected.dataset.index;
+        document.querySelectorAll("#outlinesContainer > div").forEach(div => {
+          if (div.dataset.index === idx) {
+            div.classList.remove('is-hidden');
+            div.classList.add('is-active');
+          } else {
+            div.classList.remove('is-active');
+            div.classList.add('is-hidden');
+          }
+        });
+      });
+    }
+    
+    // Process tips
+    const tipsArray = result.gemini_tips && result.gemini_tips.tips
+      ? result.gemini_tips.tips.split("\n").filter(l => l.trim())
+      : [];
+      
+    // Set up outlines from tips
+    for (let i = 0; i < 3; i++) {
+      const outlineUl = document.getElementById("outlineList" + i);
+      if (outlineUl) {
+        outlineUl.innerHTML = "";
+        if (tipsArray[i]) {
+          const parts = tipsArray[i].split(/[:\-–]/).slice(1).join("");
+          const li = document.createElement("li");
+          li.contentEditable = "true";
+          li.className = "py-2 border-b";
+          li.style.borderColor = "#eaeaea";
+          li.textContent = parts || tipsArray[i];
+          outlineUl.appendChild(li);
+        }
+      }
+    }
+    
+    // All tips list
+    const tipsList = document.getElementById("allTipsList");
+    if (tipsList) {
+      tipsList.innerHTML = "";
+      if (result.gemini_tips && result.gemini_tips.tips) {
+        tipsArray.forEach((tip, i) => {
+          const li = document.createElement("li");
+          li.className = "mb-3";
+          
+          // Process tip text to enhance typography
+          const enhancedTip = tip.replace(/\*(.*?)\*/g, '<strong style="color: #4f46e5; font-weight: 600;">$1</strong>');
+          
+          li.innerHTML = `
+            <div class="box p-4" style="border-left: 4px solid #48c774;">
+              <div class="columns is-vcentered">
+                <div class="column">
+                  <p>${enhancedTip}</p>
+                </div>
+                <div class="column is-narrow">
+                  <button class="button is-small is-success">
+                    <i class="fas fa-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+          
+          // Add "+" button functionality
+          li.querySelector("button").addEventListener('click', () => {
+            const active = outlineTabs.querySelector("li.is-active").dataset.index;
+            const outlineLi = document.createElement("li");
+            outlineLi.contentEditable = "true";
+            outlineLi.className = "py-2 border-b";
+            outlineLi.style.borderColor = "#eaeaea";
+            outlineLi.textContent = tip.replace(/\*(.*?)\*/g, '$1'); // Remove asterisks in outline
+            document.getElementById("outlineList" + active).appendChild(outlineLi);
+          });
+          
+          tipsList.appendChild(li);
+        });
+      } else {
+        tipsList.innerHTML = `
+          <div class="notification is-danger is-light">
+            ${result.gemini_tips && result.gemini_tips.error ? result.gemini_tips.error : "Failed to generate tips"}
+          </div>
+        `;
+      }
+    }
+    
+    // Video cards
+    const cards = document.getElementById("videoCards");
+    if (cards) {
+      cards.innerHTML = "";
+      (result.reference_videos || []).forEach(v => {
+        const videoCard = document.createElement("div");
+        videoCard.className = "column is-4";
+        
+        videoCard.innerHTML = `
+          <div class="card" style="height: 100%; cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+            <div class="card-image" style="position: relative;">
+              <figure class="image is-16by9">
+                <img src="https://img.youtube.com/vi/${v["video id"] || ""}/hqdefault.jpg" alt="Thumbnail">
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+                            width: 50px; height: 50px; background-color: rgba(255,0,0,0.8); 
+                            border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-play has-text-white"></i>
+                </div>
+              </figure>
+            </div>
+            <div class="card-content">
+              <p class="title is-6">${v["video title"]}</p>
+              <div class="is-flex is-size-7 has-text-grey mb-2">
+                <span class="mr-3"><i class="fas fa-eye mr-1"></i> ${v["view count"]}</span>
+                <span class="mr-3"><i class="fas fa-thumbs-up mr-1"></i> ${v["like count"]}</span>
+                <span><i class="fas fa-comment mr-1"></i> ${v["comment count"]}</span>
+              </div>
+              <p class="is-size-7 has-text-grey-dark"><strong>Length:</strong> ${v["length_sec"]}s</p>
+              <div class="tags mt-3">
+                ${(v["tags"] || "").split('|').slice(0, 3).map(tag => 
+                  `<span class="tag is-info is-light">${tag}</span>`
+                ).join('')}
+                ${v["tags"] && v["tags"].split('|').length > 3 ? 
+                  `<span class="tag is-light">+${v["tags"].split('|').length - 3} more</span>` : ''}
+              </div>
+            </div>
+          </div>
+        `;
+        
+        cards.appendChild(videoCard);
+        
+        // Make card clickable to YouTube
+        if (v["video id"]) {
+          videoCard.addEventListener('click', () => {
+            window.open(`https://www.youtube.com/watch?v=${v["video id"]}`, '_blank');
+          });
+        }
+      });
+    }
+    
+    // Filter functionality
+    const videoFilter = document.getElementById("videoFilter");
+    if (videoFilter && cards) {
+      videoFilter.addEventListener('input', (e) => {
+        const q = e.target.value.toLowerCase();
+        cards.querySelectorAll('.column').forEach(card => {
+          card.style.display = card.textContent.toLowerCase().includes(q) ? "" : "none";
+        });
+      });
+    }
+    
+    // Clear filter button
+    const clearFilter = document.querySelector('.video-filter-clear');
+    if (clearFilter) {
+      clearFilter.addEventListener('click', () => {
+        videoFilter.value = '';
+        videoFilter.dispatchEvent(new Event('input'));
+      });
+    }
+    
+    // Re-evaluate button
+    const reEvalBtn = document.getElementById("reEvalBtn");
+    if (reEvalBtn) {
+      reEvalBtn.addEventListener('click', () => {
+        // Show loading animation
+        reEvalBtn.classList.add('is-loading');
+        
+        // Prepare updated data from outlines
+        const updatedData = {
+          title: videoData.videoTitle,
+          description: videoData.videoDescription || "",
+          duration_sec: parseInt(videoData.durationSec || "0"),
+          tags: videoData.tags || "",
+          category_id: parseInt(videoData.videoCategoryId || "22"),
+          is_hd: videoData.definition === 'hd' ? 1 : 0,
+          has_captions: videoData.caption === 'true' ? 1 : 0,
+          publish_dow: new Date(videoData.publishedAt).getDay() === 0 ? 6 : new Date(videoData.publishedAt).getDay() - 1,
+          publish_hour: new Date(videoData.publishedAt).getHours()
+        };
+        
+        // Re-run optimization
+        fetch("https://medipulse-832734119496.us-west2.run.app/api/optimize", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updatedData)
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('API request failed');
+          }
+          return response.text();
+        })
+        .then(rawText => {
+          // Handle potential NaN values in the response
+          const processedText = rawText.replace(/\bNaN\b/g, "null");
+          return JSON.parse(processedText);
+        })
+        .then(newResult => {
+          reEvalBtn.classList.remove('is-loading');
+          
+          // Update engagement score
+          const imp = clamp(newResult.improved_engagement || newResult.predicted_engagement || 0);
+          engagementChart.data.datasets[0].data = [imp, 100-imp];
+          engagementChart.update({duration: 800});
+          document.getElementById("engagementScore").textContent = (newResult.improved_engagement || newResult.predicted_engagement).toFixed(2);
+          document.getElementById("engagementProgress").value = imp;
+        })
+        .catch(error => {
+          console.error("Re-evaluation failed:", error);
+          reEvalBtn.classList.remove('is-loading');
+          alert("Sorry, there was an error processing your request.");
+        });
+      });
+    }
+    
+    // Back button functionality
+    const goBackBtn = document.getElementById("goBackBtn");
+    if (goBackBtn) {
+      goBackBtn.addEventListener('click', () => {
+        container.innerHTML = originalHTML;
+      });
+    }
+  }
+</script>
