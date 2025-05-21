@@ -329,6 +329,12 @@ menu: nav/home.html
     </div>
 </div>
 
+<style>
+.hidden {
+    display: none;
+}
+</style>
+
 <script type="module">
     import { pythonURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js';
     import { getUserCars } from '{{site.baseurl}}/assets/js/api/userCar.js';
@@ -376,16 +382,16 @@ menu: nav/home.html
             const userResponse = await fetch(`${pythonURI}/api/user`, fetchOptions);
             const userData = await userResponse.json();
             
-        document.getElementById('welcome-message').textContent = `Welcome back, ${userData.name}!`;
-        const profileNameEl = document.getElementById('profile-name');
-        if (profileNameEl) {
-            profileNameEl.textContent = userData.name;
+        if (userResponse.ok && userData && userData.name) {
+            document.getElementById('welcome-message').textContent = `Welcome back, ${userData.name}!`;
+        } else {
+            console.error('Failed to fetch user data or user name is missing.');
         }
-.hidden {
-    display: none;
-}
-
 .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 0.8s ease-out, transform 0.8s ease-out;
