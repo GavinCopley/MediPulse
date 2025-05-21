@@ -127,7 +127,7 @@ menu: nav/home.html
     .play-button {
     width: 60px;
     height: 60px;
-    background: rgba(255, 0, 0, 0.8);
+    background: rgba(79, 70, 229, 0.8); /* Changed from red to indigo-600 (#4f46e5) */
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -680,7 +680,11 @@ menu: nav/home.html
         videos = csvData.map(item => {
           // Extract categories from the topicCategories field
           const categories = item.topicCategories ? 
-            item.topicCategories.split(',').map(cat => cat.trim().replace('_', ' ')) : 
+            item.topicCategories.split(',').map(cat => {
+              // Replace Lifestyle_(sociology) with just Lifestyle
+              const cleanCat = cat.trim();
+              return cleanCat === "Lifestyle_(sociology)" ? "Lifestyle" : cleanCat.replace('_', '');
+            }) : 
             ['General'];
           
           return {
@@ -723,7 +727,12 @@ menu: nav/home.html
         
         videos.forEach(video => {
           if (video.categories) {
-            video.categories.forEach(category => allCategories.add(category));
+            video.categories.forEach(category => {
+              // Don't add "Health" category since all videos have it
+              if (category !== 'Health') {
+                allCategories.add(category);
+              }
+            });
           }
         });
         
@@ -1365,7 +1374,7 @@ menu: nav/home.html
               <figure class="image is-16by9">
                 <img src="https://img.youtube.com/vi/${v["video id"] || ""}/hqdefault.jpg" alt="Thumbnail">
                 <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-                            width: 50px; height: 50px; background-color: rgba(255,0,0,0.8); 
+                            width: 50px; height: 50px; background-color: rgba(79, 70, 229, 0.8); 
                             border-radius: 50%; display: flex; align-items: center; justify-content: center;">
                   <i class="fas fa-play has-text-white"></i>
                 </div>
