@@ -151,6 +151,78 @@ input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.15)}
 <!--────────── CHART MODAL / LEGEND / LANDMARK & PICK MODALS (unchanged) ──────────-->
 <!-- … identical to original markup … -->
 
+<!-- Add these modal elements right before your JavaScript section -->
+
+<!--────────── CHART MODAL / LEGEND / LANDMARK & PICK MODALS ──────────-->
+<!-- Chart Modal -->
+<div id="chart-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 p-4">
+  <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-md w-full p-6">
+    <div class="flex justify-between items-center mb-4">
+      <h3 id="chart-title" class="text-xl font-bold">Hospital Score Details</h3>
+      <button id="close-chart" class="text-gray-500 hover:text-gray-700">✕</button>
+    </div>
+    <div class="flex gap-8">
+      <div class="w-40 h-40 relative">
+        <canvas id="chart-canvas"></canvas>
+      </div>
+      <div id="chart-stats" class="flex-1"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Landmark Modal -->
+<div id="landmark-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 p-4">
+  <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-2xl w-full p-6">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="text-xl font-bold">Choose a San Diego Landmark</h3>
+      <button id="close-landmark" class="text-gray-500 hover:text-gray-700">✕</button>
+    </div>
+    <div class="flex gap-6">
+      <div id="landmark-buttons" class="flex-1 flex flex-col gap-2"></div>
+      <div id="landmark-map" class="w-64 h-64 rounded-md"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Pick-on-Map Modal -->
+<div id="pick-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 p-4">
+  <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-2xl w-full p-6">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="text-xl font-bold">Click to Select Location</h3>
+      <button id="close-pick" class="text-gray-500 hover:text-gray-700">✕</button>
+    </div>
+    <div id="pick-map" class="w-full h-64 rounded-md"></div>
+  </div>
+</div>
+
+<!-- Legend Info Modal -->
+<div id="legend-info-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 p-4">
+  <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-md w-full p-6">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="text-xl font-bold">Score Explanation</h3>
+      <button id="close-legend-info" class="text-gray-500 hover:text-gray-700">✕</button>
+    </div>
+    <div class="space-y-4 text-sm">
+      <div class="flex items-center gap-2">
+        <span class="w-3 h-3 bg-teal-500 rounded-full"></span>
+        <strong>Distance Score:</strong> Proximity to your location
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="w-3 h-3 bg-indigo-500 rounded-full"></span>
+        <strong>Quality Score:</strong> Overall care quality metrics
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="w-3 h-3 bg-amber-500 rounded-full"></span>
+        <strong>Experience Score:</strong> Patient experience ratings
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="w-3 h-3 bg-rose-500 rounded-full"></span>
+        <strong>Safety Score:</strong> Infection rates and safety protocols
+      </div>
+    </div>
+  </div>
+</div>
+
 <!--────────── JAVASCRIPT ──────────-->
 <script>
 /*==== DATA & CONSTANTS (unchanged) ====*/
