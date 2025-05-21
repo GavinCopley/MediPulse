@@ -1139,8 +1139,8 @@ menu: nav/home.html
         <div class="columns is-multiline" id="videoCards"></div>
       </div>
       
-      <!-- Add back button -->
-      <div class="has-text-centered mt-6 mb-6">
+      <!-- Add back button with more bottom padding -->
+      <div class="has-text-centered mt-6 mb-6" style="padding-bottom: 5rem; margin-bottom: 3rem;">
         <button id="goBackBtn" class="button is-light">
           <span class="icon">
             <i class="fas fa-arrow-left"></i>
@@ -1423,7 +1423,9 @@ menu: nav/home.html
     const goBackBtn = document.getElementById("goBackBtn");
     if (goBackBtn) {
       goBackBtn.addEventListener('click', () => {
-        container.innerHTML = originalHTML;
+        // Use window.location.reload() to refresh the page
+        // This is the simplest and most reliable solution
+        window.location.reload();
       });
     }
   }
