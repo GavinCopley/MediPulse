@@ -484,15 +484,32 @@ menu: nav/home.html
                 </div>
                 <p class="help">Leave default if unsure.</p>
               </div>
-              <div class="column is-4">
-                <label class="label">Duration (seconds)</label>
-                <div class="control has-icons-left">
-                  <input class="input" name="duration_sec" type="number" min="5" required />
-                  <span class="icon is-small is-left">
-                    <i class="fas fa-clock"></i>
-                  </span>
+              <div class="column is-12">
+                <label class="label">Duration</label>
+                <div class="field has-addons">
+                  <div class="control has-icons-left" style="width: 33%;">
+                    <input class="input" id="duration_hours" name="duration_hours" type="number" min="0" value="0" />
+                    <span class="icon is-small is-left">
+                      <i class="fas fa-clock"></i>
+                    </span>
+                    <p class="help">Hours</p>
+                  </div>
+                  <div class="control has-icons-left" style="width: 33%;">
+                    <input class="input" id="duration_minutes" name="duration_minutes" type="number" min="0" max="59" value="0" />
+                    <span class="icon is-small is-left">
+                      <i class="fas fa-stopwatch"></i>
+                    </span>
+                    <p class="help">Minutes</p>
+                  </div>
+                  <div class="control has-icons-left" style="width: 33%;">
+                    <input class="input" id="duration_seconds" name="duration_seconds" type="number" min="0" max="59" value="0" />
+                    <span class="icon is-small is-left">
+                      <i class="fas fa-hourglass-half"></i>
+                    </span>
+                    <p class="help">Seconds</p>
+                  </div>
                 </div>
-                <p class="help">Length of your video in seconds</p>
+                <p class="help">Total length of your video</p>
               </div>
             </div>
 
@@ -682,7 +699,7 @@ menu: nav/home.html
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      const API_BASE_URL = "https://medipulse-832734119496.us-west2.run.app";
+      const API_BASE_URL = "http://localhost:8115";
       const form = document.getElementById("videoForm");
       const step1 = document.getElementById("step1");
       const step2 = document.getElementById("step2");
