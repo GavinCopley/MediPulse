@@ -382,44 +382,7 @@ menu: nav/home.html
             profileNameEl.textContent = userData.name;
         }
 
-        await loadUserSurvey();
-    } catch (error) {
-        console.error('Error loading dashboard:', error);
-    }
-}
-
-
-        if (!surveyResponse.ok) {
-            const errorDetails = await surveyResponse.text();
-            console.error("Survey fetch error details:", errorDetails);
-            throw new Error("Failed to fetch survey");
-        }
-
-        const { survey } = await surveyResponse.json();
-        console.log("Fetched survey data:", survey);
-
-        // Update the DOM with the user's survey data
-        document.getElementById('user-age').textContent = survey.age || 'Not specified';
-        document.getElementById('user-height').textContent = survey.height ? `${survey.height} inches` : 'Not specified';
-        document.getElementById('user-weight').textContent = survey.weight ? `${survey.weight} lbs` : 'Not specified';
-        document.getElementById('user-ethnicity').textContent = survey.ethnicity || 'Not specified';
-        document.getElementById('user-allergies').textContent = survey.allergies || 'None reported';
-        document.getElementById('user-conditions').textContent = survey.conditions || 'None reported';
-
-    } catch (error) {
-        console.error("Survey loading error:", error);
-        const errorMessage = 'Error loading data';
-        ['user-age', 'user-height', 'user-weight', 'user-ethnicity', 'user-allergies', 'user-conditions']
-            .forEach(id => document.getElementById(id).textContent = errorMessage);
-    }
-}
-
-}
-
-    // Check auth status when page loads
-    document.addEventListener('DOMContentLoaded', checkAuth);
-</script>
-
+     
 <style>
 .hidden {
     display: none;
