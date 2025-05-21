@@ -69,18 +69,6 @@ menu: nav/home.html
     if (!emailRegex.test(formData.email))
         return showMessage("Please enter a valid email address", "error");
 
-    try {
-        const submitButton = form.querySelector('button[type="submit"]');
-        submitButton.disabled = true;
-        submitButton.textContent = "Submitting...";
-
-        const response = await fetch(`${pythonURI}/api/survey`, {
-            method: "POST",
-            credentials: "include",  // ✅ KEY LINE: Send auth cookies!
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(formData)
         });
 
         if (!response.ok) {

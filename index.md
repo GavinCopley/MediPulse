@@ -388,16 +388,6 @@ menu: nav/home.html
     }
 }
 
-async function loadUserSurvey() {
-   async function loadUserSurvey() {
-    try {
-        const surveyResponse = await fetch(`${pythonURI}/api/survey/self`, {
-            method: 'GET',
-            credentials: 'include', // Send auth cookies
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
 
         if (!surveyResponse.ok) {
             const errorDetails = await surveyResponse.text();
