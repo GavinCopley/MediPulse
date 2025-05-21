@@ -484,32 +484,15 @@ menu: nav/home.html
                 </div>
                 <p class="help">Leave default if unsure.</p>
               </div>
-              <div class="column is-12">
-                <label class="label">Duration</label>
-                <div class="field has-addons">
-                  <div class="control has-icons-left" style="width: 33%;">
-                    <input class="input" id="duration_hours" name="duration_hours" type="number" min="0" value="0" />
-                    <span class="icon is-small is-left">
-                      <i class="fas fa-clock"></i>
-                    </span>
-                    <p class="help">Hours</p>
-                  </div>
-                  <div class="control has-icons-left" style="width: 33%;">
-                    <input class="input" id="duration_minutes" name="duration_minutes" type="number" min="0" max="59" value="0" />
-                    <span class="icon is-small is-left">
-                      <i class="fas fa-stopwatch"></i>
-                    </span>
-                    <p class="help">Minutes</p>
-                  </div>
-                  <div class="control has-icons-left" style="width: 33%;">
-                    <input class="input" id="duration_seconds" name="duration_seconds" type="number" min="0" max="59" value="0" />
-                    <span class="icon is-small is-left">
-                      <i class="fas fa-hourglass-half"></i>
-                    </span>
-                    <p class="help">Seconds</p>
-                  </div>
+              <div class="column is-4">
+                <label class="label">Duration (seconds)</label>
+                <div class="control has-icons-left">
+                  <input class="input" name="duration_sec" type="number" min="5" required />
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-clock"></i>
+                  </span>
                 </div>
-                <p class="help">Total length of your video</p>
+                <p class="help">Length of your video in seconds</p>
               </div>
             </div>
 
@@ -699,7 +682,7 @@ menu: nav/home.html
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      const API_BASE_URL = "http://localhost:8115";
+      const API_BASE_URL = "https://medipulse-832734119496.us-west2.run.app";
       const form = document.getElementById("videoForm");
       const step1 = document.getElementById("step1");
       const step2 = document.getElementById("step2");
@@ -1010,6 +993,20 @@ menu: nav/home.html
           });
         };
       }
+
+      form.addEventListener("submit", e => {
+        const hours = parseInt(form.elements["duration_hours"].value || 0);
+        const minutes = parseInt(form.elements["duration_minutes"].value || 0);
+        const seconds = parseInt(form.elements["duration_seconds"].value || 0);
+        
+        const totalSeconds = (hours * 3600) + (minutes * 60) + seconds;
+        
+        if (totalSeconds <= 0) {
+          e.preventDefault();
+          alert("Please enter a duration greater than 0 seconds.");
+          return false;
+        }
+      });
     });
   </script>
 </body>
