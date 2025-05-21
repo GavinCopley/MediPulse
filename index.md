@@ -381,9 +381,6 @@ menu: nav/home.html
         if (profileNameEl) {
             profileNameEl.textContent = userData.name;
         }
-
-     
-<style>
 .hidden {
     display: none;
 }
