@@ -387,11 +387,93 @@ menu: nav/home.html
         } else {
             console.error('Failed to fetch user data or user name is missing.');
         }
-.fade-in {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    } catch (error) {
+        console.error('Error loading dashboard:', error);
+    }
 }
+
+    async function loadRecentPosts() {
+        try {
+            const postsResponse = await fetch(`${pythonURI}/api/posts/recent`, fetchOptions);
+            const postsData = await postsResponse.json();
+
+            if (postsResponse.ok && Array.isArray(postsData)) {
+                const postsContainer = document.getElementById('recent-posts');
+                postsContainer.innerHTML = '';
+
+                postsData.forEach(post => {
+                    const postElement = document.createElement('div');
+                    postElement.classList.add('p-4', 'bg-indigo-50', 'rounded-lg', 'shadow', 'transition', 'hover:shadow-lg');
+                    postElement.innerHTML = `
+                        <h3 class="text-lg font-semibold text-indigo-900">${post.title}</h3>
+                        <p class="text-gray-600">${post.excerpt}</p>
+                        <div class="flex items-center justify-between mt-4">
+                            <span class="text-sm text-gray-500">${new Date(post.date).toLocaleDateString()}</span>
+                            <a href="{{site.baseurl}}/post/${post.id}" class="text-sm font-semibold text-indigo-600 hover:underline">Read more</a>
+                        </div>
+                    `;
+                    postsContainer.appendChild(postElement);
+                });
+            } else {
+                console.error('Failed to fetch recent posts or posts data is not an array.');
+            }
+        } catch (error) {
+            console.error('Error loading recent posts:', error);
+        }
+    }
+
+    async function loadActivityFeed() {
+        try {
+            const activityResponse = await fetch(`${pythonURI}/api/users/activity`, fetchOptions);
+            const activityData = await activityResponse.json();
+
+            if (activityResponse.ok && Array.isArray(activityData)) {
+                const activityFeed = document.getElementById('activity-feed');
+                activityFeed.innerHTML = '';
+
+                activityData.forEach(activity => {
+                    const activityElement = document.createElement('div');
+                    activityElement.classList.add('p-4', 'bg-indigo-50', 'rounded-lg', 'shadow', 'transition', 'hover:shadow-lg');
+                    activityElement.innerHTML = `
+                        <p class="text-gray-600">${activity.description}</p>
+                        <span class="text-sm text-gray-500">${new Date(activity.date).toLocaleString()}</span>
+                    `;
+                    activityFeed.appendChild(activityElement);
+                });
+            } else {
+                console.error('Failed to fetch activity data or activity data is not an array.');
+            }
+        } catch (error) {
+            console.error('Error loading activity feed:', error);
+        }
+    }
+
+    // Initial auth check
+    checkAuth();
+
+    // Intersection Observer for fade-in animations
+    document.addEventListener('DOMContentLoaded', () => {
+        const fadeInElements = document.querySelectorAll('.fade-in, .fade-in-delay-1, .fade-in-delay-2, .fade-in-section');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        fadeInElements.forEach(element => {
+            observer.observe(element);
+        });
+    });
+</script>
+
+<style>
+.fade-in {
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 0.8s ease-out, transform 0.8s ease-out;
@@ -491,7 +573,7 @@ menu: nav/home.html
     }
 </style>
 
- <script>
+<script>
 /* Intersection Observer for section animations */
 document.addEventListener('DOMContentLoaded', () => {
     const sections = document.querySelectorAll('.fade-in, .fade-in-delay-1, .fade-in-delay-2, .fade-in-section, .slide-in-left, .slide-in-right, .slide-in-bottom');
@@ -511,4 +593,4 @@ document.addEventListener('DOMContentLoaded', () => {
         observer.observe(section);
     });
 });
-    </script>
+</script>
