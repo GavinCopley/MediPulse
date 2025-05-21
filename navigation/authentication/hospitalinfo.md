@@ -1,781 +1,637 @@
 ---
-layout: tailwind
-title: Hospitals 
-permalink: /Hospital
+layout: base
+title: Best Hospital for You
+permalink: /hospitalforyou
 search_exclude: true
-menu: nav/home.html 
+menu: nav/home.html
 ---
 
-<div class="max-w-7xl mx-auto px-4 py-10">
-  <h1 class="text-4xl font-bold text-center text-indigo-700 mb-6">Find the Right Hospital</h1>
 
-  <!-- Search Form -->
-  <form id="search-form" class="bg-white p-6 rounded shadow-md mb-8">
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-      <input type="text" id="location" placeholder="Location" class="border p-2 rounded w-full">
-      <input type="text" id="specialty" placeholder="Specialty" class="border p-2 rounded w-full">
-      <input type="text" id="insurance" placeholder="Insurance" class="border p-2 rounded w-full">
-      <input type="text" id="treatment" placeholder="Treatment" class="border p-2 rounded w-full">
-      <!-- Add new search fields for emergency and department -->
-      <input type="text" id="department" placeholder="Department" class="border p-2 rounded w-full">
-      <select id="rating" class="border p-2 rounded w-full">
-        <option value="1">Any Rating</option>
-        <option value="2">2+ Stars</option>
-        <option value="3">3+ Stars</option>
-        <option value="4">4+ Stars</option>
-        <option value="5">5 Stars Only</option>
-      </select>
-      <div class="flex items-center">
-        <input type="checkbox" id="emergency" class="mr-2 h-4 w-4 text-indigo-600">
-        <label for="emergency" class="text-gray-700">Emergency Services</label>
-      </div>
-      <button type="submit" class="bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700 flex justify-center items-center">
-        <span id="search-text">Search</span>
-        <svg id="search-loading" class="animate-spin ml-2 h-4 w-4 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-        </svg>
-      </button>
-    </div>
-  </form>
+<!--────────── CDN IMPORTS ──────────-->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css"/>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 
-  <!-- Results Section -->
-  <div id="results-count" class="text-gray-600 mb-4 text-sm">Loading hospitals...</div>
-  <div id="hospital-results" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-    <div class="col-span-2 flex justify-center">
-      <svg class="animate-spin h-8 w-8 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-      </svg>
-    </div>
-  </div>
-  <div id="pagination" class="flex justify-center mt-8 gap-2"></div>
-  
-  <!-- Hospital Details Modal -->
-  <div id="hospital-modal" class="fixed inset-0 z-50 hidden overflow-y-auto">
-    <div class="flex items-center justify-center min-h-screen p-4">
-      <!-- Modal Background Overlay -->
-      <div id="modal-backdrop" class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
-      
-      <!-- Modal Content -->
-      <div class="relative bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto z-10">
-        <!-- Modal Header -->
-        <div class="sticky top-0 z-10 bg-white border-b px-6 py-4 flex justify-between items-center">
-          <h3 id="modal-title" class="text-lg font-medium text-gray-900">Hospital Details</h3>
-          <button id="close-modal" class="text-gray-400 hover:text-gray-500">
-            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-        
-        <!-- Modal Body -->
-        <div id="modal-content" class="p-6">
-          <div class="flex justify-center">
-            <svg class="animate-spin h-8 w-8 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
-<script>
-  const pythonURI = "https://medipulse-832734119496.us-west2.run.app";
-  
-  document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('search-form');
-    const resultsContainer = document.getElementById('hospital-results');
-    const resultsCount = document.getElementById('results-count');
-    const pagination = document.getElementById('pagination');
-    const searchText = document.getElementById('search-text');
-    const searchLoading = document.getElementById('search-loading');
-    
-    // Modal elements
-    const hospitalModal = document.getElementById('hospital-modal');
-    const modalBackdrop = document.getElementById('modal-backdrop');
-    const closeModal = document.getElementById('close-modal');
-    const modalTitle = document.getElementById('modal-title');
-    const modalContent = document.getElementById('modal-content');
-    
-    // Modal event listeners
-    closeModal.addEventListener('click', hideModal);
-    modalBackdrop.addEventListener('click', hideModal);
-    
-    // Close modal on escape key
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape' && !hospitalModal.classList.contains('hidden')) {
-        hideModal();
-      }
-    });
-    
-    function showModal() {
-      hospitalModal.classList.remove('hidden');
-      document.body.classList.add('overflow-hidden');
-    }
-    
-    function hideModal() {
-      hospitalModal.classList.add('hidden');
-      document.body.classList.remove('overflow-hidden');
-      modalTitle.textContent = 'Hospital Details';
-      modalContent.innerHTML = `
-        <div class="flex justify-center">
-          <svg class="animate-spin h-8 w-8 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-          </svg>
-        </div>
-      `;
-    }
-    
-    // Initial load of hospitals
-    fetchHospitals();
-    
-    // Form submission handler
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      fetchHospitals();
-    });
-    
-    function fetchHospitals(page = 1) {
-      // Show loading state
-      searchText.textContent = page === 1 ? "Searching..." : searchText.textContent;
-      searchLoading.classList.remove('hidden');
-      resultsContainer.innerHTML = `
-        <div class="col-span-2 flex justify-center py-12">
-          <svg class="animate-spin h-8 w-8 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-          </svg>
-        </div>
-      `;
-      resultsCount.textContent = 'Searching hospitals...';
-      
-      // Build API query parameters
-      const params = new URLSearchParams({
-        location: document.getElementById('location').value,
-        specialty: document.getElementById('specialty').value,
-        insurance: document.getElementById('insurance').value,
-        treatment: document.getElementById('treatment').value,
-        rating: document.getElementById('rating').value,
-        department: document.getElementById('department').value,
-        page: page
-      });
-      
-      // Add emergency services filter if checked
-      if (document.getElementById('emergency').checked) {
-        params.append('emergency', 'yes');
-      }
-      
-      // Make API request
-      fetch(`${pythonURI}/api/hospital-search?${params.toString()}`)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-          }
-          return response.json();
-        })
-        .then(data => {
-          // Reset loading state
-          searchText.textContent = "Search";
-          searchLoading.classList.add('hidden');
-          
-          // Update results
-          updateResults(data, page);
-        })
-        .catch(error => {
-          console.error('Error fetching hospitals:', error);
-          
-          // Reset loading state
-          searchText.textContent = "Search";
-          searchLoading.classList.add('hidden');
-          
-          // Show error message
-          resultsContainer.innerHTML = `
-            <div class="col-span-2 bg-white p-8 text-center rounded-lg shadow">
-              <svg class="mx-auto h-12 w-12 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <h3 class="mt-2 text-lg font-medium text-gray-900">Error connecting to API</h3>
-              <p class="mt-1 text-sm text-gray-500">Please ensure the Flask server is running at ${pythonURI}</p>
-              <div class="mt-4">
-                <button type="button" id="retry-btn" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                  Retry Connection
-                </button>
-              </div>
-              <p class="mt-3 text-xs text-gray-500">Error: ${error.message}</p>
-            </div>
-          `;
-          resultsCount.textContent = 'Error loading hospitals';
-          
-          // Add retry button handler
-          document.getElementById('retry-btn').addEventListener('click', () => fetchHospitals(page));
-          
-          // If API is unavailable, fall back to sample data after delay
-          setTimeout(() => {
-            if (resultsContainer.querySelector('#retry-btn')) {
-              resultsContainer.innerHTML += `
-                <div class="col-span-2 mt-4 p-4 bg-yellow-50 border border-yellow-100 rounded-lg">
-                  <p class="text-sm text-yellow-700">Loading sample data instead...</p>
-                </div>
-              `;
-              
-              // After another delay, show sample data
-              setTimeout(() => loadSampleData(), 1500);
-            }
-          }, 3000);
-        });
-    }
-    
-    function updateResults(data, currentPage) {
-      const hospitals = data.hospitals || [];
-      const totalResults = data.total_results || 0;
-      const totalPages = data.total_pages || 1;
-      
-      // Update results count
-      resultsCount.textContent = `Showing ${hospitals.length} of ${totalResults} hospital${totalResults !== 1 ? 's' : ''}`;
-      
-      // Clear previous results
-      resultsContainer.innerHTML = '';
-      
-      // If no results found
-      if (hospitals.length === 0) {
-        resultsContainer.innerHTML = `
-          <div class="col-span-2 bg-white p-8 text-center rounded-lg shadow">
-            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <h3 class="mt-2 text-lg font-medium text-gray-900">No hospitals found</h3>
-            <p class="mt-1 text-sm text-gray-500">Try adjusting your search criteria</p>
-            <button id="reset-search" class="mt-4 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-              Clear all filters
-            </button>
-          </div>
-        `;
-        
-        document.getElementById('reset-search').addEventListener('click', function() {
-          // Reset all form fields
-          form.reset();
-          // Fetch all hospitals
-          fetchHospitals();
-        });
-        
-        pagination.innerHTML = '';
-        return;
-      }
-      
-      // Display hospitals
-      hospitals.forEach(hospital => {
-        // Generate specialties HTML
-        const specialties = hospital.specialties ? hospital.specialties.split(',').map(s => s.trim()).filter(s => s.length > 0) : [];
-        const specialtiesHTML = specialties.map(specialty => 
-          `<span class="px-2 py-1 text-xs bg-indigo-100 text-indigo-800 rounded">${specialty}</span>`
-        ).join('');
-        
-        // Generate insurance HTML if available
-        const insurances = hospital.insurance ? hospital.insurance.split(',').map(i => i.trim()).filter(i => i.length > 0) : [];
-        const insurancesHTML = insurances.length > 0 ? 
-          `<div class="mt-2">
-            <span class="text-xs text-gray-500">Insurance:</span>
-            <span class="ml-1 text-xs text-gray-700">${insurances.slice(0, 2).join(', ')}${insurances.length > 2 ? ', ...' : ''}</span>
-          </div>` : '';
-        
-        // Check for emergency services
-        const hasEmergency = hospital.emergency_services && hospital.emergency_services.toLowerCase() === 'yes';
-        const emergencyBadge = hasEmergency ? 
-          `<span class="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-bl">24/7 Emergency</span>` : '';
-        
-        // Create hospital card
-        const hospitalCard = `
-          <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition duration-300 relative">
-            ${emergencyBadge}
-            <div class="md:flex">
-              <div class="md:flex-shrink-0">
-                <img class="h-48 w-full object-cover md:w-48" src="${hospital.image || `${pythonURI}/api/hospital-search/image/${encodeURIComponent(hospital.name)}`}" alt="${hospital.name}" onerror="this.src='https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
-              </div>
-              <div class="p-6">
-                <div class="flex justify-between items-start">
-                  <div>
-                    <h3 class="text-xl font-semibold text-gray-900">${hospital.name}</h3>
-                    <p class="text-sm text-gray-500">${hospital.location}${hospital.distance ? ` • ${hospital.distance} miles away` : ''}</p>
-                  </div>
-                  <div class="flex items-center">
-                    <span class="text-lg font-bold text-indigo-600">${hospital.rating}</span>
-                    <svg class="w-5 h-5 text-yellow-400 ml-1" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                    </svg>
-                  </div>
-                </div>
-                <div class="mt-4">
-                  <div class="flex flex-wrap gap-2">
-                    ${specialtiesHTML}
-                  </div>
-                  <p class="mt-3 text-sm text-gray-600">${hospital.description || 'No description available.'}</p>
-                  ${insurancesHTML}
-                  <div class="mt-4 flex justify-between items-center">
-                    <div class="text-xs ${hospital.accepting_new_patients ? 'text-green-600' : 'text-orange-600'} font-medium">
-                      <svg class="inline-block w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${hospital.accepting_new_patients ? 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z' : 'M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z'}"></path>
-                      </svg>
-                      ${hospital.accepting_new_patients ? 'Accepting new patients' : 'Not accepting new patients'}
-                    </div>
-                    <button data-hospital-name="${hospital.name}" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium hospital-details">View details →</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        `;
-        
-        resultsContainer.innerHTML += hospitalCard;
-      });
-      
-      // Add event listeners to hospital detail links
-      document.querySelectorAll('.hospital-details').forEach(button => {
-        button.addEventListener('click', function() {
-          const hospitalName = this.getAttribute('data-hospital-name');
-          if (hospitalName) {
-            fetchHospitalDetails(hospitalName);
-          }
-        });
-      });
-      
-      // Update pagination
-      renderPagination(currentPage, totalPages);
-    }
-    
-    function fetchHospitalDetails(hospitalName) {
-      // Show modal with loading state
-      showModal();
-      modalTitle.textContent = hospitalName;
-      
-      // Make API request for hospital details
-      fetch(`${pythonURI}/api/hospital-search/${encodeURIComponent(hospitalName)}`)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-          }
-          return response.json();
-        })
-        .then(data => {
-          if (data.status === 'success' && data.hospital) {
-            displayHospitalDetails(data.hospital);
-          } else {
-            throw new Error('Hospital details not found');
-          }
-        })
-        .catch(error => {
-          console.error('Error fetching hospital details:', error);
-          modalContent.innerHTML = `
-            <div class="text-center py-8">
-              <svg class="mx-auto h-12 w-12 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <h3 class="mt-2 text-lg font-medium text-gray-900">Failed to load hospital details</h3>
-              <p class="mt-1 text-sm text-gray-500">${error.message}</p>
-              <button id="modal-retry-btn" class="mt-4 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                Retry
-              </button>
-            </div>
-          `;
-          
-          document.getElementById('modal-retry-btn').addEventListener('click', () => {
-            fetchHospitalDetails(hospitalName);
-          });
-        });
-    }
-    
-    function displayHospitalDetails(hospital) {
-      // Format departments as list items if available
-      const departments = hospital.departments ? hospital.departments.split(',').map(d => d.trim()).filter(d => d.length > 0) : [];
-      const departmentsHTML = departments.length > 0 ?
-        `<div class="mb-6">
-          <h4 class="font-medium text-gray-900 mb-2">Departments</h4>
-          <ul class="grid grid-cols-1 md:grid-cols-2 gap-2">
-            ${departments.map(dept => `<li class="flex items-center">
-              <svg class="h-5 w-5 text-indigo-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              ${dept}
-            </li>`).join('')}
-          </ul>
-        </div>` : '';
-
-      // Format visiting hours
-      const visitingHours = hospital.visiting_hours || 'Not specified';
-      
-      // Format contact information
-      const phoneNumber = hospital.phone || 'Not available';
-      const email = hospital.email || 'Not available';
-      const website = hospital.website ? `<a href="${hospital.website}" target="_blank" class="text-indigo-600 hover:underline">${hospital.website}</a>` : 'Not available';
-      
-      // Format accessibility information
-      const accessibility = hospital.parking_accessibility || 'Information not available';
-      
-      // Format reviews if available
-      const reviews = hospital.patient_review ? hospital.patient_review.split('|').map(r => r.trim()).filter(r => r.length > 0) : [];
-      const reviewsHTML = reviews.length > 0 ?
-        `<div class="mb-6 border-t border-gray-200 pt-6">
-          <h4 class="font-medium text-gray-900 mb-4">Patient Reviews</h4>
-          ${reviews.map(review => {
-            // Parse review - assume format "Name: Comment" or just "Comment"
-            const parts = review.includes(':') ? review.split(':', 2) : ['Anonymous', review];
-            const name = parts[0].trim();
-            const comment = parts[1].trim();
-            
-            return `<div class="mb-4 bg-gray-50 p-4 rounded">
-              <p class="text-sm italic text-gray-600">"${comment}"</p>
-              <p class="text-xs text-gray-500 mt-2">— ${name}</p>
-            </div>`;
-          }).join('')}
-        </div>` : '';
-      
-      // Build the complete modal content
-      modalContent.innerHTML = `
-        <div class="flex flex-col md:flex-row">
-          <div class="md:w-1/2 pr-0 md:pr-6">
-            <img src="${hospital.image || `${pythonURI}/api/hospital-search/image/${encodeURIComponent(hospital.name)}`}" 
-                 alt="${hospital.name}" 
-                 class="rounded-lg w-full h-64 object-cover mb-6"
-                 onerror="this.src='https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
-            
-            <div class="mb-6">
-              <h4 class="font-medium text-gray-900 mb-2">About</h4>
-              <p class="text-gray-600">${hospital.description || 'No description available.'}</p>
-            </div>
-            
-            ${departmentsHTML}
-            
-            <div class="mb-6">
-              <h4 class="font-medium text-gray-900 mb-2">Insurance Accepted</h4>
-              <p class="text-gray-600">${hospital.insurance || 'Information not available'}</p>
-            </div>
-          </div>
-          
-          <div class="md:w-1/2 border-t md:border-t-0 md:border-l border-gray-200 pl-0 md:pl-6 pt-6 md:pt-0">
-            <div class="flex items-center mb-4">
-              <div class="bg-indigo-100 rounded-full p-2 mr-3">
-                <svg class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-              </div>
-              <div>
-                <p class="text-sm font-medium text-gray-900">Location</p>
-                <p class="text-sm text-gray-600">${hospital.location}</p>
-              </div>
-            </div>
-            
-            <div class="flex items-center mb-4">
-              <div class="bg-indigo-100 rounded-full p-2 mr-3">
-                <svg class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <div>
-                <p class="text-sm font-medium text-gray-900">Visiting Hours</p>
-                <p class="text-sm text-gray-600">${visitingHours}</p>
-              </div>
-            </div>
-            
-            <div class="flex items-center mb-4">
-              <div class="bg-indigo-100 rounded-full p-2 mr-3">
-                <svg class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                        d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                </svg>
-              </div>
-              <div>
-                <p class="text-sm font-medium text-gray-900">Phone</p>
-                <p class="text-sm text-gray-600">${phoneNumber}</p>
-              </div>
-            </div>
-            
-            <div class="flex items-center mb-4">
-              <div class="bg-indigo-100 rounded-full p-2 mr-3">
-                <svg class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-              </div>
-              <div>
-                <p class="text-sm font-medium text-gray-900">Email</p>
-                <p class="text-sm text-gray-600">${email}</p>
-              </div>
-            </div>
-            
-            <div class="flex items-center mb-4">
-              <div class="bg-indigo-100 rounded-full p-2 mr-3">
-                <svg class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                        d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
-                </svg>
-              </div>
-              <div>
-                <p class="text-sm font-medium text-gray-900">Website</p>
-                <p class="text-sm text-gray-600">${website}</p>
-              </div>
-            </div>
-            
-            <div class="flex items-center mb-6">
-              <div class="bg-indigo-100 rounded-full p-2 mr-3">
-                <svg class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                        d="M13 16h-1v-4h-1m-1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <div>
-                <p class="text-sm font-medium text-gray-900">Parking & Accessibility</p>
-                <p class="text-sm text-gray-600">${accessibility}</p>
-              </div>
-            </div>
-            
-            <div class="mb-6">
-              <h4 class="font-medium text-gray-900 mb-2">Emergency Services</h4>
-              <p class="text-gray-600 flex items-center">
-                ${hospital.emergency_services === 'Yes' ? 
-                  `<svg class="h-4 w-4 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                   </svg> Available 24/7` : 
-                  `<svg class="h-4 w-4 text-red-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                   </svg> Not available`
-                }
-              </p>
-            </div>
-            
-            <div class="flex items-center justify-between border-t border-gray-200 pt-4">
-              <div>
-                <div class="flex items-center">
-                  <span class="text-lg font-bold text-indigo-600">${hospital.rating}</span>
-                  <svg class="w-5 h-5 text-yellow-400 ml-1" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                  </svg>
-                  <span class="ml-1 text-sm text-gray-500">Overall Rating</span>
-                </div>
-              </div>
-              <div class="text-sm ${hospital.accepting_new_patients ? 'text-green-600' : 'text-orange-600'} font-medium">
-                ${hospital.accepting_new_patients ? 'Accepting new patients' : 'Not accepting new patients'}
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        ${reviewsHTML}
-        
-        <div class="border-t border-gray-200 pt-6">
-          <div class="flex justify-center">
-            <a href="tel:${hospital.phone}" class="mx-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded font-medium">
-              Call Hospital
-            </a>
-            <a href="https://maps.google.com/?q=${encodeURIComponent(hospital.name + ' ' + hospital.location)}" target="_blank" 
-               class="mx-2 bg-white border border-indigo-600 text-indigo-600 hover:bg-indigo-50 px-4 py-2 rounded font-medium">
-              Get Directions
-            </a>
-          </div>
-        </div>
-      `;
-    }
-    
-    function renderPagination(currentPage, totalPages) {
-      pagination.innerHTML = '';
-      
-      if (totalPages <= 1) {
-        pagination.style.display = 'none';
-        return;
-      }
-      
-      pagination.style.display = 'flex';
-      
-      // Previous page button
-      if (currentPage > 1) {
-        const prevButton = document.createElement('a');
-        prevButton.href = '#';
-        prevButton.className = 'px-3 py-1 border border-gray-300 rounded-md bg-white text-gray-700 hover:bg-gray-50';
-        prevButton.innerHTML = 'Previous';
-        prevButton.addEventListener('click', function(e) {
-          e.preventDefault();
-          fetchHospitals(currentPage - 1);
-        });
-        pagination.appendChild(prevButton);
-      }
-      
-      // Page numbers
-      const maxVisiblePages = 5;
-      let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
-      let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-      
-      if (endPage - startPage + 1 < maxVisiblePages) {
-        startPage = Math.max(1, endPage - maxVisiblePages + 1);
-      }
-      
-      for (let i = startPage; i <= endPage; i++) {
-        const pageLink = document.createElement('a');
-        pageLink.href = '#';
-        pageLink.textContent = i;
-        pageLink.className = i === currentPage
-          ? 'px-3 py-1 bg-indigo-600 text-white rounded-md'
-          : 'px-3 py-1 border border-gray-300 rounded-md bg-white text-gray-700 hover:bg-gray-50';
-        
-        pageLink.addEventListener('click', function(e) {
-          e.preventDefault();
-          if (i !== currentPage) {
-            fetchHospitals(i);
-          }
-        });
-        
-        pagination.appendChild(pageLink);
-      }
-      
-      // Next page button
-      if (currentPage < totalPages) {
-        const nextButton = document.createElement('a');
-        nextButton.href = '#';
-        nextButton.className = 'px-3 py-1 border border-gray-300 rounded-md bg-white text-gray-700 hover:bg-gray-50';
-        nextButton.innerHTML = 'Next';
-        nextButton.addEventListener('click', function(e) {
-          e.preventDefault();
-          fetchHospitals(currentPage + 1);
-        });
-        pagination.appendChild(nextButton);
-      }
-    }
-    
-    // Fallback data for demonstration if API is not available
-    function loadSampleData() {
-      const sampleData = {
-        page: 1,
-        total_pages: 3,
-        total_results: 8,
-        hospitals: [
-          {
-            id: "1",
-            name: "Palomar Medical Center",
-            location: "Escondido, CA",
-            distance: "2.3",
-            specialties: "Trauma Center,Cardiology,Oncology",
-            insurance: "Medicare,Blue Cross,Aetna",
-            treatments: "Surgery,Physical Therapy,Radiation",
-            rating: 4.8,
-            accepting_new_patients: true,
-            description: "A 288-bed hospital featuring the latest medical technology and nationally recognized care teams.",
-            emergency_services: "Yes",
-            departments: "Cardiology,Oncology,Neurology,Orthopedics",
-            visiting_hours: "9:00 AM - 8:00 PM Daily",
-            phone: "(760) 739-3000",
-            website: "https://www.palomarhealth.org",
-            email: "info@palomarhealth.org"
-          },
-          {
-            id: "2",
-            name: "Sharp Memorial Hospital",
-            location: "San Diego, CA",
-            distance: "5.7",
-            specialties: "Neurology,Orthopedics,Women's Health",
-            insurance: "Medicare,Cigna,UnitedHealthcare",
-            treatments: "Surgery,Rehabilitation,Diagnostics",
-            rating: 4.5,
-            accepting_new_patients: true,
-            description: "Leading the way with advanced technology and specialized care for complex medical conditions.",
-            emergency_services: "Yes",
-            departments: "Neurology,Orthopedics,Women's Health,Cardiology"
-          },
-          {
-            id: "3",
-            name: "Scripps Mercy Hospital",
-            location: "La Jolla, CA",
-            distance: "8.2",
-            specialties: "Cancer Care,Heart Care,Research",
-            insurance: "Blue Shield,Medicare,Kaiser",
-            treatments: "Chemotherapy,Heart Surgery,Clinical Trials",
-            rating: 4.7,
-            accepting_new_patients: true,
-            description: "Renowned for cancer treatment, cardiovascular care, and groundbreaking clinical research.",
-            emergency_services: "Yes"
-          },
-          {
-            id: "4",
-            name: "UC San Diego Health",
-            location: "San Diego, CA",
-            distance: "10.5",
-            specialties: "Academic Medical Center,Transplant,Pediatrics",
-            insurance: "Medicare,Medicaid,Most Major Providers",
-            treatments: "Organ Transplantation,Pediatric Services,Research",
-            rating: 4.9,
-            accepting_new_patients: true,
-            description: "Academic medical center providing cutting-edge treatments and pioneering medical research.",
-            emergency_services: "Yes"
-          }
-        ]
-      };
-      
-      // Update the UI with sample data
-      updateResults(sampleData, 1);
-      
-      // Show "Demo Mode" indicator
-      const demoNotice = document.createElement('div');
-      demoNotice.className = 'bg-yellow-50 border-yellow-100 border text-yellow-800 text-sm px-4 py-2 rounded-md mt-4 mb-2';
-      demoNotice.innerHTML = '<strong>Demo Mode:</strong> Using sample data. API connection failed.';
-      resultsContainer.parentNode.insertBefore(demoNotice, resultsContainer);
-    }
-  });
-</script>
-
-<!-- Help Section -->
-<div class="bg-white py-12">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="lg:flex lg:items-center lg:justify-between">
-      <div class="lg:w-1/2">
-        <h2 class="text-3xl font-bold text-gray-900 mb-4">Need Help Finding the Right Hospital?</h2>
-        <p class="text-lg text-gray-600 mb-6">Our healthcare advisors can help you find the perfect match for your medical needs.</p>
-        <div class="flex flex-wrap gap-4">
-          <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-md font-medium flex items-center">
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-            </svg>
-            Call an Advisor
-          </button>
-          <a href="/MediPulse/hospital-chat" class="bg-white border border-indigo-600 text-indigo-600 hover:bg-indigo-50 px-6 py-3 rounded-md font-medium flex items-center">
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-            </svg>
-            Chat Now
-          </a>
-        </div>
-      </div>
-      <div class="lg:w-1/3 mt-10 lg:mt-0">
-        <img src="https://images.unsplash.com/photo-1581056771107-24ca5f033842?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Healthcare advisor" class="rounded-lg shadow-lg">
-      </div>
-    </div>
-  </div>
-</div>
-
+<!--────────── GLOBAL STYLE PATCHES ──────────-->
 <style>
-  @keyframes spin {
-    to {
-      transform: rotate(360deg);
-    }
-  }
-  .animate-spin {
-    animation: spin 1s linear infinite;
-  }
-  
-  body.overflow-hidden {
-    overflow: hidden;
-  }
-  
-  #hospital-modal {
-    transition: opacity 0.3s ease;
-  }
-  
-  #hospital-modal.hidden {
-    display: none;
-    opacity: 0;
-  }
+:root{--track:#e5e7eb;--thumb:#4f46e5;--fill:#4f46e5}
+.dark{--track:#374151;--thumb:#6366f1;--fill:#6366f1;background:#1f2937;color:#d1d5db}
+
+
+/* slider + mini-bars (unchanged) */
+input[type=range]{-webkit-appearance:none;width:100%;height:8px;border-radius:4px;background:var(--track)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;height:22px;width:22px;border-radius:50%;background:var(--thumb);border:2px solid #fff;cursor:pointer;box-shadow:0 0 3px rgb(0 0 0/.4);margin-top:-7px;transition:.2s}
+input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.15)}
+.bar{height:8px;border-radius:4px;display:flex;overflow:hidden}.bar span{display:block;height:100%}
+.bar span[data-tip]{position:relative}
+.bar span[data-tip]::after{content:attr(data-tip);position:absolute;bottom:110%;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:10px;padding:2px 4px;border-radius:4px;background:#111;color:#fff;opacity:0;pointer-events:none;transition:.15s}
+.bar span[data-tip]:hover::after{opacity:1}
+.hash{background-image:linear-gradient(135deg,rgba(0,0,0,.17)25%,transparent25%,transparent50%,rgba(0,0,0,.17)50%,rgba(0,0,0,.17)75%,transparent75%,transparent);background-size:8px 8px}
+
+
+/* suggestions dropdown */
+#suggestions{position:absolute;top:100%;left:0;width:100%;background:#fff;border:1px solid #ccc;border-top:none;z-index:1000;max-height:14rem;overflow-y:auto}
+#suggestions div{padding:.5rem .75rem;font-size:.9rem;cursor:pointer;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}
+#suggestions div:hover{background:#f0f0f0}
 </style>
+
+
+<!--────────── HERO ──────────-->
+<div class="bg-gradient-to-r from-indigo-600 to-blue-500 py-12">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+    <div class="text-center flex-1">
+      <h1 class="text-4xl font-extrabold text-white">Find the Best Hospital for Your Needs</h1>
+      <p class="mt-3 text-xl text-indigo-100 max-w-3xl mx-auto">
+        AI-driven scoring for distance • quality • experience • safety
+      </p>
+    </div>
+    <!-- dark-mode toggle -->
+    <button id="dark-toggle" class="ml-4 flex items-center justify-center h-10 w-10 rounded-full bg-white/20 hover:bg-white/30 text-white backdrop-blur">
+      <svg id="sun" class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M12 8a4 4 0 100 8 4 4 0 000-8z"/>
+      </svg>
+      <svg id="moon" class="h-5 w-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+
+<!--────────── MAIN WRAPPER ──────────-->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative">
+
+
+  <!-- progress bar -->
+  <div class="flex mb-6 items-center justify-center gap-6 text-sm font-semibold">
+    <span id="p-step1" class="text-indigo-600">Step 1 • Location</span><span>➔</span>
+    <span id="p-step2" class="text-gray-400">Step 2 • Preferences</span><span>➔</span>
+    <span id="p-step3" class="text-gray-400">Step 3 • Results</span>
+  </div>
+
+
+  <!-- STEP 1 -------------------------------------------------->
+  <div id="step-one" class="bg-white dark:bg-gray-800 shadow-lg rounded-2xl p-6 mb-10">
+    <h2 class="text-2xl font-bold mb-4">Step&nbsp;1: Choose Your Location</h2>
+
+
+    <div class="relative mb-1.5">
+      <label for="address-input" class="block text-lg font-medium mb-1.5">Address (autocomplete):</label>
+      <input id="address-input" autocomplete="off" type="text" placeholder="Start typing…" class="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-md px-4 py-2 w-full">
+      <div id="suggestions" class="hidden"></div>
+    </div>
+    <p class="text-sm text-gray-500 dark:text-gray-400">Select from suggestions or click “Use My Location”.</p>
+
+
+    <div class="flex flex-wrap gap-3 mt-4 mb-3">
+      <button id="geo-btn"              class="bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-gray-800 dark:text-gray-200 px-4 py-2 rounded-md shadow">Use My Location</button>
+      <button id="choose-landmark-btn"  class="bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 rounded-md shadow">Choose a San Diego Landmark</button>
+      <button id="select-on-map-btn"    class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md shadow">Pick on Map</button>
+    </div>
+
+
+    <div id="user-map" class="w-full h-64 rounded-md mb-2 shadow-inner"></div>
+    <p id="location-status" class="font-medium">No location selected yet.</p>
+  </div>
+
+
+  <!-- STEP 2 -------------------------------------------------->
+  <div id="step-two" class="hidden bg-white dark:bg-gray-800 shadow-lg rounded-2xl p-6 mb-10">
+    <h2 class="text-2xl font-bold mb-6">Step&nbsp;2: Select Your Preferences</h2>
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <!-- left -->
+      <div class="md:col-span-2 grid gap-8">
+        <div>
+          <p class="text-lg font-medium mb-2">Medical issue (hover for details)</p>
+          <div id="issue-pills" class="flex flex-wrap gap-2"></div>
+        </div>
+        <div class="flex items-end gap-4">
+          <div>
+            <label class="font-medium block mb-1.5">Results to show</label>
+            <select id="num-results" class="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-md px-4 py-2">
+              <option>1</option><option>2</option><option selected>3</option><option>5</option><option>7</option><option>10</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <!-- right – stylish blue slider -->
+      <div class="md:col-span-2 flex flex-col">
+        <label class="block text-xl font-medium mb-4">Max travel distance</label>
+        <input type="range" id="distance-range" min="1" max="50" value="10" oninput="document.getElementById('distance-readout').textContent=this.value+' mi'">
+        <div class="flex justify-between text-xs text-gray-500 mt-1"><span>1 mi</span><span>25</span><span>50 mi</span></div>
+        <span id="distance-readout" class="font-semibold mt-2 self-center">10 mi</span>
+      </div>
+    </div>
+
+
+    <div class="mt-10 flex justify-center gap-4">
+      <button id="find-hospitals-btn" class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 px-10 rounded-md shadow-lg text-xl">Get Recommendations</button>
+      <button id="print-btn"           class="bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-gray-800 dark:text-gray-200 px-4 rounded-md shadow">Save / Print PDF</button>
+    </div>
+  </div>
+
+
+  <!-- STEP 3 -------------------------------------------------->
+  <div id="results" class="hidden">
+    <h2 class="text-2xl font-bold mb-6">Step&nbsp;3: Your Recommended Hospitals</h2>
+    <div id="hospital-list" class="grid md:grid-cols-2 gap-6 mb-6"></div>
+    <div id="map" class="hidden w-full h-96 rounded-lg shadow-inner"></div>
+  </div>
+</div>
+
+
+<!--────────── CHART MODAL, LEGEND, LANDMARK & PICK MODALS (unchanged markup) ──────────-->
+<!-- … identical to previous version … -->
+
+
+<!-- CHART MODAL -->
+<div id="chart-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+  <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-2xl relative w-80">
+    <h4 id="chart-title" class="font-bold mb-2 text-center"></h4>
+    <canvas id="chart-canvas"></canvas>
+    <div id="chart-stats" class="mt-3 text-xs text-gray-700 dark:text-gray-300"></div>
+    <button id="close-chart" class="absolute top-2 right-3 text-xl hover:text-red-600">&times;</button>
+  </div>
+</div>
+
+
+<!-- LEGEND -->
+<div class="fixed bottom-4 right-4 bg-white dark:bg-gray-800 rounded-lg shadow px-3 py-2 text-xs text-gray-700 dark:text-gray-200 flex items-center">
+  <strong>Score colours</strong> –
+  <span class="inline-block w-3 h-3 bg-teal-500 mr-1"></span>Distance
+  <span class="inline-block w-3 h-3 bg-indigo-500 mr-1"></span>Quality
+  <span class="inline-block w-3 h-3 bg-amber-500 mr-1"></span>Experience
+  <span class="inline-block w-3 h-3 bg-rose-500 mr-1"></span>Safety
+  <span class="inline-block w-3 h-3 bg-gray-400 mr-1 hash"></span>N/A
+  <button id="legend-info-btn" class="ml-2 p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full text-gray-500 dark:text-gray-400" aria-label="Show score key">ℹ️</button>
+</div>
+
+
+<!-- LEGEND INFO MODAL -->
+<div id="legend-info-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+  <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-2xl max-w-md">
+    <h4 class="font-bold mb-4 text-lg">Score Explanation</h4>
+    <ul class="list-disc list-inside text-sm space-y-2">
+      <li><strong>Distance:</strong> How far the hospital is (closer = better).</li>
+      <li><strong>Quality:</strong> Risk-adjusted rate & hospital ratings.</li>
+      <li><strong>Experience:</strong> Number of treated cases.</li>
+      <li><strong>Safety:</strong> Fewer adverse events.</li>
+    </ul>
+    <div class="mt-6 text-right"><button id="close-legend-info" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded">Close</button></div>
+  </div>
+</div>
+
+
+<!-- LANDMARK MODAL -->
+<div id="landmark-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+  <div class="bg-white dark:bg-gray-800 rounded-lg w-[90vw] h-[90vh] flex relative shadow-2xl">
+    <aside class="w-64 border-r dark:border-gray-700 p-4 overflow-y-auto">
+      <h3 class="text-lg font-bold mb-4">Landmarks</h3>
+      <div id="landmark-buttons" class="space-y-2"></div>
+      <button id="close-landmark" class="mt-4 text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900">Close</button>
+    </aside>
+    <div id="landmark-map" class="flex-1"></div>
+  </div>
+</div>
+
+
+<!-- PICK MODAL -->
+<div id="pick-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+  <div class="bg-white dark:bg-gray-800 rounded-lg w-[90vw] h-[90vh] relative shadow-2xl flex flex-col">
+    <h3 class="text-lg font-bold p-4 border-b dark:border-gray-700">Click map to set location</h3>
+    <div id="pick-map" class="flex-1"></div>
+    <button id="close-pick" class="absolute top-2 right-4 text-xl text-gray-600 dark:text-gray-300 hover:text-gray-900">&times;</button>
+  </div>
+</div>
+
+
+<!--────────── JAVASCRIPT ──────────-->
+<script>
+/*==== DATA ====*/
+const issuesData={
+  'AAA Repair Endo Unrupture':'Elective endovascular aortic aneurysm repair.',
+  'AAA Repair Open Unrupture':'Open surgical repair of an unruptured abdominal aortic aneurysm.',
+  'Acute Stroke':'Emergency treatment for any stroke type (bleed or clot).',
+  'Acute Stroke Hemorrhagic':'Bleeding stroke requiring neuro-critical care.',
+  'Acute Stroke Ischemic':'Clot-related stroke (tPA / thrombectomy).',
+  'Acute Stroke Subarachnoid':'Bleed around the brain from ruptured aneurysm.',
+  'AMI':'Acute myocardial infarction (“heart attack”).',
+  'Carotid Endarterectomy':'Surgery to clear carotid-artery plaque.',
+  'GI Hemorrhage':'Life-threatening gastrointestinal bleeding.',
+  'Heart Failure':'Inpatient care for acute heart-failure decompensation.',
+  'Hip Fracture':'Emergency repair of fractured hip.',
+  'Isolated CABG Operative Mor':'Coronary-artery bypass graft.',
+  'Pancreatic Resection':'Partial / total pancreas removal.',
+  'PCI':'Percutaneous coronary intervention (stent).',
+  'Pneumonia':'Severe pneumonia management.',
+  'Postoperative Sepsis':'Septic complication after surgery.'
+};
+const landmarks=[
+  {name:'Petco Park',lat:32.7073,lng:-117.1566},
+  {name:'San Diego Zoo',lat:32.7353,lng:-117.1490},
+  {name:'Balboa Park',lat:32.7311,lng:-117.1466},
+  {name:'SeaWorld',lat:32.7640,lng:-117.2265},
+  {name:'USS Midway',lat:32.7137,lng:-117.1750},
+  {name:'La Jolla Cove',lat:32.8504,lng:-117.2727}
+];
+
+
+/*==== STATE ====*/
+let userMap,userMarker,chosen;
+let landmarkMap,landmarkTemp,pickMap,pickMarker,hospMap,routeCtl;
+let selectedIssue='';
+const apiURL='http://127.0.0.1:8115/api/predict';
+
+
+/*==== DARK MODE ====*/
+document.getElementById('dark-toggle').onclick=()=>{
+  document.documentElement.classList.toggle('dark');
+  document.getElementById('sun').classList.toggle('hidden');
+  document.getElementById('moon').classList.toggle('hidden');
+};
+
+
+/*==== PROGRESS ====*/
+function markStep(n){
+  document.getElementById('p-step1').className=n>=1?'text-indigo-600':'text-gray-400';
+  document.getElementById('p-step2').className=n>=2?'text-indigo-600':'text-gray-400';
+  document.getElementById('p-step3').className=n>=3?'text-indigo-600':'text-gray-400';
+}
+
+
+/*==== MAP INIT ====*/
+function initUserMap(){
+  userMap=L.map('user-map',{zoomControl:false}).setView([32.7157,-117.1611],12);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19}).addTo(userMap);
+}
+
+
+/*==== SET LOCATION ====*/
+function setLoc(lat,lng,label=''){
+  chosen={lat,lng};
+  if(userMarker)userMap.removeLayer(userMarker);
+  userMarker=L.marker([lat,lng]).addTo(userMap);
+  userMap.setView([lat,lng],14);
+  if(label)userMarker.bindPopup(label).openPopup();
+  document.getElementById('location-status').textContent=Location set ➜ ${label};
+  document.getElementById('step-two').classList.remove('hidden');
+  markStep(2);
+}
+
+
+/*==== AUTOCOMPLETE ====*/
+function initAutocomplete(){
+  const input=document.getElementById('address-input');
+  const dropdown=document.getElementById('suggestions');
+  let debounce;
+  input.addEventListener('input',()=>{
+    clearTimeout(debounce);
+    const q=input.value.trim();
+    if(q.length<3){dropdown.classList.add('hidden');return;}
+    debounce=setTimeout(async()=>{
+      try{
+        const url=https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(q)}&limit=8&addressdetails=1;
+        const data=await (await fetch(url)).json();
+        dropdown.innerHTML='';
+        if(!data.length){dropdown.classList.add('hidden');return;}
+        data.forEach(item=>{
+          const div=document.createElement('div');
+          div.textContent=item.display_name;
+          div.onclick=()=>{
+            input.value=item.display_name;
+            dropdown.classList.add('hidden');
+            setLoc(+item.lat,+item.lon,item.display_name);
+          };
+          dropdown.appendChild(div);
+        });
+        dropdown.classList.remove('hidden');
+      }catch(e){console.error(e);}
+    },250);
+  });
+  document.addEventListener('click',e=>{
+    if(!input.contains(e.target)) dropdown.classList.add('hidden');
+  });
+}
+
+
+/*==== GEOLOCATION ====*/
+document.getElementById('geo-btn').onclick=()=>{
+  if(!navigator.geolocation){alert('Geolocation not supported');return;}
+  navigator.geolocation.getCurrentPosition(
+    pos=>setLoc(pos.coords.latitude,pos.coords.longitude,'Your location'),
+    ()=>alert('Unable to retrieve your location'));
+};
+
+
+/*==== ISSUE PILLS ====*/
+const pillWrap=document.getElementById('issue-pills');
+Object.entries(issuesData).forEach(([txt,desc])=>{
+  const b=document.createElement('button');
+  b.textContent=txt; b.title=desc;
+  b.className='px-4 py-1.5 text-sm border rounded-full border-gray-300 dark:border-gray-600 hover:bg-indigo-50 dark:hover:bg-gray-600 transition';
+  b.onclick=()=>{
+    selectedIssue=txt;
+    [...pillWrap.children].forEach(x=>x.className='px-4 py-1.5 text-sm border rounded-full border-gray-300 dark:border-gray-600 hover:bg-indigo-50 dark:hover:bg-gray-600 transition');
+    b.className+=' bg-indigo-600 text-white border-indigo-600';
+  };
+  pillWrap.appendChild(b);
+});
+
+
+/*==== LANDMARK MODAL ====*/
+const lmModal=document.getElementById('landmark-modal');
+document.getElementById('choose-landmark-btn').onclick=()=>{
+  lmModal.classList.replace('hidden','flex');
+  document.getElementById('user-map').classList.add('invisible');
+  if(!landmarkMap){
+    landmarkMap=L.map('landmark-map',{zoomControl:false}).setView([32.7157,-117.1611],11);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19}).addTo(landmarkMap);
+  }
+};
+document.getElementById('close-landmark').onclick=()=>{
+  lmModal.classList.replace('flex','hidden');
+  document.getElementById('user-map').classList.remove('invisible');
+};
+const lmBtns=document.getElementById('landmark-buttons');
+landmarks.forEach(l=>{
+  const btn=document.createElement('button');
+  btn.innerHTML=<span class="inline-block w-2 h-2 bg-indigo-500 rounded-full mr-3"></span>${l.name};
+  btn.className='w-full text-left px-3 py-2 border rounded bg-white dark:bg-gray-700 hover:bg-indigo-50 dark:hover:bg-gray-600 shadow-sm';
+  btn.onmouseenter=()=>{
+    if(landmarkTemp)landmarkMap.removeLayer(landmarkTemp);
+    landmarkTemp=L.marker([l.lat,l.lng]).addTo(landmarkMap);
+    landmarkMap.panTo([l.lat,l.lng]);
+  };
+  btn.onmouseleave=()=>{if(landmarkTemp)landmarkMap.removeLayer(landmarkTemp);};
+  btn.onclick=()=>{
+    setLoc(l.lat,l.lng,l.name);
+    lmModal.classList.replace('flex','hidden');
+    document.getElementById('user-map').classList.remove('invisible');
+  };
+  lmBtns.appendChild(btn);
+});
+
+
+/*==== PICK MAP ====*/
+const pickModal=document.getElementById('pick-modal');
+document.getElementById('select-on-map-btn').onclick=()=>{
+  pickModal.classList.replace('hidden','flex');
+  document.getElementById('user-map').classList.add('invisible');
+  if(!pickMap){
+    pickMap=L.map('pick-map',{zoomControl:false}).setView([32.7157,-117.1611],11);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19}).addTo(pickMap);
+    pickMap.on('click',e=>{
+      const {lat,lng}=e.latlng;
+      if(pickMarker)pickMap.removeLayer(pickMarker);
+      pickMarker=L.marker([lat,lng]).addTo(pickMap);
+      setTimeout(()=>{
+        pickModal.classList.replace('flex','hidden');
+        document.getElementById('user-map').classList.remove('invisible');
+      },300);
+      setLoc(lat,lng,'Custom drop-pin');
+    });
+  }
+};
+document.getElementById('close-pick').onclick=()=>{
+  pickModal.classList.replace('flex','hidden');
+  document.getElementById('user-map').classList.remove('invisible');
+};
+
+
+/*==== PRINT ====*/
+document.getElementById('print-btn').onclick=()=>window.print();
+
+
+/*==== MINI-BAR ====*/
+function makeBar(d,q,e,s){
+  const cell=(v,c,l)=><span data-tip="${l}: ${v==null?'N/A':v.toFixed(2)}" style="width:${v==null?5:Math.min(v/40*100,100)}%" class="${v==null?'hash':''} ${c}"></span>;
+  return <div class="bar mt-2">${cell(d,'bg-teal-500','Distance')}${cell(q,'bg-indigo-500','Quality')}${cell(e,'bg-amber-500','Experience')}${cell(s,'bg-rose-500','Safety')}</div>;
+}
+
+
+/*==== CHART MODAL ====*/
+let chart,ctx=document.getElementById('chart-canvas');
+function showChart(h){
+  if(chart)chart.destroy();
+  chart=new Chart(ctx,{type:'doughnut',
+    data:{labels:['Distance','Quality','Experience','Safety'],
+          datasets:[{data:[h.score_distance??0,h.score_quality??0,h.score_experience??0,h.score_safety??0],
+                     backgroundColor:['#14b8a6','#6366f1','#f59e0b','#f43f5e'],borderWidth:0}]},
+    options:{plugins:{legend:{display:false}},cutout:'60%'}});
+  document.getElementById('chart-title').textContent=h.hospital;
+  document.getElementById('chart-stats').innerHTML=
+    <table class="w-full"><tbody>
+      <tr><td>Distance</td><td class="text-right">${(h.score_distance??0).toFixed(2)}</td></tr>
+      <tr><td>Quality</td><td class="text-right">${(h.score_quality??0).toFixed(2)}</td></tr>
+      <tr><td>Experience</td><td class="text-right">${(h.score_experience??0).toFixed(2)}</td></tr>
+      <tr><td>Safety</td><td class="text-right">${(h.score_safety??0).toFixed(2)}</td></tr>
+    </tbody></table>;
+  document.getElementById('chart-modal').classList.replace('hidden','flex');
+}
+document.getElementById('close-chart').onclick=()=>document.getElementById('chart-modal').classList.replace('flex','hidden');
+
+
+/*==== FIND HOSPITALS (fix sort + routing) ====*/
+
+
+/*==== FIND HOSPITALS (sort rows before rendering) ====*/
+document.getElementById('find-hospitals-btn').onclick = async () => {
+  if (!chosen)      { alert('Choose a location first'); return; }
+  if (!selectedIssue){ alert('Select a medical issue'); return; }
+
+
+  const list = document.getElementById('hospital-list');
+  list.innerHTML =
+    '<div class="h-24 rounded-lg skel"></div>'.repeat(
+      +document.getElementById('num-results').value || 3
+    );
+  document.getElementById('results').classList.remove('hidden');
+  markStep(3);
+
+
+  /* fetch */
+  const payload = {
+    disease: selectedIssue,
+    lat: chosen.lat,
+    lon: chosen.lng,
+    radius: +document.getElementById('distance-range').value,
+    limit:  +document.getElementById('num-results').value
+  };
+
+
+  const mapDiv = document.getElementById('map');
+  mapDiv.classList.add('hidden');
+  if (hospMap) hospMap.remove();
+  if (routeCtl) { hospMap?.removeControl(routeCtl); routeCtl = null; }
+
+
+  try {
+    const res  = await fetch(apiURL, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify(payload)
+    });
+    const data = await res.json();
+    let rows   = data.recommended_hospitals || [];
+
+
+    if (!rows.length) {
+      list.innerHTML = '<p class="text-red-600">No hospitals returned.</p>';
+      return;
+    }
+
+
+    /* 1️⃣  Calculate a single composite score and sort DESCENDING */
+    rows = rows
+      .map(h => {
+        const avg =
+          ((h.score_distance   ?? 0) +
+           (h.score_quality    ?? 0) +
+           (h.score_experience ?? 0) +
+           (h.score_safety     ?? 0)) / 4;
+        return { ...h, avg };
+      })
+      .sort((a, b) => b.avg - a.avg);          // bigger score → higher rank
+
+
+    /* 2️⃣  Build map first */
+    mapDiv.classList.remove('hidden');
+    hospMap = L.map('map', { zoomControl: false })
+      .setView([chosen.lat, chosen.lng], 10);
+    L.tileLayer(
+      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+      { maxZoom: 19 }
+    ).addTo(hospMap);
+
+
+    const you = L.marker([chosen.lat, chosen.lng])
+      .addTo(hospMap)
+      .bindPopup('You');
+    you.openPopup();
+
+
+    const bounds = [[chosen.lat, chosen.lng]];
+
+
+    /* 3️⃣  Render cards & markers */
+    list.innerHTML = '';                       // clear skeletons
+
+
+    rows.forEach((h, idx) => {
+      bounds.push([h.latitude, h.longitude]);
+
+
+      const card = document.createElement('div');
+      card.className =
+        'p-4 border rounded-lg bg-white dark:bg-gray-700 shadow hover:shadow-md transition';
+
+
+      card.innerHTML = 
+        <h3 class="font-bold text-lg mb-1">${idx + 1}. ${h.hospital}</h3>
+        <p class="text-sm text-gray-600 dark:text-gray-300">
+          Distance ${h.distance_mi} mi • Score ${h.avg.toFixed(2)}
+        </p>
+        ${makeBar(
+          h.score_distance,
+          h.score_quality,
+          h.score_experience,
+          h.score_safety
+        )}
+        <div class="flex gap-2 items-center text-xs mt-2">
+          ${h.phone
+            ? ☎ <a href="tel:+1-${h.phone}" class="underline">${h.phone}</a>
+            : ''}
+          <button
+            class="bg-sky-600 hover:bg-sky-700 text-white px-2 py-1 rounded"
+            data-i="${idx}"
+            data-lat="${h.latitude}"
+            data-lng="${h.longitude}">
+            Route
+          </button>
+          <button
+            class="bg-emerald-600 hover:bg-emerald-700 text-white px-2 py-1 rounded"
+            onclick='showChart(${JSON.stringify(h)})'>
+            Details
+          </button>
+        </div>
+        <p class="text-xs mt-1" id="eta-${idx}"></p>;
+
+
+      list.appendChild(card);
+
+
+      L.marker([h.latitude, h.longitude])
+        .addTo(hospMap)
+        .bindPopup(h.hospital);
+    });
+
+
+    hospMap.fitBounds(bounds, { padding: [50, 50] });
+
+
+    /* 4️⃣  Routing */
+    list.querySelectorAll('button[data-i]').forEach(btn => {
+      btn.onclick = () => {
+        const lat = +btn.dataset.lat,
+              lng = +btn.dataset.lng,
+              i   = btn.dataset.i;
+
+
+        if (routeCtl) hospMap.removeControl(routeCtl);
+
+
+        routeCtl = L.Routing.control({
+          waypoints: [
+            L.latLng(chosen.lat, chosen.lng),
+            L.latLng(lat, lng)
+          ],
+          router: L.Routing.osrmv1({
+            serviceUrl: 'https://router.project-osrm.org/route/v1'
+          }),
+          lineOptions: {
+            addWaypoints: false,
+            styles: [{ weight: 5 }]
+          },
+          show: false,
+          addWaypoints: false,
+          fitSelectedRoutes: false
+        }).addTo(hospMap);
+
+
+        routeCtl.on('routesfound', e => {
+          const mins = Math.round(e.routes[0].summary.totalTime / 60);
+          document.getElementById(eta-${i}).textContent =
+            ~${mins} min travel time;
+          hospMap.fitBounds(e.routes[0].bounds, { padding: [30, 30] });
+        });
+      };
+    });
+  } catch (err) {
+    console.error(err);
+    list.innerHTML = <p class="text-red-600">${err.message}</p>;
+  }
+};
+
+
+
+
+
+
+/*==== LEGEND INFO MODAL ====*/
+document.getElementById('legend-info-btn').onclick=()=>document.getElementById('legend-info-modal').classList.replace('hidden','flex');
+document.getElementById('close-legend-info').onclick=()=>document.getElementById('legend-info-modal').classList.replace('flex','hidden');
+document.getElementById('legend-info-modal').onclick=e=>{
+  if(e.target===document.getElementById('legend-info-modal')) document.getElementById('legend-info-modal').classList.replace('flex','hidden');
+};
+
+
+/*==== INIT ====*/
+window.addEventListener('DOMContentLoaded',()=>{
+  initUserMap();
+  initAutocomplete();
+  markStep(1);
+});
+</script>
