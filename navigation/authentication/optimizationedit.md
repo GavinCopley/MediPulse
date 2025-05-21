@@ -15,251 +15,182 @@ menu: nav/home.html
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.4/css/bulma.min.css" />
   <!-- FontAwesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-
-  <style>
+    <style>
+    /* Clean light mode styling - removed dark mode variables */
     :root {
-      --bg-gradient-light: linear-gradient(135deg, #f8f9fa 0%, #e9f2ff 100%);
-      --bg-gradient-dark: linear-gradient(135deg, #1a1d21 0%, #111827 100%);
-      --text-primary-light: #333;
-      --text-primary-dark: #e2e8f0;
+      --bg-gradient-light: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+      --text-primary-light: #333333;
       --text-secondary-light: #6b7280;
-      --text-secondary-dark: #9ca3af;
-      --bg-card-light: #fff;
-      --bg-card-dark: #1e293b;
+      --bg-card-light: #ffffff;
       --border-color-light: #e1e4e8;
-      --border-color-dark: #2d3748;
       --primary-color: #3273dc;
-      --primary-color-dark: #4e7dd9;
-      --shadow-light: 0 4px 20px rgba(0, 0, 0, 0.05);
-      --shadow-dark: 0 4px 20px rgba(0, 0, 0, 0.25);
+      --shadow-light: 0 2px 10px rgba(0, 0, 0, 0.05);
     }
     
-    body.dark-mode {
-      --bg-gradient: var(--bg-gradient-dark);
-      --text-primary: var(--text-primary-dark);
-      --text-secondary: var(--text-secondary-dark);
-      --bg-card: var(--bg-card-dark);
-      --border-color: var(--border-color-dark);
-      --shadow: var(--shadow-dark);
-      color-scheme: dark;
-    }
-    
-    body.light-mode {
-      --bg-gradient: var(--bg-gradient-light);
-      --text-primary: var(--text-primary-light);
-      --text-secondary: var(--text-secondary-light);
-      --bg-card: var(--bg-card-light);
-      --border-color: var(--border-color-light);
-      --shadow: var(--shadow-light);
-      color-scheme: light;
+    body {
+      background-color: #ffffff;
+      color: var(--text-primary-light);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
     }
     
     html, body { 
       height: 100%; 
-      background: var(--bg-gradient);
-      color: var(--text-primary);
-      transition: background 0.3s ease, color 0.3s ease;
+      background: var(--bg-gradient-light);
+      color: var(--text-primary-light);
     }
-
     .header-container {
-      padding: 2rem 0;
-      text-align: center;
+    padding: 2rem 0;
+    text-align: center;
     }
-
     .title {
-      color: var(--text-primary);
+    color: #333333;
     }
-    
     .subtitle {
-      color: var(--text-secondary);
+    color: var(--text-secondary-light);
     }
-
     .video-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 1.5rem;
-      padding: 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    padding: 1rem;
     }
-
     .video-card {
-      background: var(--bg-card);
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: var(--shadow);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--shadow-light);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #eaedf1;
     }
-
     .video-card:hover {
-      transform: translateY(-7px);
-      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.08);
     }
-
     .thumbnail-container {
-      position: relative;
-      width: 100%;
-      height: 0;
-      padding-bottom: 56.25%; /* 16:9 aspect ratio */
-      overflow: hidden;
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    overflow: hidden;
     }
-
     .thumbnail {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.5s ease;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
     }
-
     .video-card:hover .thumbnail {
-      transform: scale(1.05);
+    transform: scale(1.05);
     }
-
     .play-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(0, 0, 0, 0.3);
-      opacity: 0;
-      transition: opacity 0.3s ease;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    transition: opacity 0.3s ease;
     }
-
     .video-card:hover .play-overlay {
-      opacity: 1;
+    opacity: 1;
     }
-
     .play-button {
-      width: 60px;
-      height: 60px;
-      background: rgba(255, 0, 0, 0.8);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.3s ease;
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 0, 0, 0.8);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
     }
-
     .video-card:hover .play-button {
-      transform: scale(1.1);
+    transform: scale(1.1);
     }
-
     .video-info {
-      padding: 1rem;
+    padding: 1rem;
     }
-
     .video-title {
-      font-size: 1.1rem;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-      line-height: 1.4;
-      color: var(--text-primary);
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+    color: #333333;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
     }
-
     .video-meta {
-      display: flex;
-      align-items: center;
-      color: var(--text-secondary);
-      font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    color: var(--text-secondary-light);
+    font-size: 0.85rem;
     }
-
     .video-date {
-      margin-left: auto;
+    margin-left: auto;
     }
-
     .search-container {
-      margin: 1rem auto 2rem;
-      max-width: 600px;
+    margin: 1rem auto 2rem;
+    max-width: 600px;
     }
-
     .filter-container {
-      margin: 0 auto 2rem;
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 0.5rem;
+    margin: 0 auto 2rem;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
     }
-
     .filter-tag {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 20px;
-      padding: 0.3rem 1rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
+    background: #ffffff;
+    border: 1px solid var(--border-color-light);
+    border-radius: 20px;
+    padding: 0.3rem 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #333333;
     }
-
     .filter-tag:hover, .filter-tag.active {
-      background: var(--primary-color);
-      color: white;
+    background: var(--primary-color);
+    color: white;
     }
-
     .loading {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 200px;
-      font-size: 1.2rem;
-      color: var(--text-secondary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    font-size: 1.2rem;
+    color: var(--text-secondary-light);
     }
-
     .spinner {
-      margin-right: 0.5rem;
-      animation: spin 1s linear infinite;
+    margin-right: 0.5rem;
+    animation: spin 1s linear infinite;
     }
-
     @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
     }
-
-    .dark-mode-toggle {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      color: var(--text-primary);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      box-shadow: var(--shadow);
-      z-index: 100;
-      transition: transform 0.3s ease;
-    }
-
-    .dark-mode-toggle:hover {
-      transform: rotate(30deg);
-    }
-
     .no-results {
-      text-align: center;
-      padding: 3rem;
-      color: var(--text-secondary);
+    text-align: center;
+    padding: 3rem;
+    color: var(--text-secondary-light);
     }
-
     .pagination {
-      margin: 2rem 0;
-      display: flex;
-      justify-content: center;
+    margin: 2rem 0;
+    display: flex;
+    justify-content: center;
     }
-  </style>
+    </style>
 </head>
 
-<body class="light-mode">
+<body>
   <div class="container">
     <div class="header-container">
       <h1 class="title is-2">
@@ -298,10 +229,6 @@ menu: nav/home.html
     <div class="pagination" id="pagination"></div>
   </div>
 
-  <button id="dark-mode-toggle" class="dark-mode-toggle">
-    <i class="fas fa-moon"></i>
-  </button>
-
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       // YouTube API Key - Get from environment or use a public data API approach
@@ -316,7 +243,6 @@ menu: nav/home.html
       const clearSearch = document.getElementById('clear-search');
       const categoryFilters = document.getElementById('category-filters');
       const paginationEl = document.getElementById('pagination');
-      const darkModeToggle = document.getElementById('dark-mode-toggle');
       
       // State
       let videos = [];
@@ -326,15 +252,341 @@ menu: nav/home.html
       let currentCategory = 'all';
       let searchQuery = '';
       
-      // Check for saved theme preference
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme) {
-        document.body.className = savedTheme === 'dark' ? 'dark-mode' : 'light-mode';
-        updateThemeIcon();
-      }
-      
       // Initialize - fetch videos immediately
-      fetchVideos();
+      // fetchVideos();
+      loadVideosFromCSV();
+      
+      // Initialize search functionality
+      searchInput.addEventListener('input', function(e) {
+        searchQuery = e.target.value.trim();
+        clearSearch.style.display = searchQuery ? 'flex' : 'none';
+        filterVideos();
+      });
+      
+      clearSearch.addEventListener('click', function() {
+        searchInput.value = '';
+        searchQuery = '';
+        clearSearch.style.display = 'none';
+        currentPage = 1;
+        filterVideos();
+      });
+      
+      // Load videos from CSV data
+      function loadVideosFromCSV() {
+        // CSV data from PalomarHealth.csv
+        const csvData = [
+          {
+            channelId: "UC6Q40pg5uRNk4rXm375-68w",
+            channelTitle: "Palomar Health",
+            videoId: "7Pzsre3iQvw",
+            publishedAt: "2023-04-18T00:47:17Z",
+            videoTitle: "Palomar Health Birth Center",
+            videoDescription: "Learn about our world-class birth center from one of our patients.",
+            videoCategoryLabel: "People & Blogs",
+            topicCategories: "Health",
+            viewCount: 170967
+          },
+          {
+            channelId: "UC6Q40pg5uRNk4rXm375-68w",
+            channelTitle: "Palomar Health",
+            videoId: "-MbUTIHaTm0",
+            publishedAt: "2023-04-18T00:40:59Z",
+            videoTitle: "Palomar Health NICU",
+            videoDescription: "Take a tour of our state-of-the-art NICU.",
+            videoCategoryLabel: "People & Blogs",
+            topicCategories: "Health",
+            viewCount: 444
+          },
+          {
+            channelId: "UC6Q40pg5uRNk4rXm375-68w",
+            channelTitle: "Palomar Health",
+            videoId: "PG5iCvcBBdI",
+            publishedAt: "2023-02-11T01:41:30Z",
+            videoTitle: "Palomar Health Recovery Center",
+            videoDescription: "Palomar Health's Recovery Center in Poway has reimagined the recovery journey. Each patient is treated with a customized plan based on individual needs to support the patient's goals. Each approach will help to empower both adolescents and adults to lead their lives to the fullest and feel comfortable in social, professional and personal settings.",
+            videoCategoryLabel: "People & Blogs",
+            topicCategories: "Health,Society",
+            viewCount: 61
+          },
+          {
+            channelId: "UC6Q40pg5uRNk4rXm375-68w",
+            channelTitle: "Palomar Health",
+            videoId: "Hdbxx8k4zGc",
+            publishedAt: "2023-02-11T00:56:54Z",
+            videoTitle: "Covid 19 Treatments At the Hospital and At Home",
+            videoDescription: "Palomar Health is taking the fear out of healthcare with Dr. Ian Butler, medical director for the ICU. Dr. Butler talks about how patients with coronavirus are treated at Palomar Health and how you can take measures at home if you think you might have COVID-19. Learn what to expect if you or a loved one gets COVID-19.",
+            videoCategoryLabel: "People & Blogs",
+            topicCategories: "Health,Society",
+            viewCount: 49
+          },
+          {
+            channelId: "UC6Q40pg5uRNk4rXm375-68w",
+            channelTitle: "Palomar Health",
+            videoId: "y3rQmNYeBqw",
+            publishedAt: "2023-02-11T00:55:40Z",
+            videoTitle: "What's Your Passion? - Erin Messer",
+            videoDescription: "The world-class team at Palomar Health shows their dedication, drive and passion with every patient. Learn what makes Palomar Health's team extraordinary by learning why they love what they do!",
+            videoCategoryLabel: "People & Blogs",
+            topicCategories: "Health,Knowledge",
+            viewCount: 64
+          },
+          {
+            channelId: "UC6Q40pg5uRNk4rXm375-68w",
+            channelTitle: "Palomar Health",
+            videoId: "OrKZECOqMxo",
+            publishedAt: "2023-02-10T23:59:48Z",
+            videoTitle: "Always Here. Always Safe. - Emergency Department Safety Measures",
+            videoDescription: "Palomar Health is taking the fear out of healthcare. Emergency Room staff provide details on the safety measures they take throughout the Emergency Department. Use this in preparation for a surgery and to better understand the measures Palomar Health is taking to provide extraordinary care to each patient.",
+            videoCategoryLabel: "People & Blogs",
+            topicCategories: "Health",
+            viewCount: 83
+          },
+          {
+            channelId: "UC6Q40pg5uRNk4rXm375-68w",
+            channelTitle: "Palomar Health",
+            videoId: "Rmlumz95s3A",
+            publishedAt: "2023-02-10T23:58:45Z",
+            videoTitle: "Always Here. Always Safe. - Operating Room Safety Measures",
+            videoDescription: "Palomar Health is taking the fear out of healthcare. Operating Room staff provide details on the safety measures they take in the operating room. Use this in preparation for a surgery and to better understand the measures Palomar Health is taking to provide extraordinary care to each patient.",
+            videoCategoryLabel: "People & Blogs",
+            topicCategories: "Health,Knowledge",
+            viewCount: 57
+          },
+          {
+            channelId: "UC6Q40pg5uRNk4rXm375-68w",
+            channelTitle: "Palomar Health",
+            videoId: "CdcLxX3QyvM",
+            publishedAt: "2023-02-10T23:57:38Z",
+            videoTitle: "What is Type 1 Diabetes?",
+            videoDescription: "Learn about what Type 1 Diabetes is from an expert, Palomar Health's Dr. Tamarah Jennings.",
+            videoCategoryLabel: "People & Blogs",
+            topicCategories: "Health,Knowledge",
+            viewCount: 36
+          },
+          {
+            channelId: "UC6Q40pg5uRNk4rXm375-68w",
+            channelTitle: "Palomar Health",
+            videoId: "3-2WUmEh-Rk",
+            publishedAt: "2023-02-07T18:21:06Z",
+            videoTitle: "Patient Success Story - Brandy Gardner",
+            videoDescription: "As a practicing doula, Brandy Gardner has worked in almost every hospital in San Diego County so when it came time to choose where to deliver her own baby she had the inside scoop. Brandy chose Palomar Medical Center Poway because of its homelike feel and personalized service which became even more critical when she went into labor two months early.",
+            videoCategoryLabel: "People & Blogs",
+            topicCategories: "Health",
+            viewCount: 149
+          },
+          {
+            channelId: "UC6Q40pg5uRNk4rXm375-68w",
+            channelTitle: "Palomar Health",
+            videoId: "WA3WlNGW500",
+            publishedAt: "2023-02-07T18:04:08Z",
+            videoTitle: "What's Your Passion? - MJ Erickson",
+            videoDescription: "Learn more about ICU Nurse MJ Erickson and her passion for her role at Palomar Health.",
+            videoCategoryLabel: "People & Blogs",
+            topicCategories: "Health,Knowledge",
+            viewCount: 710
+          },
+          {
+            channelId: "UC6Q40pg5uRNk4rXm375-68w",
+            channelTitle: "Palomar Health",
+            videoId: "t5_7G08hlJs",
+            publishedAt: "2023-02-07T17:57:58Z",
+            videoTitle: "What's Your Passion? - Tyler Powell, Outpatient Rehab Services Supervisor",
+            videoDescription: "Learn about our Poway Outpatient Rehab Services Supervisor, Tyler Powell.",
+            videoCategoryLabel: "People & Blogs",
+            topicCategories: "Health,Society",
+            viewCount: 45
+          },
+          {
+            channelId: "UC6Q40pg5uRNk4rXm375-68w",
+            channelTitle: "Palomar Health",
+            videoId: "5xrUjKWfKNE",
+            publishedAt: "2023-02-03T00:51:34Z",
+            videoTitle: "Palomar Health's Award-Winning Cardiovascular Team",
+            videoDescription: "",
+            videoCategoryLabel: "Nonprofits & Activism",
+            topicCategories: "Health,Society",
+            viewCount: 13146
+          },
+          {
+            channelId: "UC6Q40pg5uRNk4rXm375-68w",
+            channelTitle: "Palomar Health",
+            videoId: "LqY46x_tu4c",
+            publishedAt: "2023-01-27T20:37:32Z",
+            videoTitle: "Join The Best Team in Healthcare!",
+            videoDescription: "",
+            videoCategoryLabel: "People & Blogs",
+            topicCategories: "Health,Society",
+            viewCount: 41
+          },
+          {
+            channelId: "UC6Q40pg5uRNk4rXm375-68w",
+            channelTitle: "Palomar Health",
+            videoId: "uHJ8SLTLVZY",
+            publishedAt: "2023-01-27T20:36:44Z",
+            videoTitle: "Palomar Health Has Been Named \"World's Best Hospitals\" 3 Years In a Row!",
+            videoDescription: "",
+            videoCategoryLabel: "People & Blogs",
+            topicCategories: "Health,Society",
+            viewCount: 320
+          },
+          {
+            channelId: "UC6Q40pg5uRNk4rXm375-68w",
+            channelTitle: "Palomar Health",
+            videoId: "pLQKqEi2SOo",
+            publishedAt: "2023-01-27T20:33:17Z",
+            videoTitle: "Dr. Karen Muchowski, CBS Spotlight on Innovation: Primary Care",
+            videoDescription: "",
+            videoCategoryLabel: "People & Blogs",
+            topicCategories: "Health,Society",
+            viewCount: 35
+          },
+          {
+            channelId: "UC6Q40pg5uRNk4rXm375-68w",
+            channelTitle: "Palomar Health",
+            videoId: "nN8DSBjqLPs",
+            publishedAt: "2023-01-27T20:32:25Z",
+            videoTitle: "Dr. Phull, CBS Spotlight on Innovation: Palomar Health Cancer Institute",
+            videoDescription: "",
+            videoCategoryLabel: "People & Blogs",
+            topicCategories: "Health,Society",
+            viewCount: 104
+          },
+          {
+            channelId: "UC6Q40pg5uRNk4rXm375-68w",
+            channelTitle: "Palomar Health",
+            videoId: "EIgxAny5m8g",
+            publishedAt: "2023-01-27T20:30:39Z",
+            videoTitle: "Dr. Maletz, ABC10 The Doctor Is In: How Can You Find a Primary Care Doctor?",
+            videoDescription: "",
+            videoCategoryLabel: "People & Blogs",
+            topicCategories: "Health,Society",
+            viewCount: 35
+          },
+          {
+            channelId: "UC6Q40pg5uRNk4rXm375-68w",
+            channelTitle: "Palomar Health",
+            videoId: "4BoGwASzgxI",
+            publishedAt: "2023-01-27T20:29:25Z",
+            videoTitle: "Dr. Maletz, ABC10 The Doctor Is In: What is the Importance of Primary Care?",
+            videoDescription: "",
+            videoCategoryLabel: "People & Blogs",
+            topicCategories: "Health,Society",
+            viewCount: 33
+          },
+          {
+            channelId: "UC6Q40pg5uRNk4rXm375-68w",
+            channelTitle: "Palomar Health",
+            videoId: "sfGrDQma1A8",
+            publishedAt: "2023-01-27T20:27:34Z",
+            videoTitle: "San Diego Living - Palomar Health Prostate Treatment Options",
+            videoDescription: "",
+            videoCategoryLabel: "People & Blogs",
+            topicCategories: "Health,Society",
+            viewCount: 13
+          },
+          {
+            channelId: "UC6Q40pg5uRNk4rXm375-68w",
+            channelTitle: "Palomar Health",
+            videoId: "Fk27l_AKOtU",
+            publishedAt: "2021-03-05T00:47:04Z",
+            videoTitle: "Patient Success Story - Brigit Davis",
+            videoDescription: "Watch how Bariatric Surgery changed the life and mindset of Escondido nurse and mother Brigit Davis. Read more: https://bit.ly/3uYtpOH",
+            videoCategoryLabel: "Nonprofits & Activism",
+            topicCategories: "Health",
+            viewCount: 256
+          },
+          {
+            channelId: "UC6Q40pg5uRNk4rXm375-68w",
+            channelTitle: "Palomar Health",
+            videoId: "7iAoUqJz1R4",
+            publishedAt: "2018-11-30T00:11:42Z",
+            videoTitle: "Patient Success Story - Michael Bollas",
+            videoDescription: "",
+            videoCategoryLabel: "Nonprofits & Activism",
+            topicCategories: "Health,Knowledge",
+            viewCount: 158
+          },
+          {
+            channelId: "UC6Q40pg5uRNk4rXm375-68w",
+            channelTitle: "Palomar Health",
+            videoId: "KkwAghs9lMY",
+            publishedAt: "2018-04-03T19:15:55Z",
+            videoTitle: "Palomar Health Recipe - Beet-Apple Salad",
+            videoDescription: "Learn how to prepare a beet-apple salad!",
+            videoCategoryLabel: "Nonprofits & Activism",
+            topicCategories: "Food,Lifestyle_(sociology)",
+            viewCount: 1563
+          },
+          {
+            channelId: "UC6Q40pg5uRNk4rXm375-68w",
+            channelTitle: "Palomar Health",
+            videoId: "IZGBuZ8Ox4M",
+            publishedAt: "2017-12-22T18:38:28Z",
+            videoTitle: "Holiday Eating with a Gluten-Free Diet - Julie Vargas",
+            videoDescription: "",
+            videoCategoryLabel: "Nonprofits & Activism",
+            topicCategories: "Health,Lifestyle_(sociology)",
+            viewCount: 22
+          },
+          {
+            channelId: "UC6Q40pg5uRNk4rXm375-68w",
+            channelTitle: "Palomar Health",
+            videoId: "URH1FKqk0QE",
+            publishedAt: "2017-12-13T18:10:20Z",
+            videoTitle: "Food Preparation Tips by Executive Chef John Medall",
+            videoDescription: "",
+            videoCategoryLabel: "Nonprofits & Activism",
+            topicCategories: "Food,Lifestyle_(sociology)",
+            viewCount: 160
+          },
+          {
+            channelId: "UC6Q40pg5uRNk4rXm375-68w",
+            channelTitle: "Palomar Health",
+            videoId: "RJq2veoKZYs",
+            publishedAt: "2017-11-08T19:11:23Z",
+            videoTitle: "Living Well with Prediabetes - Jennifer Purdie, Digital Content Specialist",
+            videoDescription: "Digital Content Specialist Jennifer Purdie talks about living well with prediabetes.",
+            videoCategoryLabel: "Nonprofits & Activism",
+            topicCategories: "Health,Knowledge",
+            viewCount: 3274
+          },
+          {
+            channelId: "UC6Q40pg5uRNk4rXm375-68w",
+            channelTitle: "Palomar Health",
+            videoId: "4paCiKsHu0k",
+            publishedAt: "2017-05-05T18:00:01Z",
+            videoTitle: "Patient Success Story - Jammin' Jimmy (Graphic Warning)",
+            videoDescription: "",
+            videoCategoryLabel: "Nonprofits & Activism",
+            topicCategories: "Health",
+            viewCount: 380
+          }
+        ];
+
+        // Process the CSV data into our video format
+        videos = csvData.map(item => {
+          // Extract categories from the topicCategories field
+          const categories = item.topicCategories ? 
+            item.topicCategories.split(',').map(cat => cat.trim().replace('_', ' ')) : 
+            ['General'];
+          
+          return {
+            id: item.videoId,
+            title: item.videoTitle,
+            thumbnail: `https://img.youtube.com/vi/${item.videoId}/hqdefault.jpg`,
+            date: new Date(item.publishedAt),
+            description: item.videoDescription || "",
+            categories: categories,
+            views: parseInt(item.viewCount) || 0
+          };
+        });
+        
+        // Generate category filters
+        generateCategoryFilters();
+        
+        // Apply initial filtering
+        filterVideos();
+      }
       
       // Initialize search functionality
       searchInput.addEventListener('input', function(e) {
@@ -351,190 +603,6 @@ menu: nav/home.html
         currentPage = 1;
         filterVideos();
       });
-      
-      // Dark mode toggle
-      darkModeToggle.addEventListener('click', () => {
-        if (document.body.classList.contains('dark-mode')) {
-          document.body.classList.remove('dark-mode');
-          document.body.classList.add('light-mode');
-          localStorage.setItem('theme', 'light');
-        } else {
-          document.body.classList.remove('light-mode');
-          document.body.classList.add('dark-mode');
-          localStorage.setItem('theme', 'dark');
-        }
-        updateThemeIcon();
-      });
-      
-      function updateThemeIcon() {
-        const icon = darkModeToggle.querySelector('i');
-        if (document.body.classList.contains('dark-mode')) {
-          icon.className = 'fas fa-sun';
-        } else {
-          icon.className = 'fas fa-moon';
-        }
-      }
-      
-      // Fetch videos from channel
-      async function fetchVideos() {
-        try {
-          const response = await fetch(`https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet,id&order=date&maxResults=50&type=video`);
-          const data = await response.json();
-          
-          if (data.items && data.items.length > 0) {
-            // Process and store videos
-            videos = data.items.map(item => ({
-              id: item.id.videoId,
-              title: item.snippet.title,
-              thumbnail: item.snippet.thumbnails.high?.url || item.snippet.thumbnails.default.url,
-              date: new Date(item.snippet.publishedAt),
-              description: item.snippet.description,
-              // Extract categories from description or title for filtering
-              categories: extractCategories(item.snippet.title, item.snippet.description)
-            }));
-            
-            // Generate category filters
-            generateCategoryFilters();
-            
-            // Apply initial filtering
-            filterVideos();
-          } else {
-            showError("No videos found for this channel.");
-          }
-        } catch (error) {
-          console.error("Error fetching videos:", error);
-          // Fallback to hardcoded videos in case of API failure
-          useHardcodedVideos();
-        }
-      }
-      
-      // Fallback function to use hardcoded videos if API fails
-      function useHardcodedVideos() {
-        videos = [
-          {
-            id: "WfLmnkO_bkI",
-            title: "Heart Health - Cardiovascular Health at Palomar Health",
-            thumbnail: "https://img.youtube.com/vi/WfLmnkO_bkI/hqdefault.jpg",
-            date: new Date("2023-02-14"),
-            categories: ["Heart Health", "Cardiovascular"]
-          },
-          {
-            id: "7wqCMr7eQIg",
-            title: "Palomar Health - Orthopedic and Spine Care",
-            thumbnail: "https://img.youtube.com/vi/7wqCMr7eQIg/hqdefault.jpg",
-            date: new Date("2023-03-22"),
-            categories: ["Orthopedic", "Spine Care"]
-          },
-          {
-            id: "JJn3u9K3Tqc",
-            title: "Emergency Services at Palomar Health",
-            thumbnail: "https://img.youtube.com/vi/JJn3u9K3Tqc/hqdefault.jpg",
-            date: new Date("2023-01-05"),
-            categories: ["Emergency Services"]
-          },
-          {
-            id: "H2Z--mE34v4",
-            title: "Women's Health at Palomar Health",
-            thumbnail: "https://img.youtube.com/vi/H2Z--mE34v4/hqdefault.jpg",
-            date: new Date("2022-11-17"),
-            categories: ["Women's Health"]
-          },
-          {
-            id: "hT2V5bYMXN8",
-            title: "Palomar Health Foundation - Making a Difference",
-            thumbnail: "https://img.youtube.com/vi/hT2V5bYMXN8/hqdefault.jpg",
-            date: new Date("2022-09-28"),
-            categories: ["Foundation", "Community"]
-          },
-          {
-            id: "0MdC8M5Jy-Q",
-            title: "Cancer Care at Palomar Health",
-            thumbnail: "https://img.youtube.com/vi/0MdC8M5Jy-Q/hqdefault.jpg",
-            date: new Date("2022-08-15"),
-            categories: ["Cancer Care", "Oncology"]
-          },
-          {
-            id: "Yv-BpuYqUgU",
-            title: "Neurosciences at Palomar Health",
-            thumbnail: "https://img.youtube.com/vi/Yv-BpuYqUgU/hqdefault.jpg",
-            date: new Date("2022-07-07"),
-            categories: ["Neurosciences", "Brain Health"]
-          },
-          {
-            id: "NzKFlOA0v90",
-            title: "Pediatric Care at Palomar Health",
-            thumbnail: "https://img.youtube.com/vi/NzKFlOA0v90/hqdefault.jpg",
-            date: new Date("2022-06-12"),
-            categories: ["Pediatric", "Children's Health"]
-          },
-          {
-            id: "q4V7Qz3MVOI",
-            title: "Mental Health Services at Palomar Health",
-            thumbnail: "https://img.youtube.com/vi/q4V7Qz3MVOI/hqdefault.jpg",
-            date: new Date("2022-05-20"),
-            categories: ["Mental Health"]
-          },
-          {
-            id: "bxrYcwjlXw0",
-            title: "Palomar Health - Our Doctors Make the Difference",
-            thumbnail: "https://img.youtube.com/vi/bxrYcwjlXw0/hqdefault.jpg",
-            date: new Date("2022-04-03"),
-            categories: ["Doctors", "Staff"]
-          },
-          {
-            id: "_QKjCvw8QH0",
-            title: "COVID-19 Updates from Palomar Health",
-            thumbnail: "https://img.youtube.com/vi/_QKjCvw8QH0/hqdefault.jpg",
-            date: new Date("2022-03-15"),
-            categories: ["COVID-19", "Pandemic"]
-          },
-          {
-            id: "mXI2D9Fpa24",
-            title: "Rehabilitation Services at Palomar Health",
-            thumbnail: "https://img.youtube.com/vi/mXI2D9Fpa24/hqdefault.jpg",
-            date: new Date("2022-02-28"),
-            categories: ["Rehabilitation"]
-          }
-        ];
-        
-        // Generate category filters
-        generateCategoryFilters();
-        
-        // Apply initial filtering
-        filterVideos();
-      }
-      
-      // Extract categories from video title and description
-      function extractCategories(title, description) {
-        const combinedText = (title + ' ' + description).toLowerCase();
-        const categories = [];
-        
-        const categoryKeywords = {
-          'Heart Health': ['heart', 'cardio', 'cardiac'],
-          'Cancer Care': ['cancer', 'oncology', 'tumor'],
-          'Women\'s Health': ['women', 'maternal', 'gynecology'],
-          'Mental Health': ['mental', 'psychiatric', 'psychology'],
-          'Orthopedic': ['orthopedic', 'bone', 'joint', 'spine'],
-          'Pediatric': ['pediatric', 'children', 'kids', 'baby'],
-          'Emergency Services': ['emergency', 'trauma', 'urgent'],
-          'COVID-19': ['covid', 'coronavirus', 'pandemic'],
-          'Community': ['community', 'outreach', 'foundation'],
-          'Wellness': ['wellness', 'prevention', 'healthy']
-        };
-        
-        Object.entries(categoryKeywords).forEach(([category, keywords]) => {
-          if (keywords.some(keyword => combinedText.includes(keyword))) {
-            categories.push(category);
-          }
-        });
-        
-        // Add a default category if none are detected
-        if (categories.length === 0) {
-          categories.push('General');
-        }
-        
-        return categories;
-      }
       
       // Generate category filter buttons
       function generateCategoryFilters() {
@@ -746,6 +814,7 @@ menu: nav/home.html
             pageItem.className = `pagination-item ${page === currentPage ? 'is-current' : ''}`;
             pageItem.innerHTML = `<a class="pagination-link" aria-label="Page ${page}">${page}</a>`;
             
+            // Page number click event
             pageItem.addEventListener('click', () => {
               currentPage = page;
               renderVideos();
