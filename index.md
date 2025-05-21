@@ -251,32 +251,80 @@ menu: nav/home.html
                 <p class="text-gray-600 mt-2" id="user-stats">Loading your stats...</p>
             </div>
 
-                <!-- Posts Section -->
-                <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
-                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Recent Posts</h2>
-                    <div id="recent-posts" class="space-y-2">
-                        <p class="text-gray-500">Loading your posts...</p>
+            <!-- Dashboard Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                <!-- Recent Posts Card -->
+                <div class="bg-white rounded-2xl shadow-lg p-8 flex flex-col justify-between hover:shadow-2xl transition">
+                    <div>
+                        <div class="flex items-center mb-4">
+                            <span class="inline-block bg-indigo-100 p-3 rounded-full mr-3">
+                                <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 20h9" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.5 3.5a2.121 2.121 0 113 3L7 19.5 3 21l1.5-4L16.5 3.5z" />
+                                </svg>
+                            </span>
+                            <h2 class="text-xl font-bold text-indigo-900">Recent Posts</h2>
+                        </div>
+                        <div id="recent-posts" class="space-y-2 mb-4">
+                            <p class="text-gray-500">Loading your posts...</p>
+                        </div>
                     </div>
-                    <a href="{{site.baseurl}}/make_post" class="mt-4 inline-block text-indigo-600 hover:text-indigo-800">Create New Post</a>
+                    <div class="flex justify-end">
+                        <a href="{{site.baseurl}}/make_post" class="inline-flex items-center bg-indigo-600 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-indigo-700 transition">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                            </svg>
+                            Create New Post
+                        </a>
+                    </div>
                 </div>
 
-
-            <!-- Add the button here -->
-            <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
-                <h2 class="text-xl font-semibold text-gray-800 mb-4">Hospital Data Analytics</h2>
-                <p class="text-gray-600 mb-4">Access comprehensive hospital performance data and analytics.</p>
-                <a href="{{site.baseurl}}/analytics" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors">
-                    Go to Data Analytics
-                </a>
+                <!-- Hospital Data Analytics Card -->
+                <div class="bg-white rounded-2xl shadow-lg p-8 flex flex-col justify-between hover:shadow-2xl transition">
+                    <div>
+                        <div class="flex items-center mb-4">
+                            <span class="inline-block bg-blue-100 p-3 rounded-full mr-3">
+                                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                </svg>
+                            </span>
+                            <h2 class="text-xl font-bold text-blue-900">Hospital Data Analytics</h2>
+                        </div>
+                        <p class="text-gray-600 mb-6">Access comprehensive hospital performance data and analytics.</p>
+                    </div>
+                    <div class="flex justify-end">
+                        <a href="{{site.baseurl}}/analytics" class="inline-flex items-center bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-blue-700 transition">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                            </svg>
+                            Go to Data Analytics
+                        </a>
+                    </div>
+                </div>
             </div>
 
-            <!-- Activity Feed -->
-            <div class="bg-white rounded-lg shadow-md p-6">
-                <h2 class="text-xl font-semibold text-gray-800 mb-4">Recent Activity</h2>
+            <!-- Recent Activity Card -->
+            <div class="bg-white rounded-2xl shadow-lg p-8 mt-8 hover:shadow-2xl transition">
+                <div class="flex items-center mb-4">
+                    <span class="inline-block bg-green-100 p-3 rounded-full mr-3">
+                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h2l1 2h13l1-2h2" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19v-6m0 0l-2-2m2 2l2-2" />
+                        </svg>
+                    </span>
+                    <h2 class="text-xl font-bold text-green-900">Recent Activity</h2>
+                </div>
                 <div id="activity-feed" class="space-y-4">
                     <p class="text-gray-500">Loading activity...</p>
                 </div>
             </div>
+
+            <!-- Floating Action Button for New Post (Mobile) -->
+            <a href="{{site.baseurl}}/make_post" class="fixed bottom-8 right-8 z-50 bg-indigo-600 text-white rounded-full shadow-lg p-4 flex items-center justify-center hover:bg-indigo-700 transition md:hidden" title="Create New Post">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+            </a>
         </div>
     </div>
 </div>
