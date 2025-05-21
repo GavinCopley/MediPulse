@@ -1,7 +1,7 @@
 ---
 layout: base
 title: Optimization
-permalink: /optimize/
+permalink: /optimize/generate/
 search_exclude: true
 menu: nav/home.html
 ---
