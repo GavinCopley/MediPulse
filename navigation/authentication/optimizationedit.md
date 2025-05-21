@@ -244,10 +244,55 @@ menu: nav/home.html
 .button.is-primary:hover:not(:disabled) {
   background-color: #4338ca; /* Darker indigo on hover */
 }
+
+/* Add these styles for the loading overlay */
+#loadingOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.9);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  backdrop-filter: blur(3px);
+}
+
+#loadingOverlay .text-center {
+  text-align: center;
+}
+
+#loadingOverlay .fas.fa-circle-notch {
+  color: #4f46e5;
+  margin-bottom: 0.75rem;
+}
+
+#loadingOverlay .text-xl {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #4f46e5;
+}
+
+#loadingOverlay .mt-2 {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: #6b7280;
+}
     </style>
 </head>
 
 <body>
+  <!-- Loading overlay -->
+  <div id="loadingOverlay" class="fixed inset-0 z-50 hidden items-center justify-center bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm">
+    <div class="text-center">
+      <i class="fas fa-circle-notch fa-spin fa-2x mb-3 text-blue-600 dark:text-blue-400"></i>
+      <div class="text-xl font-semibold text-blue-600 dark:text-blue-400">Optimising Your Content...</div>
+      <div class="mt-2 text-xs text-gray-500 dark:text-gray-400">Processing with AI</div>
+    </div>
+  </div>
+
   <div class="container">
     <div class="header-container">
       <h1 class="title is-2" style="color: #4f46e5;">
@@ -928,7 +973,10 @@ menu: nav/home.html
       // Add optimize button click handler
       document.getElementById('optimize-button').addEventListener('click', function() {
         if (selectedVideoId) {
-          // Show loading state
+          // Show loading overlay
+          document.getElementById('loadingOverlay').style.display = "flex";
+          
+          // Show loading state in button
           const optimizeButton = document.getElementById('optimize-button');
           optimizeButton.disabled = true;
           optimizeButton.innerHTML = '<span class="icon"><i class="fas fa-circle-notch fa-spin"></i></span><span>Processing...</span>';
@@ -975,18 +1023,27 @@ menu: nav/home.html
             .then(result => {
               console.log("API response:", result);
               
-              // Instead of redirecting, replace the current page content with optimization results
+              // Hide loading overlay
+              document.getElementById('loadingOverlay').style.display = "none";
+              
+              // Replace current page content with optimization results
               renderOptimizationResults(result, selectedVideoEntry);
             })
             .catch(error => {
               console.error("Error optimizing video:", error);
               alert("There was an error optimizing this video. Please try again.");
               
+              // Hide loading overlay
+              document.getElementById('loadingOverlay').style.display = "none";
+              
               // Reset button
               optimizeButton.disabled = false;
               optimizeButton.innerHTML = '<span class="icon"><i class="fas fa-magic"></i></span><span>Optimize Selected Video</span>';
             });
           } else {
+            // Hide loading overlay
+            document.getElementById('loadingOverlay').style.display = "none";
+            
             alert("Could not find complete metadata for this video.");
             optimizeButton.disabled = false;
             optimizeButton.innerHTML = '<span class="icon"><i class="fas fa-magic"></i></span><span>Optimize Selected Video</span>';
@@ -1368,6 +1425,9 @@ menu: nav/home.html
     const reEvalBtn = document.getElementById("reEvalBtn");
     if (reEvalBtn) {
       reEvalBtn.addEventListener('click', () => {
+        // Show loading overlay
+        document.getElementById('loadingOverlay').style.display = "flex";
+        
         // Show loading animation
         reEvalBtn.classList.add('is-loading');
         
@@ -1402,6 +1462,9 @@ menu: nav/home.html
           return JSON.parse(processedText);
         })
         .then(newResult => {
+          // Hide loading overlay
+          document.getElementById('loadingOverlay').style.display = "none";
+          
           reEvalBtn.classList.remove('is-loading');
           
           // Update engagement score
@@ -1413,6 +1476,10 @@ menu: nav/home.html
         })
         .catch(error => {
           console.error("Re-evaluation failed:", error);
+          
+          // Hide loading overlay
+          document.getElementById('loadingOverlay').style.display = "none";
+          
           reEvalBtn.classList.remove('is-loading');
           alert("Sorry, there was an error processing your request.");
         });
