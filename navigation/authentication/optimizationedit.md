@@ -23,7 +23,7 @@ menu: nav/home.html
       --text-secondary-light: #6b7280;
       --bg-card-light: #ffffff;
       --border-color-light: #e1e4e8;
-      --primary-color: #3273dc;
+      --primary-color: #4f46e5;
       --shadow-light: 0 2px 10px rgba(0, 0, 0, 0.05);
     }
     
@@ -43,7 +43,7 @@ menu: nav/home.html
     text-align: center;
     }
     .title {
-    color: #333333;
+    color: #4f46e5; /* This is the Tailwind indigo-600 color */
     }
     .subtitle {
     color: var(--text-secondary-light);
@@ -223,17 +223,37 @@ menu: nav/home.html
     .pagination-previous:hover, .pagination-next:hover {
     background-color: #f5f5f5;
     }
+
+    /* Add these styles to fix the button appearance */
+.button-container {
+  margin-bottom: 5rem;
+  padding-bottom: 3rem;
+}
+
+.button.is-primary:disabled {
+  background-color: #9ca3af; /* Gray color when disabled (no video selected) */
+  opacity: 1; /* Full opacity */
+  cursor: not-allowed;
+}
+
+.button.is-primary {
+  background-color: #4f46e5; /* indigo-600 color when enabled */
+  transition: background-color 0.3s ease;
+}
+
+.button.is-primary:hover:not(:disabled) {
+  background-color: #4338ca; /* Darker indigo on hover */
+}
     </style>
 </head>
 
 <body>
   <div class="container">
     <div class="header-container">
-      <h1 class="title is-2">
-        <img src="https://www.palomarhealthfoundation.org/wp-content/uploads/2022/03/Palomar-Health-logo.jpg" alt="Palomar Health Logo" height="60" style="vertical-align: middle; margin-right: 15px;">
-        Palomar Health Video Gallery
+      <h1 class="title is-2" style="color: #4f46e5;">
+        Optimize an Existing Video
       </h1>
-      <p class="subtitle is-5">Explore the latest videos from Palomar Health's YouTube channel</p>
+      <p class="subtitle is-5">Select an existing Palomar Health video to optimize it</p>
     </div>
 
     <div class="search-container">
@@ -263,6 +283,16 @@ menu: nav/home.html
     </div>
 
     <div class="pagination" id="pagination"></div>
+
+    <!-- Add an optimize button -->
+    <div class="has-text-centered mt-5 mb-5 button-container">
+      <button id="optimize-button" class="button is-primary is-large" disabled>
+        <span class="icon">
+          <i class="fas fa-magic"></i>
+        </span>
+        <span>Optimize Selected Video</span>
+      </button>
+    </div>
   </div>
 
   <script>
@@ -287,6 +317,7 @@ menu: nav/home.html
       const videosPerPage = 9;
       let currentCategory = 'all';
       let searchQuery = '';
+      let selectedVideoId = null; // Add a state variable to track the currently selected video
       
       // Initialize - fetch videos immediately
       // fetchVideos();
@@ -724,6 +755,9 @@ menu: nav/home.html
           
           const videoCard = document.createElement('div');
           videoCard.className = 'video-card';
+          if (video.id === selectedVideoId) {
+            videoCard.classList.add('selected');
+          }
           videoCard.dataset.videoId = video.id; // Store the video ID in the dataset
           videoCard.innerHTML = `
             <div class="thumbnail-container">
@@ -743,14 +777,28 @@ menu: nav/home.html
             </div>
           `;
           
-          // Add selection functionality instead of YouTube link
+          // Add selection functionality with single select
           videoCard.addEventListener('click', () => {
-            // Toggle selection state
-            videoCard.classList.toggle('selected');
+            // First, remove selected class from all cards
+            document.querySelectorAll('.video-card').forEach(card => {
+              card.classList.remove('selected');
+            });
             
-            // You can add code here to track selected videos
-            // e.g., store in an array, update a counter, etc.
-            console.log(`Video ${video.id} selection toggled`);
+            // Toggle selected state for this card
+            if (selectedVideoId === video.id) {
+              selectedVideoId = null; // Deselect if already selected
+            } else {
+              selectedVideoId = video.id; // Select this video
+              videoCard.classList.add('selected');
+            }
+            
+            console.log(`Selected video: ${selectedVideoId}`);
+            
+            // Enable optimize button if we have a selection
+            const optimizeButton = document.getElementById('optimize-button');
+            if (optimizeButton) {
+              optimizeButton.disabled = !selectedVideoId;
+            }
           });
           
           videoGrid.appendChild(videoCard);
@@ -856,18 +904,16 @@ menu: nav/home.html
             const pageItem = document.createElement('li');
             pageItem.className = 'pagination-item';
             pageItem.innerHTML = `
-              <a class="pagination-link ${currentPage === page ? 'is-current' : ''}" aria-label="Page ${page}">
+              <a class="pagination-link ${page === currentPage ? 'is-current' : ''}" aria-label="Page ${page}">
                 ${page}
               </a>
             `;
-            
             pageItem.addEventListener('click', () => {
               currentPage = page;
               renderVideos();
               renderPagination();
               window.scrollTo({ top: 0, behavior: 'smooth' });
             });
-            
             pageList.appendChild(pageItem);
           }
         });
@@ -875,11 +921,9 @@ menu: nav/home.html
         nav.appendChild(prevButton);
         nav.appendChild(pageList);
         nav.appendChild(nextButton);
-        
         paginationEl.appendChild(nav);
       }
     });
   </script>
 </body>
 </html>
-
