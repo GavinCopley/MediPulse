@@ -398,17 +398,206 @@ menu: nav/home.html
       background: var(--primary-color);
     }
     
+    /* Add these to your existing style section */
     .tip-box {
-      background: #f9fafb;
+      background: var(--bg-card);
       border-left: 4px solid #48c78e;
       border-radius: 8px;
       padding: 1rem 1.25rem;
       margin-bottom: 0.5rem;
-      transition: box-shadow 0.2s;
+      transition: all 0.3s ease;
+      font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+      letter-spacing: 0.01em;
     }
+
     .tip-box:hover {
-      box-shadow: 0 4px 16px rgba(50,115,220,0.12);
+      box-shadow: 0 6px 20px rgba(50,115,220,0.15);
+      transform: translateY(-2px);
     }
+
+    .tip-box strong, .tip-box b {
+      color: var(--primary-color);
+      font-weight: 600;
+    }
+
+    /* Style for the tips section titles */
+    .tips-section-title {
+      font-family: 'Montserrat', 'Segoe UI', system-ui, sans-serif;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.25rem;
+    }
+
+    /* Style for each individual tip */
+    .tip-content {
+      font-size: 1.05rem;
+      color: var(--text-primary);
+    }
+
+    /* Improvement Tips Dropdown with Tailwind CSS */
+    .bg-white {
+      background-color: #fff;
+    }
+
+    .dark\:bg-slate-800 {
+      background-color: #1e293b;
+    }
+
+    .rounded-xl {
+      border-radius: 0.75rem;
+    }
+
+    .shadow-md {
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .border {
+      border-width: 1px;
+    }
+
+    .border-gray-200 {
+      border-color: #e5e7eb;
+    }
+
+    .dark\:border-gray-700 {
+      border-color: #374151;
+    }
+
+    .transition-all {
+      transition-property: all;
+      transition-duration: 150ms;
+      transition-timing-function: ease-in-out;
+    }
+
+    .hover\:shadow-lg:hover {
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .p-6 {
+      padding: 1.5rem;
+    }
+
+    .text-lg {
+      font-size: 1.125rem;
+    }
+
+    .font-semibold {
+      font-weight: 600;
+    }
+
+    .mb-4 {
+      margin-bottom: 1rem;
+    }
+
+    .flex {
+      display: flex;
+    }
+
+    .items-center {
+      align-items: center;
+    }
+
+    .cursor-pointer {
+      cursor: pointer;
+    }
+
+    .text-amber-500 {
+      color: #f59e0f;
+    }
+
+    .bg-gradient-to-r {
+      background-image: linear-gradient(to right, var(--tw-gradient-stops));
+    }
+
+    .from-amber-50 {
+      --tw-gradient-from: #fefce8;
+      --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(254, 252, 232, 0));
+    }
+
+    .to-orange-50 {
+      --tw-gradient-to: #ffedd5;
+    }
+
+    .dark\:from-amber-900\/10 {
+      --tw-gradient-from: rgba(250, 204, 21, 0.1);
+    }
+
+    .dark\:to-orange-900\/10 {
+      --tw-gradient-to: rgba(255, 165, 0, 0.1);
+    }
+
+    .rounded-md {
+      border-radius: 0.375rem;
+    }
+
+    .py-2 {
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+    }
+
+    .px-4 {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    .inline-flex {
+      display: inline-flex;
+    }
+
+    .gap-2 {
+      gap: 0.5rem;
+    }
+
+    .hover\:translate-y-\[-2px\]:hover {
+      transform: translateY(-2px);
+    }
+
+    .hover\:bg-gradient-to-r:hover {
+      background-image: linear-gradient(to right, var(--tw-gradient-stops));
+    }
+
+    .hover\:from-amber-100:hover {
+      --tw-gradient-from: #fffbeb;
+    }
+
+    .hover\:to-orange-100:hover {
+      --tw-gradient-to: #ffe4b5;
+    }
+
+    .dark\:hover\:from-amber-900\/20:hover {
+      --tw-gradient-from: rgba(250, 204, 21, 0.2);
+    }
+
+    .dark\:hover\:to-orange-900\/20:hover {
+      --tw-gradient-to: rgba(255, 165, 0, 0.2);
+    }
+
+    .group {
+      position: relative;
+    }
+
+    .group-open\:rotate-180 {
+      transform: rotate(180deg);
+    }
+
+    .mt-4 {
+      margin-top: 1rem;
+    }
+
+    .space-y-3 > * + * {
+      margin-top: 0.75rem;
+    }
+
+    .list-none {
+      list-style-type: none;
+    }
+
+    .pl-0 {
+      padding-left: 0;
+    }
+
+    /* Add Google Fonts import for better typography */
   </style>
 </head>
 
@@ -633,16 +822,21 @@ menu: nav/home.html
         </div>
 
         <!-- Improvement Tips Dropdown -->
-        <div class="box">
-          <h3 class="title is-5 mb-4">
-            <i class="fas fa-lightbulb mr-2 has-text-warning"></i> 
-            Improvement Tips <span class="is-size-7 has-text-grey">(click to expand)</span>
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md border border-gray-200 dark:border-gray-700 transition-all hover:shadow-lg p-6">
+          <h3 class="text-lg font-semibold mb-4 flex items-center">
+            <i class="fas fa-lightbulb mr-2 text-yellow-400"></i> 
+            Improvement Tips <span class="text-xs text-gray-500 ml-2">(click to expand)</span>
           </h3>
-          <details id="allTipsDropdown">
-            <summary style="cursor:pointer; font-weight:600; color:#f59e42;">
-              Show All Tips
+          <details id="allTipsDropdown" class="group">
+            <summary class="cursor-pointer font-semibold text-amber-500 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/10 dark:to-orange-900/10 rounded-md py-2 px-4 inline-flex items-center gap-2 transition-all hover:translate-y-[-2px] hover:bg-gradient-to-r hover:from-amber-100 hover:to-orange-100 dark:hover:from-amber-900/20 dark:hover:to-orange-900/20">
+              <span class="flex items-center">
+                <span class="transform transition-transform group-open:rotate-180 inline-block mr-2">
+                  <i class="fas fa-chevron-down text-sm"></i>
+                </span>
+                Show All Tips
+              </span>
             </summary>
-            <ul id="allTipsList" class="mt-3 pl-4"></ul>
+            <ul id="allTipsList" class="mt-4 space-y-3 list-none pl-0"></ul>
           </details>
         </div>
 
@@ -873,26 +1067,38 @@ menu: nav/home.html
               tipsArray.forEach((tip, i) => {
                 const li = document.createElement("li");
                 li.className = "mb-3";
+                
+                // Process tip text to enhance typography
+                const enhancedTip = tip.replace(/\*(.*?)\*/g, '<strong class="text-blue-600 dark:text-blue-400 font-semibold">$1</strong>');
+                
                 li.innerHTML = `
-                  <div class="box tip-box" style="display:flex;align-items:flex-start;gap:1rem;box-shadow:0 2px 8px rgba(50,115,220,0.07);">
-                    <div style="flex:1;">${tip}</div>
-                    <button class="button is-small is-success" style="flex-shrink:0;">
-                      <i class="fas fa-plus"></i>
+                  <div class="flex items-start gap-4 bg-white dark:bg-slate-800 rounded-lg p-4 border-l-4 border-green-500 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all">
+                    <div class="flex-1 text-gray-800 dark:text-gray-100 text-base leading-relaxed">
+                      ${enhancedTip}
+                    </div>
+                    <button class="flex-shrink-0 bg-green-500 hover:bg-green-600 text-white rounded-md p-2 transition-colors">
+                      <i class="fas fa-plus text-sm"></i>
                     </button>
                   </div>
                 `;
+                
                 // Add "+" button functionality
                 li.querySelector("button").onclick = () => {
                   const active = outlineTabs.querySelector("li.is-active").dataset.index;
                   const outlineLi = document.createElement("li");
                   outlineLi.contentEditable = "true";
-                  outlineLi.textContent = tip;
+                  outlineLi.textContent = tip.replace(/\*(.*?)\*/g, '$1'); // Remove asterisks in outline
                   document.getElementById("outlineList" + active).appendChild(outlineLi);
                 };
+                
                 tipsList.appendChild(li);
               });
             } else {
-              tipsList.innerHTML = `<div class="notification is-danger">${result.gemini_tips.error || "Failed to generate tips"}</div>`;
+              tipsList.innerHTML = `
+                <div class="bg-red-100 dark:bg-red-900/30 border-l-4 border-red-500 text-red-700 dark:text-red-400 p-4 rounded">
+                  ${result.gemini_tips.error || "Failed to generate tips"}
+                </div>
+              `;
             }
           }
 
