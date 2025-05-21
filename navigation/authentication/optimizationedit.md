@@ -680,11 +680,7 @@ menu: nav/home.html
         videos = csvData.map(item => {
           // Extract categories from the topicCategories field
           const categories = item.topicCategories ? 
-            item.topicCategories.split(',').map(cat => {
-              // Replace Lifestyle_(sociology) with just Lifestyle
-              const cleanCat = cat.trim();
-              return cleanCat === "Lifestyle_(sociology)" ? "Lifestyle" : cleanCat.replace('_', '');
-            }) : 
+            item.topicCategories.split(',').map(cat => cat.trim().replace('_', '')) : 
             ['General'];
           
           return {
@@ -727,12 +723,7 @@ menu: nav/home.html
         
         videos.forEach(video => {
           if (video.categories) {
-            video.categories.forEach(category => {
-              // Don't add "Health" category since all videos have it
-              if (category !== 'Health') {
-                allCategories.add(category);
-              }
-            });
+            video.categories.forEach(category => allCategories.add(category));
           }
         });
         
@@ -1381,19 +1372,21 @@ menu: nav/home.html
               </figure>
             </div>
             <div class="card-content">
-              <p class="title is-6">${v["video title"]}</p>
+              <p class="title is-6">${v["video title"] || ""}</p>
               <div class="is-flex is-size-7 has-text-grey mb-2">
-                <span class="mr-3"><i class="fas fa-eye mr-1"></i> ${v["view count"]}</span>
-                <span class="mr-3"><i class="fas fa-thumbs-up mr-1"></i> ${v["like count"]}</span>
-                <span><i class="fas fa-comment mr-1"></i> ${v["comment count"]}</span>
+                <span class="mr-3"><i class="fas fa-eye mr-1"></i> ${v["view count"] || "0"}</span>
+                <span class="mr-3"><i class="fas fa-thumbs-up mr-1"></i> ${v["like count"] || "0"}</span>
+                <span><i class="fas fa-comment mr-1"></i> ${v["comment count"] || "0"}</span>
               </div>
-              <p class="is-size-7 has-text-grey-dark"><strong>Length:</strong> ${v["length_sec"]}s</p>
-              <div class="tags mt-3">
-                ${(v["tags"] || "").split('|').slice(0, 3).map(tag => 
-                  `<span class="tag is-info is-light">${tag}</span>`
-                ).join('')}
+              <p class="is-size-7 has-text-grey-dark"><strong>Length:</strong> ${v["length_sec"] || "0"}s</p>
+              <div class="tags mt-3 is-flex is-flex-wrap-wrap" style="max-width: 100%;">
+                ${v["tags"] ? 
+                  v["tags"].split('|').slice(0, 3).map(tag => 
+                    `<span class="tag is-info is-light mr-1 mb-1" style="word-break: break-word; max-width: 100%; white-space: normal; height: auto; line-height: 1.2; padding: 0.3rem 0.5rem;">${tag}</span>`
+                  ).join('') : ''
+                }
                 ${v["tags"] && v["tags"].split('|').length > 3 ? 
-                  `<span class="tag is-light">+${v["tags"].split('|').length - 3} more</span>` : ''}
+                  `<span class="tag is-light mr-1 mb-1">+${v["tags"].split('|').length - 3} more</span>` : ''}
               </div>
             </div>
           </div>
