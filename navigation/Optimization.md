@@ -1,5 +1,5 @@
 ---
-layout: base
+layout: tailwind
 title: Optimization
 permalink: /optimize/generate/
 search_exclude: true
@@ -11,11 +11,6 @@ menu: nav/home.html
   <meta charset="UTF-8" />
   <title>Hospital Video Optimiser</title>
 
-  <!-- Bulma CSS -->
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.4/css/bulma.min.css"
-  />
   <!-- FontAwesome -->
   <link
     rel="stylesheet"
@@ -24,730 +19,160 @@ menu: nav/home.html
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <style>
-    :root {
-      --bg-gradient-light: linear-gradient(135deg, #f8f9fa 0%, #e9f2ff 100%);
-      --bg-gradient-dark: linear-gradient(135deg, #1a1d21 0%, #111827 100%);
-      --text-primary-light: #333;
-      --text-primary-dark: #e2e8f0;
-      --text-secondary-light: #6b7280;
-      --text-secondary-dark: #9ca3af;
-      --bg-card-light: #fff;
-      --bg-card-dark: #1e293b;
-      --border-color-light: #e1e4e8;
-      --border-color-dark: #2d3748;
-      --primary-color: #3273dc;
-      --primary-color-dark: #4e7dd9;
-      --shadow-light: 0 4px 20px rgba(0, 0, 0, 0.05);
-      --shadow-dark: 0 4px 20px rgba(0, 0, 0, 0.25);
-    }
-    
-    body.dark-mode {
-      --bg-gradient: var(--bg-gradient-dark);
-      --text-primary: var(--text-primary-dark);
-      --text-secondary: var(--text-secondary-dark);
-      --bg-card: var(--bg-card-dark);
-      --border-color: var(--border-color-dark);
-      --shadow: var(--shadow-dark);
-      color-scheme: dark;
-    }
-    
-    body.light-mode {
-      --bg-gradient: var(--bg-gradient-light);
-      --text-primary: var(--text-primary-light);
-      --text-secondary: var(--text-secondary-light);
-      --bg-card: var(--bg-card-light);
-      --border-color: var(--border-color-light);
-      --shadow: var(--shadow-light);
-      color-scheme: light;
-    }
-    
-    html, body { 
-      height: 100%; 
-      background: var(--bg-gradient);
-      color: var(--text-primary);
-      transition: background 0.3s ease, color 0.3s ease;
-    }
-    
-    .loading-overlay {
-      position: fixed; top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(var(--bg-card-rgb, 255, 255, 255), 0.9);
-      display: none; align-items: center; justify-content: center;
-      font-size: 1.75rem; color: var(--primary-color); z-index: 1000; font-weight: 600;
-      backdrop-filter: blur(3px);
-    }
-    
-    /* Instructions header */
-    .instructions-header {
-      background: var(--bg-card);
-      border-radius: 12px;
-      padding: 1.5rem;
-      margin-bottom: 2rem;
-      box-shadow: var(--shadow);
-      border: 1px solid var(--border-color);
-      position: relative;
-    }
-    
-    .instructions-steps {
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      margin: 1rem 0;
-    }
-    
-    .instruction-step {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-      flex: 1;
-    }
-    
-    .instruction-step:not(:last-child)::after {
-      content: "";
-      position: absolute;
-      top: 2rem;
-      right: -45%;
-      width: 90%;
-      height: 2px;
-      background: var(--border-color);
-    }
-    
-    .instruction-number {
-      width: 4rem;
-      height: 4rem;
-      border-radius: 50%;
-      background: var(--bg-card);
-      border: 2px solid var(--primary-color);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: var(--primary-color);
-      margin-bottom: 1rem;
-      position: relative;
-      z-index: 2;
-    }
-    
-    .instruction-step.active .instruction-number {
-      background: var(--primary-color);
-      color: white;
-    }
-    
-    .instruction-text {
-      font-weight: 600;
-      text-align: center;
-      color: var(--text-primary);
-    }
-    
-    .dark-mode-toggle {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      cursor: pointer;
-      background: transparent;
-      border: none;
-      color: var(--text-primary);
-      font-size: 1.5rem;
-      transition: transform 0.3s ease;
-    }
-    
-    .dark-mode-toggle:hover {
-      transform: rotate(30deg);
-    }
-    
-    /* Other styles from previous version */
-    .steps { 
-      margin-bottom: 2rem; 
-    }
-    
-    .accordion details {
-      margin-bottom: 1rem; 
-      border: 1px solid var(--border-color);
-      border-radius: 12px; 
-      padding: 0.75rem 1rem; 
-      background: var(--bg-card);
-      box-shadow: var(--shadow);
-      transition: box-shadow 0.3s, transform 0.2s;
-    }
-    
-    .accordion details:hover {
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-    }
-    
-    .accordion summary { 
-      cursor: pointer; 
-      font-weight: bold; 
-      padding: 0.25rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      color: var(--text-primary);
-    }
-    
-    .video-card { 
-      transition: all 0.3s ease; 
-      height: 100%;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: var(--shadow);
-      background: var(--bg-card);
-    }
-    
-    .video-card:hover { 
-      transform: translateY(-7px); 
-      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
-    }
-    
-    .outline-box {
-      background: var(--bg-card); 
-      padding: 2rem; 
-      border-radius: 12px; 
-      margin-bottom: 1.5rem;
-      box-shadow: var(--shadow);
-      border: 1px solid var(--border-color);
-    }
-    
-    .upload-placeholder {
-      border: 2px dashed var(--border-color);
-      border-radius: 12px;
-      height: 150px; 
-      display: flex; 
-      align-items: center; 
-      justify-content: center;
-      color: var(--text-secondary); 
-      cursor: pointer; 
-      margin-bottom: 0.5rem;
-      transition: all 0.2s;
-      background: rgba(250, 250, 250, 0.5);
-    }
-    
-    .upload-placeholder:hover {
-      border-color: var(--primary-color);
-    }
-    
-    .tabs.is-centered { 
-      justify-content: center; 
-      margin-bottom: 1rem; 
-    }
-    
-    .tabs li.is-active a { 
-      border-bottom-color: var(--primary-color); 
-      color: var(--primary-color);
-      font-weight: 600;
-    }
-    
-    .tabs li a {
-      color: var(--text-primary);
-    }
-    
-    .box {
-      border-radius: 12px;
-      box-shadow: var(--shadow);
-      transition: transform 0.2s, box-shadow 0.2s;
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-    }
-    
-    .box:hover {
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-    }
-    
-    .title {
-      color: var(--text-primary);
-    }
-    
-    .subtitle {
-      color: var(--text-secondary);
-    }
-    
-    .button.is-primary {
-      background-color: var(--primary-color);
-      transition: background-color 0.3s, transform 0.1s;
-    }
-    
-    .button.is-primary:hover {
-      background-color: var(--primary-color-dark);
-      transform: translateY(-2px);
-    }
-    
-    .button.is-primary:active {
-      transform: translateY(0);
-    }
-    
-    .button.is-link {
-      transition: all 0.2s;
-    }
-    
-    .button.is-link:hover {
-      transform: translateY(-2px);
-    }
-    
-    #outlinesContainer ul li {
-      padding: 0.5rem 0;
-      border-bottom: 1px solid var(--border-color);
-      transition: background-color 0.2s;
-      color: var(--text-primary);
-    }
-    
-    #outlinesContainer ul li:hover {
-      background-color: rgba(0, 0, 0, 0.03);
-      padding-left: 0.25rem;
-    }
-    
-    #outlinesContainer ul li:focus {
-      outline: none;
-      background-color: rgba(50, 115, 220, 0.1);
-      padding-left: 0.5rem;
-    }
-    
-    .card-content {
-      padding: 1.25rem;
-      color: var(--text-primary);
-    }
-    
-    .progress.is-primary {
-      height: 0.75rem;
-    }
-    
-    input.input, select.select, textarea.textarea {
-      border-radius: 8px;
-      border-color: var(--border-color);
-      box-shadow: none;
-      transition: all 0.2s;
-      background-color: var(--bg-card);
-      color: var(--text-primary);
-    }
-    
-    input.input:focus, select.select:focus, textarea.textarea:focus {
-      border-color: var(--primary-color);
-      box-shadow: 0 0 0 2px rgba(50, 115, 220, 0.25);
-    }
-    
-    .label {
-      color: var(--text-primary);
-    }
-    
-    .help {
-      font-style: italic;
-      color: var(--text-secondary);
-    }
-    
-    .notification {
-      border-radius: 8px;
-    }
-    
-    /* Animated step indicator */
-    .step-marker {
-      transition: all 0.3s ease;
-    }
-    
-    .step-item.is-active .step-marker {
-      background-color: var(--primary-color);
-      animation: pulse 2s infinite;
-    }
-    
-    @keyframes pulse {
-      0% {
-        box-shadow: 0 0 0 0 rgba(50, 115, 220, 0.7);
-      }
-      70% {
-        box-shadow: 0 0 0 10px rgba(50, 115, 220, 0);
-      }
-      100% {
-        box-shadow: 0 0 0 0 rgba(50, 115, 220, 0);
-      }
-    }
-    
-    /* Custom section padding */
-    .section {
-      padding: 3rem 1.5rem;
-    }
-    
-    /* Card image hover effect */
-    .card-image {
-      overflow: hidden;
-    }
-    
-    .card-image img {
-      transition: transform 0.5s ease;
-    }
-    
-    .card-image:hover img {
-      transform: scale(1.05);
-    }
-    
-    /* Custom scrollbar */
-    ::-webkit-scrollbar {
-      width: 8px;
-    }
-    
-    ::-webkit-scrollbar-track {
-      background: var(--border-color);
-      border-radius: 10px;
-    }
-    
-    ::-webkit-scrollbar-thumb {
-      background: var(--text-secondary);
-      border-radius: 10px;
-    }
-    
-    ::-webkit-scrollbar-thumb:hover {
-      background: var(--primary-color);
-    }
-    
-    /* Add these to your existing style section */
-    .tip-box {
-      background: var(--bg-card);
-      border-left: 4px solid #48c78e;
-      border-radius: 8px;
-      padding: 1rem 1.25rem;
-      margin-bottom: 0.5rem;
-      transition: all 0.3s ease;
-      font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
-      line-height: 1.6;
-      letter-spacing: 0.01em;
-    }
-
-    .tip-box:hover {
-      box-shadow: 0 6px 20px rgba(50,115,220,0.15);
-      transform: translateY(-2px);
-    }
-
-    .tip-box strong, .tip-box b {
-      color: var(--primary-color);
-      font-weight: 600;
-    }
-
-    /* Style for the tips section titles */
-    .tips-section-title {
-      font-family: 'Montserrat', 'Segoe UI', system-ui, sans-serif;
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      margin-bottom: 1.25rem;
-    }
-
-    /* Style for each individual tip */
-    .tip-content {
-      font-size: 1.05rem;
-      color: var(--text-primary);
-    }
-
-    /* Improvement Tips Dropdown with Tailwind CSS */
-    .bg-white {
-      background-color: #fff;
-    }
-
-    .dark\:bg-slate-800 {
-      background-color: #1e293b;
-    }
-
-    .rounded-xl {
-      border-radius: 0.75rem;
-    }
-
-    .shadow-md {
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .border {
-      border-width: 1px;
-    }
-
-    .border-gray-200 {
-      border-color: #e5e7eb;
-    }
-
-    .dark\:border-gray-700 {
-      border-color: #374151;
-    }
-
-    .transition-all {
-      transition-property: all;
-      transition-duration: 150ms;
-      transition-timing-function: ease-in-out;
-    }
-
-    .hover\:shadow-lg:hover {
-      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .p-6 {
-      padding: 1.5rem;
-    }
-
-    .text-lg {
-      font-size: 1.125rem;
-    }
-
-    .font-semibold {
-      font-weight: 600;
-    }
-
-    .mb-4 {
-      margin-bottom: 1rem;
-    }
-
-    .flex {
-      display: flex;
-    }
-
-    .items-center {
-      align-items: center;
-    }
-
-    .cursor-pointer {
-      cursor: pointer;
-    }
-
-    .text-amber-500 {
-      color: #f59e0f;
-    }
-
-    .bg-gradient-to-r {
-      background-image: linear-gradient(to right, var(--tw-gradient-stops));
-    }
-
-    .from-amber-50 {
-      --tw-gradient-from: #fefce8;
-      --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(254, 252, 232, 0));
-    }
-
-    .to-orange-50 {
-      --tw-gradient-to: #ffedd5;
-    }
-
-    .dark\:from-amber-900\/10 {
-      --tw-gradient-from: rgba(250, 204, 21, 0.1);
-    }
-
-    .dark\:to-orange-900\/10 {
-      --tw-gradient-to: rgba(255, 165, 0, 0.1);
-    }
-
-    .rounded-md {
-      border-radius: 0.375rem;
-    }
-
-    .py-2 {
-      padding-top: 0.5rem;
-      padding-bottom: 0.5rem;
-    }
-
-    .px-4 {
-      padding-left: 1rem;
-      padding-right: 1rem;
-    }
-
-    .inline-flex {
-      display: inline-flex;
-    }
-
-    .gap-2 {
-      gap: 0.5rem;
-    }
-
-    .hover\:translate-y-\[-2px\]:hover {
-      transform: translateY(-2px);
-    }
-
-    .hover\:bg-gradient-to-r:hover {
-      background-image: linear-gradient(to right, var(--tw-gradient-stops));
-    }
-
-    .hover\:from-amber-100:hover {
-      --tw-gradient-from: #fffbeb;
-    }
-
-    .hover\:to-orange-100:hover {
-      --tw-gradient-to: #ffe4b5;
-    }
-
-    .dark\:hover\:from-amber-900\/20:hover {
-      --tw-gradient-from: rgba(250, 204, 21, 0.2);
-    }
-
-    .dark\:hover\:to-orange-900\/20:hover {
-      --tw-gradient-to: rgba(255, 165, 0, 0.2);
-    }
-
-    .group {
-      position: relative;
-    }
-
-    .group-open\:rotate-180 {
-      transform: rotate(180deg);
-    }
-
-    .mt-4 {
-      margin-top: 1rem;
-    }
-
-    .space-y-3 > * + * {
-      margin-top: 0.75rem;
-    }
-
-    .list-none {
-      list-style-type: none;
-    }
-
-    .pl-0 {
-      padding-left: 0;
-    }
-
-    /* Add Google Fonts import for better typography */
-  </style>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
 </head>
 
-<body class="light-mode">
-  <div class="loading-overlay" id="loadingOverlay">
-    <div class="has-text-centered">
-      <i class="fas fa-circle-notch fa-spin fa-2x mb-3"></i>
-      <div>Optimising Your Content...</div>
-      <div class="is-size-7 mt-2">Processing with AI</div>
+<body class="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-slate-900 text-gray-800 dark:text-gray-100 transition-all duration-300">
+  <!-- Loading overlay -->
+  <div id="loadingOverlay" class="fixed inset-0 z-50 hidden items-center justify-center bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm">
+    <div class="text-center">
+      <i class="fas fa-circle-notch fa-spin fa-2x mb-3 text-blue-600 dark:text-blue-400"></i>
+      <div class="text-xl font-semibold text-blue-600 dark:text-blue-400">Optimising Your Content...</div>
+      <div class="mt-2 text-xs text-gray-500 dark:text-gray-400">Processing with AI</div>
     </div>
   </div>
 
-  <section class="section">
-    <div class="container">
-      <h1 class="title has-text-centered is-2 mb-5">
-        <i class="fa-solid fa-chart-line has-text-primary"></i> Hospital Video Optimiser
+  <section class="py-12 px-6">
+    <div class="container mx-auto max-w-5xl">
+      <h1 class="mb-5 text-center text-4xl font-bold text-gray-800 dark:text-gray-100">
+        <i class="fa-solid fa-chart-line text-blue-600 dark:text-blue-400 mr-2"></i> Hospital Video Optimiser
       </h1>
-      <p class="subtitle has-text-centered is-5 mb-5">Enhance your hospital's video content with AI-powered insights</p>
+      <p class="mb-10 text-center text-xl text-gray-600 dark:text-gray-300">
+        Enhance your hospital's video content with AI-powered insights
+      </p>
       
-      <!-- New Instructions Header -->
-      <div class="instructions-header">
-        <button id="darkModeToggle" class="dark-mode-toggle">
+      <!-- Instructions Header -->
+      <div class="relative mb-8 rounded-xl bg-white dark:bg-slate-800 p-6 shadow-md dark:shadow-lg border border-gray-200 dark:border-gray-700">
+        <button id="darkModeToggle" class="absolute top-4 right-4 cursor-pointer bg-transparent border-none text-gray-800 dark:text-gray-100 text-xl transition-transform hover:rotate-30">
           <i class="fas fa-moon"></i>
         </button>
-        <h3 class="title is-5 has-text-centered mb-3">How It Works</h3>
-        <div class="instructions-steps">
-          <div class="instruction-step active" id="instructionStep1">
-            <div class="instruction-number">1</div>
-            <div class="instruction-text">Describe Video</div>
+        <h3 class="mb-3 text-center text-lg font-semibold text-gray-800 dark:text-gray-100">How It Works</h3>
+        
+        <div class="my-4 flex justify-around items-center">
+          <div id="instructionStep1" class="flex flex-col items-center relative flex-1 active">
+            <div class="instruction-number w-16 h-16 rounded-full bg-white dark:bg-slate-800 border-2 border-blue-600 flex items-center justify-center text-xl font-bold text-blue-600 mb-4 relative z-10 active:bg-blue-600 active:text-white">1</div>
+            <div class="font-semibold text-center text-gray-800 dark:text-gray-100">Describe Video</div>
           </div>
-          <div class="instruction-step" id="instructionStep2">
-            <div class="instruction-number">2</div>
-            <div class="instruction-text">See Results</div>
+          <div class="w-1/3 h-0.5 bg-gray-200 dark:bg-gray-700"></div>
+          <div id="instructionStep2" class="flex flex-col items-center relative flex-1">
+            <div class="instruction-number w-16 h-16 rounded-full bg-white dark:bg-slate-800 border-2 border-blue-600 flex items-center justify-center text-xl font-bold text-blue-600 mb-4 relative z-10 active:bg-blue-600 active:text-white">2</div>
+            <div class="font-semibold text-center text-gray-800 dark:text-gray-100">See Results</div>
           </div>
         </div>
-        <p class="has-text-centered mt-3">
-          <span id="instructionDetail" class="has-text-grey">Enter the details of your hospital video to receive AI-powered optimization suggestions</span>
+        
+        <p class="mt-3 text-center">
+          <span id="instructionDetail" class="text-gray-500 dark:text-gray-400">Enter the details of your hospital video to receive AI-powered optimization suggestions</span>
         </p>
       </div>
 
       <!-- FORM (Step 1) -->
-      <div id="step1">
-        <div class="box">
-          <h2 class="subtitle has-text-weight-bold">
-            <i class="fas fa-pencil-alt mr-2 has-text-primary"></i>
+      <div id="step1" class="block">
+        <div class="rounded-xl bg-white dark:bg-slate-800 p-6 shadow-md dark:shadow-lg border border-gray-200 dark:border-gray-700 transition-all hover:shadow-lg">
+          <h2 class="mb-6 font-bold text-gray-800 dark:text-gray-100 flex items-center">
+            <i class="fas fa-pencil-alt mr-2 text-blue-600 dark:text-blue-400"></i>
             Step 1 – Describe your video
           </h2>
-          <form id="videoForm">
-            <div class="columns is-multiline">
-              <div class="column is-4">
-                <label class="label">Platform</label>
-                <div class="control has-icons-left">
-                  <div class="select is-fullwidth">
-                    <select name="platform" disabled>
-                      <option value="youtube" selected>YouTube</option>
-                      <option value="tiktok">TikTok</option>
-                      <option value="instagram">Instagram Reels</option>
-                    </select>
-                  </div>
-                  <span class="icon is-small is-left">
-                    <i class="fab fa-youtube has-text-danger"></i>
-                  </span>
-                </div>
-                <p class="help">Currently only YouTube is supported.</p>
-              </div>
-              <div class="column is-4">
-                <label class="label">Category ID</label>
-                <div class="control has-icons-left">
-                  <input class="input" name="category_id" type="number" min="1" value="27" />
-                  <span class="icon is-small is-left">
-                    <i class="fas fa-tag"></i>
-                  </span>
-                </div>
-                <p class="help">Leave default if unsure.</p>
-              </div>
-              <div class="column is-4">
-                <label class="label">Duration (seconds)</label>
-                <div class="control has-icons-left">
-                  <input class="input" name="duration_sec" type="number" min="5" required />
-                  <span class="icon is-small is-left">
-                    <i class="fas fa-clock"></i>
-                  </span>
-                </div>
-                <p class="help">Length of your video in seconds</p>
-              </div>
-            </div>
-
-            <div class="field">
-              <label class="label">Title</label>
-              <div class="control has-icons-left">
-                <input class="input" name="title" maxlength="100" required placeholder="Enter an engaging title for your video" />
-                <span class="icon is-small is-left">
-                  <i class="fas fa-heading"></i>
-                </span>
-              </div>
-              <p class="help">Catchy titles improve click-through rates</p>
-            </div>
-
-            <div class="field">
-              <label class="label">Description</label>
-              <div class="control">
-                <textarea class="textarea" name="description" rows="4" placeholder="Describe what your video is about..."></textarea>
-              </div>
-              <p class="help">A thorough description helps with SEO and viewer understanding</p>
-            </div>
-
-            <div class="field">
-              <label class="label">Tags <span class="has-text-grey">(pipe-separated)</span></label>
-              <div class="control has-icons-left">
-                <textarea class="textarea" name="tags" rows="2" placeholder="cardiology|heart health|angioplasty"></textarea>
-                <span class="icon is-small is-left" style="top: 0.75rem;">
-                  <i class="fas fa-hashtag"></i>
-                </span>
-              </div>
-              <p class="help">Tags help your video appear in searches</p>
-            </div>
-
-            <div class="columns">
-              <div class="column is-3">
-                <div class="field">
-                  <div class="control">
-                    <label class="checkbox">
-                      <input type="checkbox" name="is_hd" checked /> 
-                      <span class="ml-2"><i class="fas fa-tv mr-1"></i> HD video</span>
-                    </label>
+          
+          <form id="videoForm" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div>
+                <label class="block mb-2 text-gray-800 dark:text-gray-100 font-medium">Platform</label>
+                <div class="relative">
+                  <select name="platform" disabled class="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-100 py-2 pl-10 pr-4 appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-600 transition-all">
+                    <option value="youtube" selected>YouTube</option>
+                    <option value="tiktok">TikTok</option>
+                    <option value="instagram">Instagram Reels</option>
+                  </select>
+                  <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <i class="fab fa-youtube text-red-500"></i>
                   </div>
                 </div>
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400 italic">Currently only YouTube is supported.</p>
               </div>
-              <div class="column is-3">
-                <div class="field">
-                  <div class="control">
-                    <label class="checkbox">
-                      <input type="checkbox" name="has_captions" /> 
-                      <span class="ml-2"><i class="fas fa-closed-captioning mr-1"></i> Includes captions</span>
-                    </label>
+              
+              <div>
+                <label class="block mb-2 text-gray-800 dark:text-gray-100 font-medium">Category ID</label>
+                <div class="relative">
+                  <input name="category_id" type="number" min="1" value="27"
+                    class="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-100 py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-600 transition-all" />
+                  <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <i class="fas fa-tag text-gray-400"></i>
                   </div>
                 </div>
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400 italic">Leave default if unsure.</p>
               </div>
-              <div class="column is-6">
-                <label class="label"><i class="fas fa-calendar-alt mr-1"></i> Publish date/time</label>
-                <div class="control">
-                  <input class="input" name="publish_datetime" type="datetime-local" />
+              
+              <div>
+                <label class="block mb-2 text-gray-800 dark:text-gray-100 font-medium">Duration (seconds)</label>
+                <div class="relative">
+                  <input name="duration_sec" type="number" min="5" required
+                    class="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-100 py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-600 transition-all" />
+                  <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <i class="fas fa-clock text-gray-400"></i>
+                  </div>
                 </div>
-                <p class="help">Timing affects viewership</p>
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400 italic">Length of your video in seconds</p>
               </div>
             </div>
 
-            <div class="field has-text-right mt-5">
-              <button type="submit" class="button is-primary is-medium">
-                <span class="icon"><i class="fa-solid fa-wand-magic-sparkles"></i></span>
+            <div>
+              <label class="block mb-2 text-gray-800 dark:text-gray-100 font-medium">Title</label>
+              <div class="relative">
+                <input name="title" maxlength="100" required placeholder="Enter an engaging title for your video"
+                  class="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-100 py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-600 transition-all" />
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                  <i class="fas fa-heading text-gray-400"></i>
+                </div>
+              </div>
+              <p class="mt-1 text-sm text-gray-500 dark:text-gray-400 italic">Catchy titles improve click-through rates</p>
+            </div>
+
+            <div>
+              <label class="block mb-2 text-gray-800 dark:text-gray-100 font-medium">Description</label>
+              <textarea name="description" rows="4" placeholder="Describe what your video is about..."
+                class="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-100 py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-600 transition-all"></textarea>
+              <p class="mt-1 text-sm text-gray-500 dark:text-gray-400 italic">A thorough description helps with SEO and viewer understanding</p>
+            </div>
+
+            <div>
+              <label class="block mb-2 text-gray-800 dark:text-gray-100 font-medium">Tags <span class="text-gray-500">(pipe-separated)</span></label>
+              <div class="relative">
+                <textarea name="tags" rows="2" placeholder="cardiology|heart health|angioplasty"
+                  class="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-100 py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-600 transition-all"></textarea>
+                <div class="absolute top-3 left-0 flex items-center pl-3 pointer-events-none">
+                  <i class="fas fa-hashtag text-gray-400"></i>
+                </div>
+              </div>
+              <p class="mt-1 text-sm text-gray-500 dark:text-gray-400 italic">Tags help your video appear in searches</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-6 gap-6">
+              <div class="md:col-span-2">
+                <label class="flex items-center">
+                  <input type="checkbox" name="is_hd" checked class="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                  <span class="ml-2"><i class="fas fa-tv mr-1"></i> HD video</span>
+                </label>
+              </div>
+              <div class="md:col-span-2">
+                <label class="flex items-center">
+                  <input type="checkbox" name="has_captions" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                  <span class="ml-2"><i class="fas fa-closed-captioning mr-1"></i> Includes captions</span>
+                </label>
+              </div>
+              <div class="md:col-span-2">
+                <label class="block mb-2 text-gray-800 dark:text-gray-100 font-medium">
+                  <i class="fas fa-calendar-alt mr-1"></i> Publish date/time
+                </label>
+                <input name="publish_datetime" type="datetime-local"
+                  class="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-100 py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-600 transition-all" />
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400 italic">Timing affects viewership</p>
+              </div>
+            </div>
+
+            <div class="flex justify-end mt-8">
+              <button type="submit" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-sm hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center gap-2">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
                 <span>Optimise</span>
               </button>
             </div>
@@ -756,33 +181,30 @@ menu: nav/home.html
       </div>
 
       <!-- RESULTS (Step 2) -->
-      <div id="step2" class="is-hidden">
-        <h2 class="subtitle has-text-weight-bold mb-4">
-          <i class="fas fa-chart-line mr-2 has-text-primary"></i>
+      <div id="step2" class="hidden">
+        <h2 class="mb-6 font-bold text-gray-800 dark:text-gray-100 flex items-center">
+          <i class="fas fa-chart-line mr-2 text-blue-600 dark:text-blue-400"></i>
           Step 2 – Results
         </h2>
 
         <!-- Engagement Score Card -->
-        <div class="box">
-          <h3 class="title is-5 mb-4">
-            <i class="fas fa-gauge-high mr-2 has-text-primary"></i> 
+        <div class="mb-8 rounded-xl bg-white dark:bg-slate-800 p-6 shadow-md dark:shadow-lg border border-gray-200 dark:border-gray-700 transition-all hover:shadow-lg">
+          <h3 class="mb-4 font-semibold text-gray-800 dark:text-gray-100 flex items-center">
+            <i class="fas fa-gauge-high mr-2 text-blue-600 dark:text-blue-400"></i> 
             Predicted Engagement
           </h3>
-          <div class="columns is-vcentered">
-            <div class="column is-4">
+          <div class="flex flex-col md:flex-row items-center gap-6">
+            <div class="w-full md:w-1/3">
               <canvas id="engagementChart"></canvas>
             </div>
-            <div class="column">
-              <progress
-                id="engagementProgress"
-                class="progress is-primary is-medium"
-                value="0"
-                max="100"
-              ></progress>
-              <p class="mt-3 has-text-centered">
-                Engagement Score: <strong id="engagementScore" class="is-size-4 has-text-primary">N/A</strong> / 100
+            <div class="w-full md:w-2/3">
+              <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+                <div id="engagementProgress" class="bg-blue-600 h-3 rounded-full" style="width: 0%"></div>
+              </div>
+              <p class="mt-3 text-center">
+                Engagement Score: <strong id="engagementScore" class="text-2xl text-blue-600 dark:text-blue-400">N/A</strong> / 100
               </p>
-              <p class="has-text-grey has-text-centered is-size-7 mt-2">
+              <p class="text-center text-xs text-gray-500 dark:text-gray-400 mt-2">
                 Based on machine learning analysis of similar content
               </p>
             </div>
@@ -790,47 +212,53 @@ menu: nav/home.html
         </div>
 
         <!-- Sample Outlines Tabs -->
-        <div class="outline-box">
-          <h3 class="title is-5 mb-4">
-            <i class="fas fa-clipboard-list mr-2 has-text-primary"></i> 
+        <div class="mb-8 rounded-xl bg-white dark:bg-slate-800 p-8 shadow-md dark:shadow-lg border border-gray-200 dark:border-gray-700">
+          <h3 class="mb-4 font-semibold text-gray-800 dark:text-gray-100 flex items-center">
+            <i class="fas fa-clipboard-list mr-2 text-blue-600 dark:text-blue-400"></i> 
             AI-Generated Outlines
           </h3>
-          <div class="tabs is-centered">
-            <ul id="outlineTabs">
-              <li class="is-active" data-index="0"><a>Outline 1</a></li>
-              <li data-index="1"><a>Outline 2</a></li>
-              <li data-index="2"><a>Outline 3</a></li>
+          <div class="border-b border-gray-200 dark:border-gray-700">
+            <ul id="outlineTabs" class="flex flex-wrap justify-center -mb-px">
+              <li data-index="0" class="mr-2">
+                <a class="inline-block py-2 px-4 border-b-2 border-blue-600 text-blue-600 font-semibold">Outline 1</a>
+              </li>
+              <li data-index="1" class="mr-2">
+                <a class="inline-block py-2 px-4 border-b-2 border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 hover:border-gray-300">Outline 2</a>
+              </li>
+              <li data-index="2">
+                <a class="inline-block py-2 px-4 border-b-2 border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 hover:border-gray-300">Outline 3</a>
+              </li>
             </ul>
           </div>
-          <div id="outlinesContainer" class="px-4">
-            <div class="content" data-index="0" style="display:block;">
-              <ul id="outlineList0" class="pl-5"></ul>
+          <div id="outlinesContainer" class="px-4 py-4">
+            <div class="block" data-index="0">
+              <ul id="outlineList0" class="pl-5 space-y-2 list-disc"></ul>
             </div>
-            <div class="content" data-index="1" style="display:none;">
-              <ul id="outlineList1" class="pl-5"></ul>
+            <div class="hidden" data-index="1">
+              <ul id="outlineList1" class="pl-5 space-y-2 list-disc"></ul>
             </div>
-            <div class="content" data-index="2" style="display:none;">
-              <ul id="outlineList2" class="pl-5"></ul>
+            <div class="hidden" data-index="2">
+              <ul id="outlineList2" class="pl-5 space-y-2 list-disc"></ul>
             </div>
           </div>
-          <div class="has-text-centered mt-5">
-            <button id="reEvalBtn" class="button is-link">
-              <span class="icon"><i class="fas fa-sync-alt"></i></span>
+          <div class="text-center mt-6">
+            <button id="reEvalBtn" class="px-4 py-2 bg-blue-100 hover:bg-blue-200 dark:bg-blue-900/30 dark:hover:bg-blue-800/40 text-blue-700 dark:text-blue-300 font-medium rounded-lg transition-all hover:-translate-y-0.5 flex items-center gap-2 mx-auto">
+              <i class="fas fa-sync-alt"></i>
               <span>Re-evaluate with these changes</span>
             </button>
           </div>
         </div>
 
         <!-- Improvement Tips Dropdown -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md border border-gray-200 dark:border-gray-700 transition-all hover:shadow-lg p-6">
+        <div class="mb-8 bg-white dark:bg-slate-800 rounded-xl shadow-md border border-gray-200 dark:border-gray-700 transition-all hover:shadow-lg p-6">
           <h3 class="text-lg font-semibold mb-4 flex items-center">
             <i class="fas fa-lightbulb mr-2 text-yellow-400"></i> 
             Improvement Tips <span class="text-xs text-gray-500 ml-2">(click to expand)</span>
           </h3>
           <details id="allTipsDropdown" class="group">
-            <summary class="cursor-pointer font-semibold text-amber-500 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/10 dark:to-orange-900/10 rounded-md py-2 px-4 inline-flex items-center gap-2 transition-all hover:translate-y-[-2px] hover:bg-gradient-to-r hover:from-amber-100 hover:to-orange-100 dark:hover:from-amber-900/20 dark:hover:to-orange-900/20">
+            <summary class="cursor-pointer font-semibold text-amber-500 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/10 dark:to-orange-900/10 rounded-md py-2 px-4 inline-flex items-center gap-2 transition-all hover:-translate-y-0.5 hover:bg-gradient-to-r hover:from-amber-100 hover:to-orange-100 dark:hover:from-amber-900/20 dark:hover:to-orange-900/20">
               <span class="flex items-center">
-                <span class="transform transition-transform group-open:rotate-180 inline-block mr-2">
+                <span class="transform transition-transform duration-200 group-open:rotate-180 inline-block mr-2">
                   <i class="fas fa-chevron-down text-sm"></i>
                 </span>
                 Show All Tips
@@ -841,32 +269,34 @@ menu: nav/home.html
         </div>
 
         <!-- Similar Videos Filter + Cards -->
-        <div class="box">
-          <h3 class="title is-5 mb-4">
-            <i class="fas fa-film mr-2 has-text-primary"></i> 
+        <div class="mb-8 rounded-xl bg-white dark:bg-slate-800 p-6 shadow-md dark:shadow-lg border border-gray-200 dark:border-gray-700 transition-all hover:shadow-lg">
+          <h3 class="mb-4 font-semibold text-gray-800 dark:text-gray-100 flex items-center">
+            <i class="fas fa-film mr-2 text-blue-600 dark:text-blue-400"></i> 
             Similar High-Performing Videos
           </h3>
-          <div class="field mb-5">
-            <div class="control has-icons-left has-icons-right">
+          <div class="mb-5">
+            <div class="relative">
               <input
-                class="input"
                 type="text"
                 id="videoFilter"
                 placeholder="Filter by title or tag..."
+                class="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-100 py-2 pl-10 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-600 transition-all"
               />
-              <span class="icon is-left"><i class="fas fa-search"></i></span>
-              <span class="icon is-right video-filter-clear" style="pointer-events: all; cursor: pointer;">
-                <i class="fas fa-times-circle"></i>
-              </span>
+              <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <i class="fas fa-search text-gray-400"></i>
+              </div>
+              <div class="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer video-filter-clear">
+                <i class="fas fa-times-circle text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"></i>
+              </div>
             </div>
           </div>
-          <div class="columns is-multiline" id="videoCards"></div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="videoCards"></div>
         </div>
         
         <!-- Add back button -->
-        <div class="has-text-centered mt-5">
-          <button id="goBackBtn" class="button is-light">
-            <span class="icon"><i class="fas fa-arrow-left"></i></span>
+        <div class="text-center mt-8">
+          <button id="goBackBtn" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 font-medium rounded-lg transition-all hover:-translate-y-0.5 flex items-center gap-2 mx-auto">
+            <i class="fas fa-arrow-left"></i>
             <span>Edit Video Details</span>
           </button>
         </div>
@@ -880,7 +310,6 @@ menu: nav/home.html
       const form = document.getElementById("videoForm");
       const step1 = document.getElementById("step1");
       const step2 = document.getElementById("step2");
-      const steps = document.querySelectorAll(".step-item");
       const loading = document.getElementById("loadingOverlay");
       const instructionStep1 = document.getElementById("instructionStep1");
       const instructionStep2 = document.getElementById("instructionStep2");
@@ -892,18 +321,20 @@ menu: nav/home.html
       // Check for saved preference
       const savedTheme = localStorage.getItem('theme');
       if (savedTheme) {
-        document.body.className = savedTheme === 'dark' ? 'dark-mode' : 'light-mode';
+        if (savedTheme === 'dark') {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
         updateThemeIcon();
       }
       
       darkModeToggle.addEventListener('click', () => {
-        if (document.body.classList.contains('dark-mode')) {
-          document.body.classList.remove('dark-mode');
-          document.body.classList.add('light-mode');
+        if (document.documentElement.classList.contains('dark')) {
+          document.documentElement.classList.remove('dark');
           localStorage.setItem('theme', 'light');
         } else {
-          document.body.classList.remove('light-mode');
-          document.body.classList.add('dark-mode');
+          document.documentElement.classList.add('dark');
           localStorage.setItem('theme', 'dark');
         }
         updateThemeIcon();
@@ -911,7 +342,7 @@ menu: nav/home.html
       
       function updateThemeIcon() {
         const icon = darkModeToggle.querySelector('i');
-        if (document.body.classList.contains('dark-mode')) {
+        if (document.documentElement.classList.contains('dark')) {
           icon.className = 'fas fa-sun';
         } else {
           icon.className = 'fas fa-moon';
@@ -930,12 +361,16 @@ menu: nav/home.html
       // Add back button functionality
       if (document.getElementById('goBackBtn')) {
         document.getElementById('goBackBtn').addEventListener('click', () => {
-          step2.classList.add('is-hidden');
-          step1.classList.remove('is-hidden');
+          step2.classList.add('hidden');
+          step1.classList.remove('hidden');
           
           // Update instruction steps
-          instructionStep1.classList.add('active');
-          instructionStep2.classList.remove('active');
+          instructionStep1.querySelector('.instruction-number').classList.add('bg-white', 'dark:bg-slate-800', 'text-blue-600');
+          instructionStep1.querySelector('.instruction-number').classList.remove('bg-blue-600', 'text-white');
+          
+          instructionStep2.querySelector('.instruction-number').classList.add('bg-white', 'dark:bg-slate-800', 'text-blue-600');
+          instructionStep2.querySelector('.instruction-number').classList.remove('bg-blue-600', 'text-white');
+          
           instructionDetail.textContent = 'Enter the details of your hospital video to receive AI-powered optimization suggestions';
         });
       }
@@ -946,7 +381,7 @@ menu: nav/home.html
         data: {
           datasets: [{
             data: [0, 100],
-            backgroundColor: ["#3273dc","#eee"]
+            backgroundColor: ["#3b82f6","#e5e7eb"]
           }]
         },
         options: {
@@ -965,35 +400,40 @@ menu: nav/home.html
       if (outlineTabs) {
         outlineTabs.onclick = e => {
           if(!e.target.closest("li")) return;
-          outlineTabs.querySelectorAll("li").forEach(li=>li.classList.remove("is-active"));
-          e.target.closest("li").classList.add("is-active");
-          const idx = e.target.closest("li").dataset.index;
-          document.querySelectorAll("#outlinesContainer .content")
-            .forEach(div=>div.style.display = div.dataset.index===idx?"block":"none");
+          
+          outlineTabs.querySelectorAll("li a").forEach(a => {
+            a.classList.remove("border-blue-600", "text-blue-600", "font-semibold");
+            a.classList.add("border-transparent", "text-gray-500", "dark:text-gray-400");
+          });
+          
+          const selected = e.target.closest("li");
+          selected.querySelector("a").classList.remove("border-transparent", "text-gray-500", "dark:text-gray-400");
+          selected.querySelector("a").classList.add("border-blue-600", "text-blue-600", "font-semibold");
+          
+          const idx = selected.dataset.index;
+          document.querySelectorAll("#outlinesContainer > div")
+            .forEach(div => {
+              if(div.dataset.index===idx) {
+                div.classList.remove('hidden');
+                div.classList.add('block');
+              } else {
+                div.classList.remove('block');
+                div.classList.add('hidden');
+              }
+            });
         };
-      }
-
-      // add "+" to tip
-      function makePlusBtn(tipIndex){
-        const btn = document.createElement("button");
-        btn.className = "button is-small is-success";
-        btn.innerHTML = "<i class='fas fa-plus'></i>";
-        btn.onclick = () => {
-          const active = outlineTabs.querySelector("li.is-active").dataset.index;
-          const li = document.createElement("li");
-          li.contentEditable = "true";
-          li.textContent = tipsArray[tipIndex];
-          document.getElementById("outlineList"+active).appendChild(li);
-        };
-        return btn;
       }
 
       let currentPayload = null, tipsArray = [];
 
       async function runOptimize(){
         // Update instructions
-        instructionStep1.classList.remove('active');
-        instructionStep2.classList.add('active');
+        instructionStep1.querySelector('.instruction-number').classList.remove('bg-white', 'dark:bg-slate-800', 'text-blue-600');
+        instructionStep1.querySelector('.instruction-number').classList.add('bg-blue-600', 'text-white');
+        
+        instructionStep2.querySelector('.instruction-number').classList.remove('bg-white', 'dark:bg-slate-800', 'text-blue-600');
+        instructionStep2.querySelector('.instruction-number').classList.add('bg-blue-600', 'text-white');
+        
         instructionDetail.textContent = 'View AI-powered suggestions and compare with similar high-performing videos';
         
         // same as submit logic
@@ -1030,15 +470,15 @@ menu: nav/home.html
           loading.style.display = "none";
 
           // switch to step2
-          step1.classList.add("is-hidden");
-          step2.classList.remove("is-hidden");
+          step1.classList.add("hidden");
+          step2.classList.remove("hidden");
 
           // predicted engagement animate
           const pred = clamp(result.predicted_engagement);
           engagementChart.data.datasets[0].data = [pred,100-pred];
           engagementChart.update({duration:800});
           document.getElementById("engagementScore").textContent = result.predicted_engagement.toFixed(2);
-          document.getElementById("engagementProgress").value = pred;
+          document.getElementById("engagementProgress").style.width = pred + '%';
 
           // set up three outlines from tips (first 3 tips each)
           tipsArray = result.gemini_tips.tips
@@ -1053,6 +493,7 @@ menu: nav/home.html
                 const parts = tipsArray[i].split(/[:\-–]/).slice(1).join("");
                 const li = document.createElement("li");
                 li.contentEditable="true";
+                li.className = "py-2 border-b border-gray-200 dark:border-gray-700 transition-all duration-200 text-gray-800 dark:text-gray-100 hover:bg-gray-50/30 hover:pl-1 focus:outline-none focus:bg-blue-500/10 focus:pl-2";
                 li.textContent = parts || tipsArray[i];
                 outlineUl.appendChild(li);
               }
@@ -1084,9 +525,10 @@ menu: nav/home.html
                 
                 // Add "+" button functionality
                 li.querySelector("button").onclick = () => {
-                  const active = outlineTabs.querySelector("li.is-active").dataset.index;
+                  const active = outlineTabs.querySelector("li a.border-blue-600").closest('li').dataset.index;
                   const outlineLi = document.createElement("li");
                   outlineLi.contentEditable = "true";
+                  outlineLi.className = "py-2 border-b border-gray-200 dark:border-gray-700 transition-all duration-200 text-gray-800 dark:text-gray-100 hover:bg-gray-50/30 hover:pl-1 focus:outline-none focus:bg-blue-500/10 focus:pl-2";
                   outlineLi.textContent = tip.replace(/\*(.*?)\*/g, '$1'); // Remove asterisks in outline
                   document.getElementById("outlineList" + active).appendChild(outlineLi);
                 };
@@ -1107,40 +549,37 @@ menu: nav/home.html
           if (cards) {
             cards.innerHTML = "";
             (result.reference_videos||[]).forEach(v=>{
-              const col = document.createElement("div");
-              col.className="column is-4";
-              col.innerHTML=`
-                <div class="card video-card">
-                  <div class="card-image">
-                    <figure class="image is-16by9">
-                      <img src="https://img.youtube.com/vi/${v["video id"] || ""}/hqdefault.jpg" alt="Thumbnail">
-                      <div class="play-button" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:50px; height:50px; background:rgba(255,0,0,0.8); border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer;">
-                        <i class="fas fa-play" style="color:white; font-size:20px;"></i>
-                      </div>
-                    </figure>
+              const videoCard = document.createElement("div");
+              videoCard.className="rounded-xl overflow-hidden shadow-md dark:shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-xl bg-white dark:bg-slate-800";
+              
+              videoCard.innerHTML=`
+                <div class="overflow-hidden">
+                  <img src="https://img.youtube.com/vi/${v["video id"] || ""}/hqdefault.jpg" alt="Thumbnail" class="w-full h-48 object-cover transition-transform duration-500 hover:scale-105">
+                  <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-red-600/80 rounded-full flex items-center justify-center cursor-pointer">
+                    <i class="fas fa-play text-white text-lg"></i>
                   </div>
-                  <div class="card-content">
-                    <p class="title is-6">${v["video title"]}</p>
-                    <p class="subtitle is-7">
-                      <i class="fas fa-eye"></i> ${v["view count"]} &nbsp;
-                      <i class="fas fa-thumbs-up"></i> ${v["like count"]} &nbsp;
-                      <i class="fas fa-comment"></i> ${v["comment count"]}
-                    </p>
-                    <p class="is-size-7"><strong>Length:</strong> ${v["length_sec"]}s</p>
-                    <div class="tags are-small mt-2">
-                      ${(v["tags"] || "").split('|').slice(0,3).map(tag => 
-                        `<span class="tag is-info is-light">${tag}</span>`
-                      ).join('')}
-                      ${v["tags"] && v["tags"].split('|').length > 3 ? 
-                        `<span class="tag is-light">+${v["tags"].split('|').length - 3} more</span>` : ''}
-                    </div>
+                </div>
+                <div class="p-5">
+                  <h4 class="font-medium text-gray-800 dark:text-gray-100 mb-2">${v["video title"]}</h4>
+                  <div class="flex items-center text-xs text-gray-500 dark:text-gray-400 mb-2">
+                    <span class="mr-3"><i class="fas fa-eye mr-1"></i> ${v["view count"]}</span>
+                    <span class="mr-3"><i class="fas fa-thumbs-up mr-1"></i> ${v["like count"]}</span>
+                    <span><i class="fas fa-comment mr-1"></i> ${v["comment count"]}</span>
                   </div>
-                </div>`;
-              cards.appendChild(col);
+                  <p class="text-xs text-gray-600 dark:text-gray-300"><strong>Length:</strong> ${v["length_sec"]}s</p>
+                  <div class="flex flex-wrap gap-1 mt-3">
+                    ${(v["tags"] || "").split('|').slice(0,3).map(tag => 
+                      `<span class="px-2 py-1 text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 rounded">${tag}</span>`
+                    ).join('')}
+                    ${v["tags"] && v["tags"].split('|').length > 3 ? 
+                      `<span class="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-300 rounded">+${v["tags"].split('|').length - 3} more</span>` : ''}
+                  </div>
+                </div>
+              `;
+              cards.appendChild(videoCard);
               
               // Make entire card clickable to YouTube
               if (v["video id"]) {
-                const videoCard = col.querySelector('.video-card');
                 videoCard.style.cursor = 'pointer';
                 videoCard.addEventListener('click', () => {
                   window.open(`https://www.youtube.com/watch?v=${v["video id"]}`, '_blank');
@@ -1154,8 +593,8 @@ menu: nav/home.html
           if (videoFilter && cards) {
             videoFilter.oninput = ev => {
               const q = ev.target.value.toLowerCase();
-              cards.childNodes.forEach(col => {
-                col.style.display = col.textContent.toLowerCase().includes(q) ? "" : "none";
+              cards.childNodes.forEach(card => {
+                card.style.display = card.textContent.toLowerCase().includes(q) ? "" : "none";
               });
             };
           }
@@ -1190,7 +629,7 @@ menu: nav/home.html
             engagementChart.data.datasets[0].data = [imp,100-imp];
             engagementChart.update({duration:800});
             document.getElementById("engagementScore").textContent = result.improved_engagement.toFixed(2);
-            document.getElementById("engagementProgress").value = imp;
+            document.getElementById("engagementProgress").style.width = imp + '%';
           })
           .catch(error => {
             console.error("Re-evaluation failed:", error);
@@ -1199,20 +638,6 @@ menu: nav/home.html
           });
         };
       }
-
-      form.addEventListener("submit", e => {
-        const hours = parseInt(form.elements["duration_hours"].value || 0);
-        const minutes = parseInt(form.elements["duration_minutes"].value || 0);
-        const seconds = parseInt(form.elements["duration_seconds"].value || 0);
-        
-        const totalSeconds = (hours * 3600) + (minutes * 60) + seconds;
-        
-        if (totalSeconds <= 0) {
-          e.preventDefault();
-          alert("Please enter a duration greater than 0 seconds.");
-          return false;
-        }
-      });
     });
   </script>
 </body>
