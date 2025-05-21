@@ -131,15 +131,8 @@ show_reading_time: false
                 usernameElement.textContent = userData.name || userData.username || "User";
             }
             
-            // Update profile picture ONLY if we have the required data
-            const profileImg = document.getElementById('profile-picture');
-            if (profileImg && userData.pfp && (userData.uid || userData.id)) {
-                const userIdValue = userData.uid || userData.id;
-                profileImg.onerror = () => {
-                    profileImg.src = "{{site.baseurl}}/assets/images/default-profile.jpg";
-                };
-                profileImg.src = `${pythonURI}/uploads/${userIdValue}/${userData.pfp}`;
-            }
+            // IMPORTANT: ALWAYS use the default profile picture - don't try to fetch a custom one
+            // This should prevent any issues with broken image URLs
             
             // Load posts
             const userPostsContainer = document.getElementById('user-posts');
