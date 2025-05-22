@@ -33,6 +33,12 @@ menu: nav/home.html
     </div>
   </div>
 
+  <!-- Notification container - add after loadingOverlay div -->
+  <div id="notification" class="fixed -top-20 left-1/2 transform -translate-x-1/2 bg-red-600 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-2 transition-all duration-500 z-50">
+    <i class="fas fa-exclamation-circle"></i>
+    <span class="notification-message"></span>
+  </div>
+
   <section class="py-12 px-6">
     <div class="container mx-auto max-w-5xl">
       <h1 class="mb-5 text-center text-4xl font-bold text-gray-800">
@@ -63,7 +69,7 @@ menu: nav/home.html
         </p>
       </div>
 
-      <!-- FORM (Step 1) -->
+      <!-- Updated FORM (Step 1): Removed Category ID block and changed grid classes -->
       <div id="step1" class="block">
         <div class="rounded-xl bg-white p-6 shadow-md border border-gray-200 transition-all hover:shadow-lg">
           <h2 class="mb-6 font-bold text-gray-800 flex items-center">
@@ -72,7 +78,7 @@ menu: nav/home.html
           </h2>
           
           <form id="videoForm" class="space-y-6">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label class="block mb-2 text-gray-800 font-medium">Platform</label>
                 <div class="relative">
@@ -86,18 +92,6 @@ menu: nav/home.html
                   </div>
                 </div>
                 <p class="mt-1 text-sm text-gray-500 italic">Currently only YouTube is supported.</p>
-              </div>
-              
-              <div>
-                <label class="block mb-2 text-gray-800 font-medium">Category ID</label>
-                <div class="relative">
-                  <input name="category_id" type="number" min="1" value="27"
-                    class="w-full rounded-lg border border-gray-200 bg-white text-gray-800 py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-600 transition-all" />
-                  <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                    <i class="fas fa-tag text-gray-400"></i>
-                  </div>
-                </div>
-                <p class="mt-1 text-sm text-gray-500 italic">Leave default if unsure.</p>
               </div>
               
               <div>
@@ -127,7 +121,8 @@ menu: nav/home.html
 
             <div>
               <label class="block mb-2 text-gray-800 font-medium">Description</label>
-              <textarea name="description" rows="4" placeholder="Describe what your video is about..."
+              <!-- Added required attribute -->
+              <textarea name="description" rows="4" required placeholder="Describe what your video is about..."
                 class="w-full rounded-lg border border-gray-200 bg-white text-gray-800 py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-600 transition-all"></textarea>
               <p class="mt-1 text-sm text-gray-500 italic">A thorough description helps with SEO and viewer understanding</p>
             </div>
@@ -144,14 +139,14 @@ menu: nav/home.html
               <p class="mt-1 text-sm text-gray-500 italic">Tags help your video appear in searches</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-6 gap-6">
-              <div class="md:col-span-2">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
                 <label class="flex items-center">
                   <input type="checkbox" name="is_hd" checked class="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
                   <span class="ml-2"><i class="fas fa-tv mr-1"></i> HD video</span>
                 </label>
               </div>
-              <div class="md:col-span-2">
+              <div>
                 <label class="flex items-center">
                   <input type="checkbox" name="has_captions" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
                   <span class="ml-2"><i class="fas fa-closed-captioning mr-1"></i> Includes captions</span>
@@ -338,7 +333,7 @@ menu: nav/home.html
         });
       }
 
-      // Chart.js gauge
+      // Chart.js gauge and helper function
       let engagementChart = new Chart(document.getElementById("engagementChart"), {
         type: "doughnut",
         data: {
@@ -354,8 +349,6 @@ menu: nav/home.html
           plugins: { legend: { display: false } }
         }
       });
-
-      // helper: clamp 0–100
       function clamp(x){ return Math.max(0, Math.min(x,100)); }
 
       // handle outline tabs
@@ -389,7 +382,44 @@ menu: nav/home.html
 
       let currentPayload = null, tipsArray = [];
 
+      function showNotification(message) {
+        const notif = document.getElementById("notification");
+        notif.querySelector('.notification-message').textContent = message;
+        notif.style.top = "20px";
+        setTimeout(() => {
+          notif.style.top = "-100px";
+        }, 3000);
+      }
+
       async function runOptimize(){
+        const fd = new FormData(form);
+        const tags = fd.get("tags") || "";
+        const pubDate = fd.get("publish_datetime") || "";
+        
+        let hasEmptyFields = false;
+        
+        if(tags.trim() === "" && !window.tagNotificationShown) {
+          setTimeout(() => {
+            showNotification("Tags aren't filled out");
+            window.tagNotificationShown = true;
+          }, 0);
+          hasEmptyFields = true;
+        }
+        
+        if(pubDate.trim() === "" && !window.dateNotificationShown) {
+          setTimeout(() => {
+            showNotification("Date isn't filled out");
+            window.dateNotificationShown = true;
+          }, 1000); // Changed from 500 to 1000ms for 1 second delay
+          hasEmptyFields = true;
+        }
+        
+        if(hasEmptyFields) return false;
+
+        // Reset notification flags if fields are filled
+        if(tags.trim() !== "") window.tagNotificationShown = false;
+        if(pubDate.trim() !== "") window.dateNotificationShown = false;
+        
         // Update instructions
         instructionStep1.querySelector('.instruction-number').classList.remove('bg-white', 'text-blue-600');
         instructionStep1.querySelector('.instruction-number').classList.add('bg-blue-600', 'text-white');
@@ -399,22 +429,20 @@ menu: nav/home.html
         
         instructionDetail.textContent = 'View AI-powered suggestions and compare with similar high-performing videos';
         
-        // same as submit logic
         loading.style.display = "flex";
-        const fd = new FormData(form);
         const data = {
           title: fd.get("title"),
           description: fd.get("description"),
           duration_sec: +fd.get("duration_sec"),
-          tags: fd.get("tags"),
-          category_id: +fd.get("category_id"),
-          is_hd: fd.get("is_hd")==="on"?1:0,
-          has_captions: fd.get("has_captions")==="on"?1:0
+          tags: tags,
+          // Category ID removed; no longer sent
+          is_hd: fd.get("is_hd") === "on" ? 1 : 0,
+          has_captions: fd.get("has_captions") === "on" ? 1 : 0
         };
         const pd = fd.get("publish_datetime");
         if(pd){
           const dt = new Date(pd);
-          data.publish_dow = dt.getDay()===0 ? 6 : dt.getDay()-1;
+          data.publish_dow = dt.getDay() === 0 ? 6 : dt.getDay()-1;
           data.publish_hour = dt.getHours();
         } else {
           data.publish_dow = 0; data.publish_hour = 12;
@@ -424,10 +452,9 @@ menu: nav/home.html
         try {
           const res = await fetch(`${API_BASE_URL}/api/optimize`, {
             method: "POST",
-            headers: {"Content-Type":"application/json"},
+            headers: {"Content-Type": "application/json"},
             body: JSON.stringify(data)
           });
-          
           const raw = await res.text();
           const result = JSON.parse(raw.replace(/\bNaN\b/g,"null"));
           loading.style.display = "none";
@@ -436,10 +463,9 @@ menu: nav/home.html
           step1.classList.add("hidden");
           step2.classList.remove("hidden");
 
-          // predicted engagement animate
           const pred = clamp(result.predicted_engagement);
-          engagementChart.data.datasets[0].data = [pred,100-pred];
-          engagementChart.update({duration:800});
+          engagementChart.data.datasets[0].data = [pred, 100 - pred];
+          engagementChart.update({ duration: 800 });
           document.getElementById("engagementScore").textContent = result.predicted_engagement.toFixed(2);
           document.getElementById("engagementProgress").style.width = pred + '%';
 
@@ -486,6 +512,8 @@ menu: nav/home.html
                   </div>
                 `;
                 
+                tipsList.appendChild(li);
+                
                 // Add "+" button functionality
                 li.querySelector("button").onclick = () => {
                   const active = outlineTabs.querySelector("li a.border-blue-600").closest('li').dataset.index;
@@ -495,8 +523,6 @@ menu: nav/home.html
                   outlineLi.textContent = tip.replace(/\*(.*?)\*/g, '$1'); // Remove asterisks in outline
                   document.getElementById("outlineList" + active).appendChild(outlineLi);
                 };
-                
-                tipsList.appendChild(li);
               });
             } else {
               tipsList.innerHTML = `
@@ -514,7 +540,6 @@ menu: nav/home.html
             (result.reference_videos||[]).forEach(v=>{
               const videoCard = document.createElement("div");
               videoCard.className="rounded-xl overflow-hidden shadow-md transition-all duration-300 hover:-translate-y-2 hover:shadow-xl bg-white";
-              
               videoCard.innerHTML=`
                 <div class="overflow-hidden">
                   <img src="https://img.youtube.com/vi/${v["video id"] || ""}/hqdefault.jpg" alt="Thumbnail" class="w-full h-48 object-cover transition-transform duration-500 hover:scale-105">
@@ -524,7 +549,8 @@ menu: nav/home.html
                   <div class="flex items-center text-xs text-gray-500 mb-2">
                     <span class="mr-3"><i class="fas fa-eye mr-1"></i> ${v["view count"]}</span>
                     <span class="mr-3"><i class="fas fa-thumbs-up mr-1"></i> ${v["like count"]}</span>
-                    <span><i class="fas fa-comment mr-1"></i> ${v["comment count"]}</span>
+                    ${v["tags"].split('|').length > 3 ? 
+                      `<span class="mr-3"><i class="fas fa-comment mr-1"></i> ${v["comment count"]}</span>` : ''}
                   </div>
                   <p class="text-xs text-gray-600"><strong>Length:</strong> ${v["length_sec"]}s</p>
                   <div class="flex flex-wrap gap-1 mt-3">
@@ -561,16 +587,15 @@ menu: nav/home.html
         } catch (error) {
           console.error("Optimization failed:", error);
           loading.style.display = "none";
-          alert("Sorry, there was an error connecting to the optimization service. Please try again later.");
         }
       }
 
       // initial form submit
-      form.addEventListener("submit", e=>{
+      form.addEventListener("submit", e=>{ 
         e.preventDefault();
-        runOptimize();
+        runOptimize();        
       });
-
+      
       // re-evaluate button
       const reEvalBtn = document.getElementById("reEvalBtn");
       if (reEvalBtn) {
@@ -594,11 +619,10 @@ menu: nav/home.html
           .catch(error => {
             console.error("Re-evaluation failed:", error);
             loading.style.display = "none";
-            alert("Sorry, there was an error processing your request.");
           });
         };
       }
     });
   </script>
-</body>
+</body>});
 </html>
