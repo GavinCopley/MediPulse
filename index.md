@@ -284,7 +284,7 @@ menu: nav/home.html
                         <p class="text-gray-600 mb-6">Browse and compare hospitals across the country and their social media presence.</p>
                     </div>
                     <div class="flex justify-end">
-                        <a href="{{site.baseurl}}/hospitalinfo" class="inline-flex items-center bg-teal-600 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-teal-700 transition">
+                        <a href="{{site.baseurl}}/Hospital" class="inline-flex items-center bg-teal-600 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-teal-700 transition">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16l2.879-2.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242zM21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
