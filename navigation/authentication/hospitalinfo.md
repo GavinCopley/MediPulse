@@ -79,7 +79,24 @@ menu: nav/home.html
   </div>
 
   <!-- Results Section -->
-  <div id="results-count" class="text-gray-600 mb-4 text-sm">Loading hospitals...</div>
+  <!-- Add a map view option to see hospitals geographically -->
+  <div class="mb-6 flex justify-between items-center">
+    <div id="results-count" class="text-gray-600 text-sm">Loading hospitals...</div>
+    <div class="flex items-center">
+      <button type="button" id="list-view" class="bg-indigo-600 text-white px-3 py-1 rounded-l-md text-sm">
+        <i class="fas fa-list mr-1"></i> List
+      </button>
+      <button type="button" id="map-view" class="bg-gray-200 text-gray-700 px-3 py-1 rounded-r-md text-sm">
+        <i class="fas fa-map-marker-alt mr-1"></i> Map
+      </button>
+    </div>
+  </div>
+
+  <div id="map-container" class="hidden h-[500px] mb-6 rounded-lg shadow-md border border-gray-200 overflow-hidden">
+    <!-- Map will be displayed here -->
+    <div id="hospital-map" class="w-full h-full"></div>
+  </div>
+
   <div id="hospital-results" class="grid grid-cols-1 md:grid-cols-2 gap-6">
     <template id="skeleton-loader">
       <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 animate-pulse">
@@ -561,7 +578,7 @@ menu: nav/home.html
               </div>
             </div>
             
-            <div class="flex items-center mb-6">
+            <div class="flex items-center mb-4">
               <div class="bg-indigo-100 rounded-full p-2 mr-3">
                 <svg class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
@@ -761,6 +778,88 @@ menu: nav/home.html
       demoNotice.className = 'bg-yellow-50 border-yellow-100 border text-yellow-800 text-sm px-4 py-2 rounded-md mt-4 mb-2';
       demoNotice.innerHTML = '<strong>Demo Mode:</strong> Using sample data. API connection failed.';
       resultsContainer.parentNode.insertBefore(demoNotice, resultsContainer);
+    }
+    
+    // Add this to your existing JavaScript
+    const listViewBtn = document.getElementById('list-view');
+    const mapViewBtn = document.getElementById('map-view');
+    const hospitalResults = document.getElementById('hospital-results');
+    const mapContainer = document.getElementById('map-container');
+    
+    listViewBtn.addEventListener('click', function() {
+      hospitalResults.classList.remove('hidden');
+      mapContainer.classList.add('hidden');
+      listViewBtn.classList.add('bg-indigo-600', 'text-white');
+      listViewBtn.classList.remove('bg-gray-200', 'text-gray-700');
+      mapViewBtn.classList.add('bg-gray-200', 'text-gray-700');
+      mapViewBtn.classList.remove('bg-indigo-600', 'text-white');
+    });
+    
+    mapViewBtn.addEventListener('click', function() {
+      hospitalResults.classList.add('hidden');
+      mapContainer.classList.remove('hidden');
+      mapViewBtn.classList.add('bg-indigo-600', 'text-white');
+      mapViewBtn.classList.remove('bg-gray-200', 'text-gray-700');
+      listViewBtn.classList.add('bg-gray-200', 'text-gray-700');
+      listViewBtn.classList.remove('bg-indigo-600', 'text-white');
+      
+      // Initialize map if not already
+      if (!window.hospitalMap) {
+        // Load Google Maps script dynamically if needed
+        if (!window.google || !window.google.maps) {
+          const script = document.createElement('script');
+          script.src = `https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap`;
+          script.defer = true;
+          document.head.appendChild(script);
+        } else {
+          initMap();
+        }
+      }
+    });
+    
+    // Map initialization function
+    window.initMap = function() {
+      const defaultLocation = { lat: 32.7157, lng: -117.1611 }; // San Diego coordinates
+      window.hospitalMap = new google.maps.Map(document.getElementById('hospital-map'), {
+        center: defaultLocation,
+        zoom: 10
+      });
+      
+      // Add markers for hospitals if available
+      if (window.hospitalData && window.hospitalData.length > 0) {
+        addHospitalMarkers(window.hospitalData);
+      }
+    };
+    
+    function addHospitalMarkers(hospitals) {
+      hospitals.forEach(hospital => {
+        // You'll need to geocode addresses or have lat/lng in your data
+        // This is a simplified example assuming you have coordinates
+        if (hospital.lat && hospital.lng) {
+          const marker = new google.maps.Marker({
+            position: { lat: parseFloat(hospital.lat), lng: parseFloat(hospital.lng) },
+            map: window.hospitalMap,
+            title: hospital.name
+          });
+          
+          // Add info window for each marker
+          const infoWindow = new google.maps.InfoWindow({
+            content: `
+              <div class="p-2">
+                <h3 class="font-semibold">${hospital.name}</h3>
+                <p class="text-sm">${hospital.location}</p>
+                <p class="text-sm mt-1">Rating: ${hospital.rating} ★</p>
+                <button class="text-indigo-600 text-xs mt-1 hospital-link" 
+                        data-hospital="${hospital.id}">View details</button>
+              </div>
+            `
+          });
+          
+          marker.addListener('click', () => {
+            infoWindow.open(window.hospitalMap, marker);
+          });
+        }
+      });
     }
   });
 </script>
