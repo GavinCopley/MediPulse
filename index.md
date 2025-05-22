@@ -245,31 +245,6 @@ menu: nav/home.html
             </div>
             <!-- Dashboard Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-                <!-- Hospital Reviews Card -->
-                <div class="bg-white rounded-2xl shadow-lg p-8 flex flex-col justify-between hover:shadow-2xl transition">
-                    <div>
-                        <div class="flex items-center mb-4">
-                            <span class="inline-block bg-indigo-100 p-3 rounded-full mr-3">
-                                <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 20h9" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.5 3.5a2.121 2.121 0 113 3L7 19.5 3 21l1.5-4L16.5 3.5z" />
-                                </svg>
-                            </span>
-                            <h2 class="text-xl font-bold text-indigo-900">Hospital Reviews</h2>
-                        </div>
-                        <div id="recent-posts" class="space-y-2 mb-4">
-                            <p class="text-gray-500">Loading your posts...</p>
-                        </div>
-                    </div>
-                    <div class="flex justify-end">
-                        <a href="{{site.baseurl}}/make_post" class="inline-flex items-center bg-indigo-600 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-indigo-700 transition">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                            </svg>
-                            Rate A Hospital
-                        </a>
-                    </div>
-                </div>
                 <!-- Hospital Information Card -->
                 <div class="bg-white rounded-2xl shadow-lg p-8 flex flex-col justify-between hover:shadow-2xl transition">
                     <div>
@@ -314,6 +289,31 @@ menu: nav/home.html
                         </a>
                     </div>
                 </div>
+                <!-- Hospital Reviews Card -->
+                <div class="bg-white rounded-2xl shadow-lg p-8 flex flex-col justify-between hover:shadow-2xl transition">
+                    <div>
+                        <div class="flex items-center mb-4">
+                            <span class="inline-block bg-indigo-100 p-3 rounded-full mr-3">
+                                <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 20h9" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.5 3.5a2.121 2.121 0 113 3L7 19.5 3 21l1.5-4L16.5 3.5z" />
+                                </svg>
+                            </span>
+                            <h2 class="text-xl font-bold text-indigo-900">Hospital Reviews</h2>
+                        </div>
+                        <div id="recent-posts" class="space-y-2 mb-4">
+                            <p class="text-gray-500">Leave a review for hospitals and give them a rating to improve our accuracy on hospital reviews.</p>
+                        </div>
+                    </div>
+                    <div class="flex justify-end">
+                        <a href="{{site.baseurl}}/make_post" class="inline-flex items-center bg-indigo-600 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-indigo-700 transition">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                            </svg>
+                            Rate A Hospital
+                        </a>
+                    </div>
+                </div>
                 <!-- Video Optimization Card -->
                 <div class="bg-white rounded-2xl shadow-lg p-8 flex flex-col justify-between hover:shadow-2xl transition">
                     <div>
@@ -333,6 +333,24 @@ menu: nav/home.html
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                             </svg>
                             Optimize Videos
+                        </a>
+                    </div>
+                </div>
+                <!-- Hospital Comparisons Card -->
+                <div class="bg-white rounded-2xl shadow-lg p-8 flex flex-col justify-between hover:shadow-2xl transition">
+                    <div>
+                        <div class="flex items-center mb-4">
+                            <span class="inline-block bg-orange-100 p-3 rounded-full mr-3">
+                                <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+                            </span>
+                            <h2 class="text-xl font-bold text-orange-900">Hospital Comparisons</h2>
+                        </div>
+                        <p class="text-gray-600 mb-6">Compare hospitals side-by-side based on various criteria and metrics.</p>
+                    </div>
+                    <div class="flex justify-end">
+                        <a href="http://127.0.0.1:4887/MediPulse/summary" class="inline-flex items-center bg-orange-600 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-orange-700 transition">
+                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+                            Compare Hospitals
                         </a>
                     </div>
                 </div>
