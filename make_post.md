@@ -52,15 +52,6 @@ permalink: /make_post
         <textarea id="description" name="description" placeholder="Share your experience and feedback about the hospital" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-red-500 focus:border-red-500"></textarea>
       </div>
 
-      <!-- Image Upload -->
-      <div id="image-upload-container" class="space-y-2">
-        <label for="images" class="block text-sm font-medium text-gray-700">Upload Images</label>
-        <div class="flex items-center space-x-2">
-          <input type="file" id="images" name="images[]" accept="image/*" class="img_file block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-red-700 hover:file:bg-red-100">
-          <button type="button" id="add-image" class="px-3 py-1 bg-red-600 text-white text-sm font-medium rounded hover:bg-red-700">+</button>
-        </div>
-      </div>
-
       <!-- Submit Button -->
       <div class="text-center">
         <button id="submit-btn" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
@@ -72,10 +63,123 @@ permalink: /make_post
 </div>
 
 <script type="module">
-  import { convertToBase64, createPost } from "{{site.baseurl}}/assets/js/api/posts.js";
+  // Define pythonURI here since we are not importing from config.js
+  let pythonURI;
+  if (location.hostname === "localhost") {
+          pythonURI = "https://medipulse-832734119496.us-west2.run.app";
+  } else if (location.hostname === "127.0.0.1") {
+          pythonURI = "https://medipulse-832734119496.us-west2.run.app";
+  } else {
+          pythonURI =  "https://medipulse-832734119496.us-west2.run.app";
+  }
 
-  const imgContainer = document.getElementById('image-upload-container');
-  const addImageButton = document.getElementById('add-image');
+  // Functions from posts.js (excluding image functions)
+  async function getPostsByHospital(hospitalName) {
+    const endpoint = pythonURI + "/api/hospitalPost/hospital/" + encodeURIComponent(hospitalName);
+
+    try {
+      const response = await fetch(endpoint);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch hospital reviews: ${response.status}`);
+      }
+      const posts = await response.json();
+      return posts;
+    } catch (error) {
+      console.error("Error fetching hospital reviews:", error.message);
+      return null;
+    }
+  }
+
+  async function getPostsByUser(uid) {
+    let endpoint = pythonURI + "/api/hospitalPost";
+
+    try {
+      const response = await fetch(endpoint);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch user reviews: ${response.status}`);
+      }
+      const posts = await response.json();
+      return posts.filter((post) => post.user.id === uid);
+    } catch (error) {
+      console.error("Error fetching user reviews:", error.message);
+      return null;
+    }
+  }
+
+  async function createPost(post) {
+    // Validate required fields
+    if (!post.hospital || !post.rating || !post.description) {
+      throw new Error("Missing required fields: hospital, rating, and description are required");
+    }
+
+    // Validate rating range
+    if (post.rating < 1 || post.rating > 5) {
+      throw new Error("Rating must be between 1 and 5");
+    }
+
+    const postOptions = {
+      method: "POST",
+      mode: "cors",
+      cache: "default",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Origin": "client",
+      },
+      body: JSON.stringify({
+        title: post.hospital, // Using hospital name as title
+        description: post.description,
+        hospital: post.hospital,
+        rating: post.rating,
+      }),
+    };
+
+    const endpoint = pythonURI + "/api/hospitalPost";
+
+    try {
+      const response = await fetch(endpoint, postOptions);
+      if (!response.ok) {
+        throw new Error(`Failed to create review: ${response.status}`);
+      }
+      const result = await response.json();
+      return true;
+    } catch (error) {
+      console.error("Error creating review:", error.message);
+      return false;
+    }
+  }
+
+  async function removePostById(id) {
+    const postOptions = {
+      method: "DELETE",
+      mode: "cors",
+      cache: "default",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Origin": "client",
+      },
+      body: JSON.stringify({
+        id: id,
+      }),
+    };
+
+    const endpoint = pythonURI + "/api/hospitalPost";
+
+    try {
+      const response = await fetch(endpoint, postOptions);
+      if (!response.ok) {
+        throw new Error(`Failed to delete review: ${response.status}`);
+      }
+      const data = await response.json();
+      return data["deleted"];
+    } catch (error) {
+      console.error("Error deleting review:", error.message);
+      return null;
+    }
+  }
+
+  // Original script logic (cleaned)
   const submitButton = document.getElementById('submit-btn');
   const hospitalSelect = document.getElementById('hospital');
   const otherHospitalContainer = document.getElementById('other-hospital-container');
@@ -96,34 +200,7 @@ permalink: /make_post
     ratingValue.textContent = ratingInput.value;
   });
 
-  addImageButton.addEventListener('click', () => {
-    const newInput = document.createElement('div');
-    newInput.classList.add('flex', 'items-center', 'space-x-2');
-    newInput.innerHTML = `
-      <input type="file" name="images[]" accept="image/*" class="img_file block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-red-700 hover:file:bg-blue-100">
-      <button type="button" class="remove-image px-3 py-1 bg-red-600 text-white text-sm font-medium rounded hover:bg-red-700">-</button>
-    `;
-    imgContainer.appendChild(newInput);
-
-    // Add event listener to remove button
-    newInput.querySelector('.remove-image').addEventListener('click', () => {
-      imgContainer.removeChild(newInput);
-    });
-  });
-
   async function submit() {
-    const imageDivs = document.getElementsByClassName('img_file')
-    const imageBase64Table = []
-    for (let i = 0; i < imageDivs.length; i++) {
-      if (imageDivs[i].files.length > 0) {
-        const img = await convertToBase64(imageDivs[i].files[0])
-        imageBase64Table.push({
-          "name": ""+i,
-          "base64": img
-        })
-      }
-    }
-
     // Get hospital name
     let hospitalName = hospitalSelect.value;
     if (hospitalName === 'other') {
@@ -149,7 +226,6 @@ permalink: /make_post
         description: document.getElementById('description').value,
         hospital: hospitalName,
         rating: rating,
-        image_base64_table: imageBase64Table
       })
 
       if (created) {
