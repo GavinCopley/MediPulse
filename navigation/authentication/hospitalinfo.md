@@ -156,6 +156,11 @@ menu: nav/home.html
   </div>
 </div>
 
+<!-- Add these improvements for better accessibility -->
+<div class="sr-only" aria-live="polite" id="a11y-status">
+  Loading hospital information. Please wait.
+</div>
+
 <script>
   const pythonURI = "https://medipulse-832734119496.us-west2.run.app";
   
@@ -400,6 +405,9 @@ menu: nav/home.html
       
       // Update pagination
       renderPagination(currentPage, totalPages);
+      
+      // Update accessibility status
+      updateA11yStatus(`Found ${hospitals.length} hospitals matching your search criteria.`);
     }
     
     function fetchHospitalDetails(hospitalName) {
@@ -861,6 +869,32 @@ menu: nav/home.html
         }
       });
     }
+    
+    // Add this function for accessibility status updates
+    function updateA11yStatus(message) {
+      document.getElementById('a11y-status').textContent = message;
+    }
+  });
+  
+  // Add this to your JavaScript for better search performance
+  function debounce(func, wait) {
+    let timeout;
+    return function(...args) {
+      const context = this;
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(context, args), wait);
+    };
+  }
+  
+  // Replace your search input handlers with this
+  const searchInputs = document.querySelectorAll('#search-form input, #search-form select');
+  searchInputs.forEach(input => {
+    input.addEventListener('input', debounce(function() {
+      // Only auto-search if there's enough input
+      if (this.value.length > 2 || this.value === '' || this.type === 'checkbox') {
+        fetchHospitals(1);
+      }
+    }, 500)); // 500ms debounce
   });
 </script>
 
