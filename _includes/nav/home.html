@@ -16,8 +16,8 @@
             <a id="signup-login" href="{{site.baseurl}}/noauth" class="text-[#592ae8] hover:text-indigo-600 text-lg font-bold">Sign Up | Login</a>
             
             <!-- Profile Button -->
-            <div class="relative">
-                <a id="profile" href="{{site.baseurl}}/profile" class="flex items-center text-indigo-600 hover:text-indigo-700 text-lg font-medium" hidden>
+            <div class="relative" id="profile-container" style="display: none;">
+                <a id="profile" href="{{site.baseurl}}/profile" class="flex items-center text-indigo-600 hover:text-indigo-700 text-lg font-medium">
                     Profile
                     <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -61,6 +61,7 @@
     } from "{{site.baseurl}}/assets/js/api/config.js";
 
     const loginLink = document.getElementById("signup-login");
+    const profileContainer = document.getElementById("profile-container");
     const profileLink = document.getElementById("profile");
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -69,15 +70,18 @@
                 if (data) {
                     // User is authenticated
                     if (loginLink) loginLink.hidden = true;
-                    if (profileLink) profileLink.hidden = false;
+                    if (profileContainer) profileContainer.style.display = "block";
                 } else {
                     // User is not authenticated
                     if (loginLink) loginLink.hidden = false;
-                    if (profileLink) profileLink.hidden = true;
+                    if (profileContainer) profileContainer.style.display = "none";
                 }
             })
             .catch((err) => {
                 console.error("Error fetching credentials: ", err);
+                // Ensure profile is hidden on error
+                if (loginLink) loginLink.hidden = false;
+                if (profileContainer) profileContainer.style.display = "none";
             });
 
         const profileButton = document.getElementById("profile");
