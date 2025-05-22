@@ -86,7 +86,7 @@ let chart;
 // Fetch data from backend
 async function fetchData() {
   try {
-    const res = await fetch(`${pythonURI}/api/analytics`, {
+    const res = await fetch(`${pythonURI}/api/comparison`, {
       ...fetchOptions,
       method: "GET"
     });

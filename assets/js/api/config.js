@@ -2,17 +2,17 @@ export var pythonURI;
 if (location.hostname === "localhost") {
         pythonURI = "https://medipulse-832734119496.us-west2.run.app";
 } else if (location.hostname === "127.0.0.1") {
-        pythonURI = "https://medipulse-832734119496.us-west2.run.app";
+        pythonURI = "http://127.0.0.1:8115";
 } else {
-        pythonURI =  "https://medipulse-832734119496.us-west2.run.app";
+        pythonURI =  "http://127.0.0.1:8115";
 }
 export var javaURI;
 if (location.hostname === "localhost") {
         javaURI = "https://medipulse-832734119496.us-west2.run.app";
 } else if (location.hostname === "127.0.0.1") {
-        javaURI = "https://medipulse-832734119496.us-west2.run.app"; //rey
+        javaURI = "http://127.0.0.1:8115"; //rey
 } else {
-        javaURI = "https://medipulse-832734119496.us-west2.run.app";
+        javaURI = "http://127.0.0.1:8115";
 }
 
 export const fetchOptions = {
@@ -61,4 +61,3 @@ export function login(options) {
 
 
 // config.js
-
