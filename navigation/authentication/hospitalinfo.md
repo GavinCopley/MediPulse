@@ -39,6 +39,45 @@ menu: nav/home.html
     </div>
   </form>
 
+  <!-- Add these filters to your search form for better filtering -->
+  <div class="bg-gray-50 p-4 rounded-lg mb-4 border border-gray-200">
+    <div class="flex items-center justify-between mb-2">
+      <h3 class="font-medium text-gray-700">Advanced Filters</h3>
+      <button type="button" id="toggle-filters" class="text-sm text-indigo-600 hover:text-indigo-800">
+        <span id="filter-text">Show Filters</span> <i class="fas fa-chevron-down ml-1"></i>
+      </button>
+    </div>
+    
+    <div id="advanced-filters" class="hidden pt-3 border-t border-gray-200">
+      <div class="grid md:grid-cols-3 gap-4 mb-3">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Distance Range</label>
+          <select id="distance" class="border p-2 rounded w-full">
+            <option value="">Any Distance</option>
+            <option value="5">Within 5 miles</option>
+            <option value="10">Within 10 miles</option>
+            <option value="25">Within 25 miles</option>
+            <option value="50">Within 50 miles</option>
+          </select>
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Sort By</label>
+          <select id="sort_by" class="border p-2 rounded w-full">
+            <option value="rating">Rating (High to Low)</option>
+            <option value="distance">Distance (Near to Far)</option>
+            <option value="name">Name (A-Z)</option>
+          </select>
+        </div>
+        
+        <label class="flex items-center">
+          <input type="checkbox" id="accepting_patients" class="mr-2 h-4 w-4 text-indigo-600">
+          <span class="text-gray-700">Only Accepting New Patients</span>
+        </label>
+      </div>
+    </div>
+  </div>
+
   <!-- Results Section -->
   <div id="results-count" class="text-gray-600 mb-4 text-sm">Loading hospitals...</div>
   <div id="hospital-results" class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -187,6 +226,19 @@ menu: nav/home.html
         params.append('emergency', 'yes');
       }
       
+      // Add advanced filters
+      const distance = document.getElementById('distance').value;
+      const sortBy = document.getElementById('sort_by').value;
+      const acceptingPatients = document.getElementById('accepting_patients').checked;
+      
+      if (distance) {
+        params.append('distance', distance);
+      }
+      params.append('sort_by', sortBy);
+      if (acceptingPatients) {
+        params.append('accepting_patients', 'yes');
+      }
+      
       // Make API request
       fetch(`${pythonURI}/api/hospital-search?${params.toString()}`)
         .then(response => {
@@ -211,39 +263,8 @@ menu: nav/home.html
           searchLoading.classList.add('hidden');
           
           // Show error message
-          resultsContainer.innerHTML = `
-            <div class="col-span-2 bg-white p-8 text-center rounded-lg shadow">
-              <svg class="mx-auto h-12 w-12 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <h3 class="mt-2 text-lg font-medium text-gray-900">Error connecting to API</h3>
-              <p class="mt-1 text-sm text-gray-500">Please ensure the Flask server is running at ${pythonURI}</p>
-              <div class="mt-4">
-                <button type="button" id="retry-btn" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                  Retry Connection
-                </button>
-              </div>
-              <p class="mt-3 text-xs text-gray-500">Error: ${error.message}</p>
-            </div>
-          `;
+          resultsContainer.innerHTML = showError('Error connecting to API', () => fetchHospitals(page));
           resultsCount.textContent = 'Error loading hospitals';
-          
-          // Add retry button handler
-          document.getElementById('retry-btn').addEventListener('click', () => fetchHospitals(page));
-          
-          // If API is unavailable, fall back to sample data after delay
-          setTimeout(() => {
-            if (resultsContainer.querySelector('#retry-btn')) {
-              resultsContainer.innerHTML += `
-                <div class="col-span-2 mt-4 p-4 bg-yellow-50 border border-yellow-100 rounded-lg">
-                  <p class="text-sm text-yellow-700">Loading sample data instead...</p>
-                </div>
-              `;
-              
-              // After another delay, show sample data
-              setTimeout(() => loadSampleData(), 1500);
-            }
-          }, 3000);
         });
     }
     
