@@ -21,11 +21,11 @@ menu: nav/home.html
       <button id="tab-video" class="tab-btn bg-white text-gray-800 border px-4 py-2 rounded">YouTube Data</button>
     </div>
 
-    <!-- Hospital Comparison -->
+    <!-- Hospital Section -->
     <div id="hospital-section" class="section-panel block">
       <h2 class="text-xl font-semibold text-gray-700 mt-8 mb-4">Compare Hospitals</h2>
 
-      <div class="bg-white p-6 rounded-lg shadow grid md:grid-cols-2 gap-4">
+      <div class="bg-white p-6 rounded-lg shadow grid md:grid-cols-3 gap-4">
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">Hospital 1</label>
           <select id="hospital1-select" class="w-full p-2 border border-gray-300 rounded-md"></select>
@@ -34,16 +34,22 @@ menu: nav/home.html
           <label class="block text-sm font-medium text-gray-700 mb-1">Hospital 2</label>
           <select id="hospital2-select" class="w-full p-2 border border-gray-300 rounded-md"></select>
         </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Performance Measure</label>
+          <select id="measure-select" class="w-full p-2 border border-gray-300 rounded-md"></select>
+        </div>
       </div>
 
-      <div class="bg-white p-6 rounded-lg shadow mt-6">
-        <canvas id="hospitalCompareChart" height="300"></canvas>
+      <div class="bg-white p-4 rounded-lg shadow mt-6 w-full max-w-4xl mx-auto">
+        <div class="relative w-full h-[400px]">
+          <canvas id="compareChart" class="w-full h-full"></canvas>
+        </div>
       </div>
 
-      <div id="error-message" class="text-red-600 text-center hidden mt-2">Failed to load hospital data.</div>
+      <div id="error-message" class="text-red-600 text-center hidden mt-4">Failed to load hospital data.</div>
     </div>
 
-    <!-- YouTube Comparison -->
+    <!-- YouTube Section -->
     <div id="video-section" class="section-panel hidden">
       <h2 class="text-xl font-semibold text-gray-700 mt-8 mb-4">YouTube Channel Comparison</h2>
 
@@ -64,26 +70,31 @@ menu: nav/home.html
         </div>
       </div>
 
-      <div class="bg-white p-6 rounded-lg shadow mt-6">
-        <canvas id="videoChart" height="300"></canvas>
+      <div class="bg-white p-4 rounded-lg shadow mt-6 w-full max-w-4xl mx-auto">
+        <div class="relative w-full h-[400px]">
+          <canvas id="videoChart" class="w-full h-full"></canvas>
+        </div>
       </div>
     </div>
+
   </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
 <script type="module">
 import { pythonURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js';
 
 const hospital1Select = document.getElementById("hospital1-select");
 const hospital2Select = document.getElementById("hospital2-select");
+const measureSelect = document.getElementById("measure-select");
 const errorMsg = document.getElementById("error-message");
-const ctx = document.getElementById("hospitalCompareChart").getContext("2d");
+const ctx = document.getElementById("compareChart").getContext("2d");
 
 let allData = [];
 let chart;
 
-// Fetch data from backend
+// Fetch data
 async function fetchData() {
   try {
     const res = await fetch(`${pythonURI}/api/comparison`, {
@@ -92,18 +103,23 @@ async function fetchData() {
     });
     const json = await res.json();
     if (!json.success || !json.data) throw new Error("Failed to load hospital data.");
+
     allData = normalizeColumns(json.data);
 
-    const hospitals = [...new Set(allData.map(d => d.HOSPITAL_NAME || d.HOSPITAL))].filter(Boolean).sort();
+    const hospitals = [...new Set(allData.map(d => d.HOSPITAL))].filter(Boolean).sort();
     hospital1Select.innerHTML = hospitals.map(h => `<option value="${h}">${h}</option>`).join('');
     hospital2Select.innerHTML = hospitals.map(h => `<option value="${h}">${h}</option>`).join('');
-
     hospital1Select.value = hospitals[0];
     hospital2Select.value = hospitals[1] || hospitals[0];
 
-    updateHospitalChart();
-  } catch (e) {
-    errorMsg.textContent = e.message;
+    const measures = [...new Set(allData.map(d => d.PERFORMANCE_MEASURE))].filter(Boolean).sort();
+    measureSelect.innerHTML = measures.map(m => `<option value="${m}">${m}</option>`).join('');
+    measureSelect.value = measures[0];
+
+    updateChart();
+  } catch (err) {
+    console.error(err);
+    errorMsg.textContent = err.message;
     errorMsg.classList.remove("hidden");
   }
 }
@@ -119,76 +135,75 @@ function normalizeColumns(data) {
   });
 }
 
-function extractMetrics(data) {
-  const excluded = ['HOSPITAL', 'HOSPITAL_NAME', 'DATE', 'TIMESTAMP'];
-  const first = data.find(Boolean) || {};
-  return Object.keys(first).filter(k => !excluded.includes(k));
+function getHospitalData(hospital, measure) {
+  return allData.find(d =>
+    (d.HOSPITAL === hospital || d.HOSPITAL_NAME === hospital) &&
+    d.PERFORMANCE_MEASURE === measure
+  );
 }
 
-function summarizeHospital(hospitalName) {
-  const entries = allData.filter(d => (d.HOSPITAL_NAME || d.HOSPITAL) === hospitalName);
-  const summary = {};
-  if (!entries.length) return summary;
-
-  const metrics = extractMetrics(entries);
-  for (const metric of metrics) {
-    const valid = entries.map(d => parseFloat(d[metric])).filter(v => !isNaN(v));
-    summary[metric] = valid.length ? (valid.reduce((a, b) => a + b, 0) / valid.length) : 0;
-  }
-  return summary;
-}
-
-function updateHospitalChart() {
+function updateChart() {
   const h1 = hospital1Select.value;
   const h2 = hospital2Select.value;
+  const measure = measureSelect.value;
 
-  const h1Metrics = summarizeHospital(h1);
-  const h2Metrics = summarizeHospital(h2);
+  const h1Data = getHospitalData(h1, measure);
+  const h2Data = getHospitalData(h2, measure);
 
-  const labels = Object.keys(h1Metrics);
-  const h1Values = labels.map(k => h1Metrics[k]);
-  const h2Values = labels.map(k => h2Metrics[k]);
+  if (!h1Data || !h2Data) {
+    errorMsg.textContent = "Data not found for selected inputs.";
+    errorMsg.classList.remove("hidden");
+    return;
+  }
+  errorMsg.classList.add("hidden");
+
+  const metrics = ["#_OF_ADVERSE_EVENTS", "#_OF_CASES", "RISK-ADJUSTED_RATE"];
+  const labels = ["Adverse Events", "Cases", "Risk-Adjusted Rate"];
+  const h1Values = metrics.map(m => parseFloat(h1Data[m]) || 0);
+  const h2Values = metrics.map(m => parseFloat(h2Data[m]) || 0);
 
   if (chart) chart.destroy();
-
   chart = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: labels.map(l => l.replace(/_/g, ' ')),
+      labels,
       datasets: [
-        {
-          label: h1,
-          data: h1Values,
-          backgroundColor: '#4F46E5'
-        },
-        {
-          label: h2,
-          data: h2Values,
-          backgroundColor: '#60A5FA'
-        }
+        { label: `**${h1}**`, data: h1Values, backgroundColor: '#4F46E5' },
+        { label: `**${h2}**`, data: h2Values, backgroundColor: '#60A5FA' }
       ]
     },
     options: {
       responsive: true,
+      maintainAspectRatio: false,
       plugins: {
-        legend: { position: 'top' },
-        tooltip: { mode: 'index', intersect: false }
+        legend: { position: 'top', labels: { font: { weight: 'bold' } } },
+        tooltip: { mode: 'index', intersect: false },
+        datalabels: {
+          anchor: 'end',
+          align: 'top',
+          color: '#374151',
+          font: { weight: 'bold' },
+          formatter: v => v.toFixed(1)
+        }
       },
       scales: {
         y: {
           beginAtZero: true,
-          title: { display: true, text: 'Average Value' }
+          title: { display: true, text: 'Value' }
         }
       }
-    }
+    },
+    plugins: [ChartDataLabels]
   });
 }
 
-hospital1Select.addEventListener("change", updateHospitalChart);
-hospital2Select.addEventListener("change", updateHospitalChart);
-fetchData();
+// Event listeners
+hospital1Select.addEventListener("change", updateChart);
+hospital2Select.addEventListener("change", updateChart);
+measureSelect.addEventListener("change", updateChart);
+await fetchData();
 
-// Tab Switching
+// Tab switching
 const tabHospital = document.getElementById("tab-hospital");
 const tabVideo = document.getElementById("tab-video");
 const hospitalSection = document.getElementById("hospital-section");
@@ -207,7 +222,7 @@ function switchTab(toHospital) {
 tabHospital.addEventListener("click", () => switchTab(true));
 tabVideo.addEventListener("click", () => switchTab(false));
 
-// YouTube section (unchanged)
+// YouTube section
 const videoChartCtx = document.getElementById("videoChart").getContext("2d");
 let videoChart;
 const videoData = {
