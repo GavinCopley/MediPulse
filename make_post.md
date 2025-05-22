@@ -6,7 +6,7 @@ permalink: /make_post
 
 <div class="flex items-center justify-center min-h-screen bg-gray-100">
   <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-    <h2 class="text-2xl font-bold mb-4 text-center">Create A Post</h2>
+    <h2 class="text-2xl font-bold mb-4 text-center">Rate A Hospital</h2>
     <div class="space-y-4">
       <!-- Hospital Selection -->
       <div>

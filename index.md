@@ -245,7 +245,7 @@ menu: nav/home.html
             </div>
             <!-- Dashboard Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-                <!-- Recent Posts Card -->
+                <!-- Hospital Reviews Card -->
                 <div class="bg-white rounded-2xl shadow-lg p-8 flex flex-col justify-between hover:shadow-2xl transition">
                     <div>
                         <div class="flex items-center mb-4">
@@ -255,7 +255,7 @@ menu: nav/home.html
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.5 3.5a2.121 2.121 0 113 3L7 19.5 3 21l1.5-4L16.5 3.5z" />
                                 </svg>
                             </span>
-                            <h2 class="text-xl font-bold text-indigo-900">Recent Posts</h2>
+                            <h2 class="text-xl font-bold text-indigo-900">Hospital Reviews</h2>
                         </div>
                         <div id="recent-posts" class="space-y-2 mb-4">
                             <p class="text-gray-500">Loading your posts...</p>
@@ -266,7 +266,7 @@ menu: nav/home.html
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                             </svg>
-                            Create New Post
+                            Rate A Hospital
                         </a>
                     </div>
                 </div>
@@ -448,10 +448,10 @@ menu: nav/home.html
                     postsContainer.appendChild(postElement);
                 });
             } else {
-                console.error('Failed to fetch recent posts or posts data is not an array.');
+                console.error('Failed to fetch hospital reviews or posts data is not an array.');
             }
         } catch (error) {
-            console.error('Error loading recent posts:', error);
+            console.error('Error loading hospital reviews:', error);
         }
     }
 
