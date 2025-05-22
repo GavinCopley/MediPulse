@@ -115,14 +115,13 @@ permalink: /make_post
     const imageDivs = document.getElementsByClassName('img_file')
     const imageBase64Table = []
     for (let i = 0; i < imageDivs.length; i++) {
-      if (imageDivs[i].files.length == 0) {
-        return
+      if (imageDivs[i].files.length > 0) {
+        const img = await convertToBase64(imageDivs[i].files[0])
+        imageBase64Table.push({
+          "name": ""+i,
+          "base64": img
+        })
       }
-      const img = await convertToBase64(imageDivs[i].files[0])
-      imageBase64Table.push({
-        "name": ""+i,
-        "base64": img
-      })
     }
 
     // Get hospital name
@@ -137,18 +136,30 @@ permalink: /make_post
       return;
     }
 
-    const created = await createPost({
-      title: hospitalName,
-      description: document.getElementById('description').value,
-      hospital: hospitalName,
-      rating: parseInt(ratingInput.value),
-      image_base64_table: imageBase64Table
-    })
+    // Validate rating
+    const rating = parseInt(ratingInput.value);
+    if (isNaN(rating) || rating < 1 || rating > 5) {
+      alert('Please select a valid rating between 1 and 5');
+      return;
+    }
 
-    if (created) {
-      window.location.href = '{{site.baseurl}}/allPosts'
-    } else {
-      console.log("ERROR WHEN MAKING POST")
+    try {
+      const created = await createPost({
+        title: hospitalName,
+        description: document.getElementById('description').value,
+        hospital: hospitalName,
+        rating: rating,
+        image_base64_table: imageBase64Table
+      })
+
+      if (created) {
+        window.location.href = '{{site.baseurl}}/allPosts'
+      } else {
+        alert('Failed to create post. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error creating post:', error);
+      alert('An error occurred while creating your post. Please try again.');
     }
   }
 
