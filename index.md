@@ -41,7 +41,7 @@ menu: nav/home.html
                         </svg>
                     </div>
                     <h3 class="text-2xl font-semibold text-indigo-900 mb-4">Performance Metrics</h3>
-                    <p class="text-lg text-gray-600">Comprehensive data on youtube videos chance of sucess.</p>
+                    <p class="text-lg text-gray-600">Comprehensive data on youtube videos chance of success.</p>
                 </div>
                 <div class="bg-indigo-50 rounded-xl p-10 text-center transform transition-all duration-300 hover:scale-105 hover:shadow-xl slide-in-bottom">
                     <div class="text-indigo-600 mb-6">
