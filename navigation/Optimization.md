@@ -23,7 +23,27 @@ menu: nav/home.html
 </head>
 
 <body class="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 text-gray-800">
-
+  <!-- Oval Navigation Bar (centered with decreased top padding) -->
+    <div class="flex justify-center mb-2 mt-2">
+      <div style="display: inline-block; background-color: #f5f5f5; border-radius: 30px; padding: 1px 3px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); width: 420px;">
+        <div class="buttons has-addons" style="margin: 0; border-radius: 25px; overflow: hidden; position: relative; display: flex; height: 36px;">
+          <!-- Blue background overlay for active button (moved to Generate New) -->
+          <div style="position: absolute; top: 0; left: 33%; bottom: 0; width: 34%; background-color: #4f46e5; border-radius: 25px; z-index: 1;"></div>
+          <a href="{{site.baseurl}}/optimize" class="button is-rounded" style="margin: 0; border-color: transparent; background-color: transparent; position: relative; z-index: 2; flex: 1; padding: 0 4px; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; white-space: nowrap;">
+            <span class="icon"><i class="fas fa-wand-magic-sparkles"></i></span>
+            <span>&nbsp;Main</span>
+          </a>
+          <a href="{{site.baseurl}}/optimize/generate" class="button is-rounded" style="margin: 0; border-color: transparent; background-color: transparent; position: relative; z-index: 2; color: white; flex: 1; padding: 0 4px; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; white-space: nowrap;">
+            <span class="icon"><i class="fas fa-plus-circle"></i></span>
+            <span>&nbsp;Generate New</span>
+          </a>
+          <a href="{{site.baseurl}}/optimize/edit" class="button is-rounded" style="margin: 0; border-color: transparent; background-color: transparent; position: relative; z-index: 2; flex: 1; padding: 0 4px; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; white-space: nowrap;">
+            <span class="icon"><i class="fas fa-edit"></i></span>
+            <span>&nbsp;Edit Existing</span>
+          </a>
+        </div>
+      </div>
+    </div>
   <!-- ▒▒ Loading overlay ▒▒ -->
   <div id="loadingOverlay"
        class="fixed inset-0 z-50 hidden items-center justify-center bg-white/90 backdrop-blur-sm">
