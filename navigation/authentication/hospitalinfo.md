@@ -39,64 +39,8 @@ menu: nav/home.html
     </div>
   </form>
 
-  <!-- Add these filters to your search form for better filtering -->
-  <div class="bg-gray-50 p-4 rounded-lg mb-4 border border-gray-200">
-    <div class="flex items-center justify-between mb-2">
-      <h3 class="font-medium text-gray-700">Advanced Filters</h3>
-      <button type="button" id="toggle-filters" class="text-sm text-indigo-600 hover:text-indigo-800">
-        <span id="filter-text">Show Filters</span> <i class="fas fa-chevron-down ml-1"></i>
-      </button>
-    </div>
-    
-    <div id="advanced-filters" class="hidden pt-3 border-t border-gray-200">
-      <div class="grid md:grid-cols-3 gap-4 mb-3">
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Distance Range</label>
-          <select id="distance" class="border p-2 rounded w-full">
-            <option value="">Any Distance</option>
-            <option value="5">Within 5 miles</option>
-            <option value="10">Within 10 miles</option>
-            <option value="25">Within 25 miles</option>
-            <option value="50">Within 50 miles</option>
-          </select>
-        </div>
-        
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Sort By</label>
-          <select id="sort_by" class="border p-2 rounded w-full">
-            <option value="rating">Rating (High to Low)</option>
-            <option value="distance">Distance (Near to Far)</option>
-            <option value="name">Name (A-Z)</option>
-          </select>
-        </div>
-        
-        <label class="flex items-center">
-          <input type="checkbox" id="accepting_patients" class="mr-2 h-4 w-4 text-indigo-600">
-          <span class="text-gray-700">Only Accepting New Patients</span>
-        </label>
-      </div>
-    </div>
-  </div>
-
   <!-- Results Section -->
-  <!-- Add a map view option to see hospitals geographically -->
-  <div class="mb-6 flex justify-between items-center">
-    <div id="results-count" class="text-gray-600 text-sm">Loading hospitals...</div>
-    <div class="flex items-center">
-      <button type="button" id="list-view" class="bg-indigo-600 text-white px-3 py-1 rounded-l-md text-sm">
-        <i class="fas fa-list mr-1"></i> List
-      </button>
-      <button type="button" id="map-view" class="bg-gray-200 text-gray-700 px-3 py-1 rounded-r-md text-sm">
-        <i class="fas fa-map-marker-alt mr-1"></i> Map
-      </button>
-    </div>
-  </div>
-
-  <div id="map-container" class="hidden h-[500px] mb-6 rounded-lg shadow-md border border-gray-200 overflow-hidden">
-    <!-- Map will be displayed here -->
-    <div id="hospital-map" class="w-full h-full"></div>
-  </div>
-
+  <div id="results-count" class="text-gray-600 mb-4 text-sm">Loading hospitals...</div>
   <div id="hospital-results" class="grid grid-cols-1 md:grid-cols-2 gap-6">
     <template id="skeleton-loader">
       <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 animate-pulse">
@@ -154,11 +98,6 @@ menu: nav/home.html
       </div>
     </div>
   </div>
-</div>
-
-<!-- Add these improvements for better accessibility -->
-<div class="sr-only" aria-live="polite" id="a11y-status">
-  Loading hospital information. Please wait.
 </div>
 
 <script>
@@ -248,19 +187,6 @@ menu: nav/home.html
         params.append('emergency', 'yes');
       }
       
-      // Add advanced filters
-      const distance = document.getElementById('distance').value;
-      const sortBy = document.getElementById('sort_by').value;
-      const acceptingPatients = document.getElementById('accepting_patients').checked;
-      
-      if (distance) {
-        params.append('distance', distance);
-      }
-      params.append('sort_by', sortBy);
-      if (acceptingPatients) {
-        params.append('accepting_patients', 'yes');
-      }
-      
       // Make API request
       fetch(`${pythonURI}/api/hospital-search?${params.toString()}`)
         .then(response => {
@@ -285,8 +211,39 @@ menu: nav/home.html
           searchLoading.classList.add('hidden');
           
           // Show error message
-          resultsContainer.innerHTML = showError('Error connecting to API', () => fetchHospitals(page));
+          resultsContainer.innerHTML = `
+            <div class="col-span-2 bg-white p-8 text-center rounded-lg shadow">
+              <svg class="mx-auto h-12 w-12 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <h3 class="mt-2 text-lg font-medium text-gray-900">Error connecting to API</h3>
+              <p class="mt-1 text-sm text-gray-500">Please ensure the Flask server is running at ${pythonURI}</p>
+              <div class="mt-4">
+                <button type="button" id="retry-btn" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                  Retry Connection
+                </button>
+              </div>
+              <p class="mt-3 text-xs text-gray-500">Error: ${error.message}</p>
+            </div>
+          `;
           resultsCount.textContent = 'Error loading hospitals';
+          
+          // Add retry button handler
+          document.getElementById('retry-btn').addEventListener('click', () => fetchHospitals(page));
+          
+          // If API is unavailable, fall back to sample data after delay
+          setTimeout(() => {
+            if (resultsContainer.querySelector('#retry-btn')) {
+              resultsContainer.innerHTML += `
+                <div class="col-span-2 mt-4 p-4 bg-yellow-50 border border-yellow-100 rounded-lg">
+                  <p class="text-sm text-yellow-700">Loading sample data instead...</p>
+                </div>
+              `;
+              
+              // After another delay, show sample data
+              setTimeout(() => loadSampleData(), 1500);
+            }
+          }, 3000);
         });
     }
     
@@ -405,9 +362,6 @@ menu: nav/home.html
       
       // Update pagination
       renderPagination(currentPage, totalPages);
-      
-      // Update accessibility status
-      updateA11yStatus(`Found ${hospitals.length} hospitals matching your search criteria.`);
     }
     
     function fetchHospitalDetails(hospitalName) {
@@ -586,7 +540,7 @@ menu: nav/home.html
               </div>
             </div>
             
-            <div class="flex items-center mb-4">
+            <div class="flex items-center mb-6">
               <div class="bg-indigo-100 rounded-full p-2 mr-3">
                 <svg class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
@@ -787,114 +741,6 @@ menu: nav/home.html
       demoNotice.innerHTML = '<strong>Demo Mode:</strong> Using sample data. API connection failed.';
       resultsContainer.parentNode.insertBefore(demoNotice, resultsContainer);
     }
-    
-    // Add this to your existing JavaScript
-    const listViewBtn = document.getElementById('list-view');
-    const mapViewBtn = document.getElementById('map-view');
-    const hospitalResults = document.getElementById('hospital-results');
-    const mapContainer = document.getElementById('map-container');
-    
-    listViewBtn.addEventListener('click', function() {
-      hospitalResults.classList.remove('hidden');
-      mapContainer.classList.add('hidden');
-      listViewBtn.classList.add('bg-indigo-600', 'text-white');
-      listViewBtn.classList.remove('bg-gray-200', 'text-gray-700');
-      mapViewBtn.classList.add('bg-gray-200', 'text-gray-700');
-      mapViewBtn.classList.remove('bg-indigo-600', 'text-white');
-    });
-    
-    mapViewBtn.addEventListener('click', function() {
-      hospitalResults.classList.add('hidden');
-      mapContainer.classList.remove('hidden');
-      mapViewBtn.classList.add('bg-indigo-600', 'text-white');
-      mapViewBtn.classList.remove('bg-gray-200', 'text-gray-700');
-      listViewBtn.classList.add('bg-gray-200', 'text-gray-700');
-      listViewBtn.classList.remove('bg-indigo-600', 'text-white');
-      
-      // Initialize map if not already
-      if (!window.hospitalMap) {
-        // Load Google Maps script dynamically if needed
-        if (!window.google || !window.google.maps) {
-          const script = document.createElement('script');
-          script.src = `https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap`;
-          script.defer = true;
-          document.head.appendChild(script);
-        } else {
-          initMap();
-        }
-      }
-    });
-    
-    // Map initialization function
-    window.initMap = function() {
-      const defaultLocation = { lat: 32.7157, lng: -117.1611 }; // San Diego coordinates
-      window.hospitalMap = new google.maps.Map(document.getElementById('hospital-map'), {
-        center: defaultLocation,
-        zoom: 10
-      });
-      
-      // Add markers for hospitals if available
-      if (window.hospitalData && window.hospitalData.length > 0) {
-        addHospitalMarkers(window.hospitalData);
-      }
-    };
-    
-    function addHospitalMarkers(hospitals) {
-      hospitals.forEach(hospital => {
-        // You'll need to geocode addresses or have lat/lng in your data
-        // This is a simplified example assuming you have coordinates
-        if (hospital.lat && hospital.lng) {
-          const marker = new google.maps.Marker({
-            position: { lat: parseFloat(hospital.lat), lng: parseFloat(hospital.lng) },
-            map: window.hospitalMap,
-            title: hospital.name
-          });
-          
-          // Add info window for each marker
-          const infoWindow = new google.maps.InfoWindow({
-            content: `
-              <div class="p-2">
-                <h3 class="font-semibold">${hospital.name}</h3>
-                <p class="text-sm">${hospital.location}</p>
-                <p class="text-sm mt-1">Rating: ${hospital.rating} ★</p>
-                <button class="text-indigo-600 text-xs mt-1 hospital-link" 
-                        data-hospital="${hospital.id}">View details</button>
-              </div>
-            `
-          });
-          
-          marker.addListener('click', () => {
-            infoWindow.open(window.hospitalMap, marker);
-          });
-        }
-      });
-    }
-    
-    // Add this function for accessibility status updates
-    function updateA11yStatus(message) {
-      document.getElementById('a11y-status').textContent = message;
-    }
-  });
-  
-  // Add this to your JavaScript for better search performance
-  function debounce(func, wait) {
-    let timeout;
-    return function(...args) {
-      const context = this;
-      clearTimeout(timeout);
-      timeout = setTimeout(() => func.apply(context, args), wait);
-    };
-  }
-  
-  // Replace your search input handlers with this
-  const searchInputs = document.querySelectorAll('#search-form input, #search-form select');
-  searchInputs.forEach(input => {
-    input.addEventListener('input', debounce(function() {
-      // Only auto-search if there's enough input
-      if (this.value.length > 2 || this.value === '' || this.type === 'checkbox') {
-        fetchHospitals(1);
-      }
-    }, 500)); // 500ms debounce
   });
 </script>
 
