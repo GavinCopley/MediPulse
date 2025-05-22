@@ -7,644 +7,613 @@ menu: nav/home.html
 ---
 
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <title>Generate an Optimal Video</title>
+  <meta charset="utf-8" />
+  <title>Hospital Video Optimiser</title>
 
-  <!-- FontAwesome -->
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-  />
-  <!-- Chart.js -->
+  <!-- FontAwesome & Chart.js -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
 </head>
 
-<body class="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 text-gray-800 transition-all duration-300">
-  <!-- Loading overlay -->
-  <div id="loadingOverlay" class="fixed inset-0 z-50 hidden items-center justify-center bg-white/90 backdrop-blur-sm">
+<body class="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 text-gray-800">
+
+  <!-- ▒▒ Loading overlay ▒▒ -->
+  <div id="loadingOverlay"
+       class="fixed inset-0 z-50 hidden items-center justify-center bg-white/90 backdrop-blur-sm">
     <div class="text-center">
       <i class="fas fa-circle-notch fa-spin fa-2x mb-3 text-blue-600"></i>
-      <div class="text-xl font-semibold text-blue-600">Optimizing Your Content...</div>
+      <div class="text-xl font-semibold text-blue-600">Optimising your content…</div>
       <div class="mt-2 text-xs text-gray-500">Processing with AI</div>
     </div>
   </div>
 
-  <!-- Notification container - add after loadingOverlay div -->
-  <div id="notification" class="fixed -top-20 left-1/2 transform -translate-x-1/2 bg-red-600 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-2 transition-all duration-500 z-50">
+  <!-- ▒▒ Notification ▒▒ -->
+  <div id="notification"
+       class="fixed -top-20 left-1/2 -translate-x-1/2 bg-red-600 text-white px-6 py-3 rounded-lg shadow-md flex items-center space-x-2 transition-all duration-500 z-50">
     <i class="fas fa-exclamation-circle"></i>
     <span class="notification-message"></span>
   </div>
 
+  <!-- ╔══ Main content ═══════════════════════════════════════════════════ -->
   <section class="py-12 px-6">
-    <div class="container mx-auto max-w-5xl">
-      <!-- Oval Navigation Bar (centered with decreased top padding) -->
-      <div class="flex justify-center mb-8 mt-2">
-        <div style="display: inline-block; background-color: #f5f5f5; border-radius: 30px; padding: 1px 3px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); width: 420px;">
-          <div class="buttons has-addons" style="margin: 0; border-radius: 25px; overflow: hidden; position: relative; display: flex; height: 36px;">
-            <!-- Blue background overlay for active button (moved to Generate New) -->
-            <div style="position: absolute; top: 0; left: 33%; bottom: 0; width: 34%; background-color: #4f46e5; border-radius: 25px; z-index: 1;"></div>
-            <a href="{{site.baseurl}}/optimize" class="button is-rounded" style="margin: 0; border-color: transparent; background-color: transparent; position: relative; z-index: 2; flex: 1; padding: 0 4px; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; white-space: nowrap;">
-              <span class="icon"><i class="fas fa-wand-magic-sparkles"></i></span>
-              <span>&nbsp;Main</span>
-            </a>
-            <a href="{{site.baseurl}}/optimize/generate" class="button is-rounded" style="margin: 0; border-color: transparent; background-color: transparent; position: relative; z-index: 2; color: white; flex: 1; padding: 0 4px; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; white-space: nowrap;">
-              <span class="icon"><i class="fas fa-plus-circle"></i></span>
-              <span>&nbsp;Generate New</span>
-            </a>
-            <a href="{{site.baseurl}}/optimize/edit" class="button is-rounded" style="margin: 0; border-color: transparent; background-color: transparent; position: relative; z-index: 2; flex: 1; padding: 0 4px; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; white-space: nowrap;">
-              <span class="icon"><i class="fas fa-edit"></i></span>
-              <span>&nbsp;Edit Existing</span>
-            </a>
-          </div>
-        </div>
-      </div>
+    <div class="mx-auto max-w-5xl">
 
-      <h1 class="mb-5 text-center text-4xl font-bold text-gray-800" style="color: #4f46e5;">
-        Generate an Optimal Video
+      <h1 class="mb-5 text-center text-4xl font-bold text-gray-800">
+        <i class="fa-solid fa-chart-line text-blue-600 mr-2"></i>
+        Hospital&nbsp;Video&nbsp;Optimiser
       </h1>
       <p class="mb-10 text-center text-xl text-gray-600">
-        Enhance your hospital's video content with AI-powered insights
+        Enhance your hospital’s video content with AI-powered insights
       </p>
-      
-      <!-- Instructions Header -->
+
+      <!-- ══ Instructions header -->
       <div class="relative mb-8 rounded-xl bg-white p-6 shadow-md border border-gray-200">
-        <h3 class="mb-3 text-center text-lg font-semibold text-gray-800">How It Works</h3>
-        
+        <h3 class="mb-3 text-center text-lg font-semibold text-gray-800">How it works</h3>
+
         <div class="my-4 flex justify-around items-center">
-          <div id="instructionStep1" class="flex flex-col items-center relative flex-1 active">
-            <div class="instruction-number w-16 h-16 rounded-full bg-white border-2 border-blue-600 flex items-center justify-center text-xl font-bold text-blue-600 mb-4 relative z-10 active:bg-blue-600 active:text-white">1</div>
-            <div class="font-semibold text-center text-gray-800">Describe Video</div>
+          <div id="instructionStep1" class="flex flex-col items-center flex-1">
+            <div
+              class="instruction-number w-16 h-16 rounded-full bg-blue-600 text-white flex items-center justify-center text-xl font-bold mb-4">
+              1
+            </div>
+            <div class="font-semibold text-center text-gray-800">Describe video</div>
           </div>
           <div class="w-1/3 h-0.5 bg-gray-200"></div>
-          <div id="instructionStep2" class="flex flex-col items-center relative flex-1">
-            <div class="instruction-number w-16 h-16 rounded-full bg-white border-2 border-blue-600 flex items-center justify-center text-xl font-bold text-blue-600 mb-4 relative z-10 active:bg-blue-600 active:text-white">2</div>
-            <div class="font-semibold text-center text-gray-800">See Results</div>
+          <div id="instructionStep2" class="flex flex-col items-center flex-1">
+            <div
+              class="instruction-number w-16 h-16 rounded-full bg-white border-2 border-blue-600 flex items-center justify-center text-xl font-bold text-blue-600 mb-4">
+              2
+            </div>
+            <div class="font-semibold text-center text-gray-800">See results</div>
           </div>
         </div>
-        
-        <p class="mt-3 text-center">
-          <span id="instructionDetail" class="text-gray-500">Enter the details of your hospital video to receive AI-powered optimization suggestions</span>
+
+        <p id="instructionDetail" class="mt-3 text-center text-gray-500">
+          Enter video details to receive AI suggestions.
         </p>
       </div>
 
-      <!-- Updated FORM (Step 1): Removed Category ID block and changed grid classes -->
-      <div id="step1" class="block">
-        <div class="rounded-xl bg-white p-6 shadow-md border border-gray-200 transition-all hover:shadow-lg">
+      <!-- ══ STEP 1 – Form -->
+      <div id="step1">
+        <div class="rounded-xl bg-white p-6 shadow-md border border-gray-200 hover:shadow-lg transition-shadow">
           <h2 class="mb-6 font-bold text-gray-800 flex items-center">
             <i class="fas fa-pencil-alt mr-2 text-blue-600"></i>
-            Step 1 – Describe your video
+            Step&nbsp;1 – Describe your video
           </h2>
-          
+
           <form id="videoForm" class="space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+              <!-- Platform (disabled) -->
               <div>
-                <label class="block mb-2 text-gray-800 font-medium">Platform</label>
+                <label class="block mb-2 font-medium">Platform</label>
                 <div class="relative">
-                  <select name="platform" disabled class="w-full rounded-lg border border-gray-200 bg-white text-gray-800 py-2 pl-10 pr-4 appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-600 transition-all">
-                    <option value="youtube" selected>YouTube</option>
-                    <option value="tiktok">TikTok</option>
-                    <option value="instagram">Instagram Reels</option>
+                  <select disabled class="w-full rounded-lg border border-gray-200 bg-white py-2 pl-10 pr-4">
+                    <option>YouTube</option>
                   </select>
-                  <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                    <i class="fab fa-youtube text-red-500"></i>
-                  </div>
+                  <span class="absolute inset-y-0 left-0 flex items-center pl-3"><i
+                      class="fab fa-youtube text-red-500"></i></span>
                 </div>
-                <p class="mt-1 text-sm text-gray-500 italic">Currently only YouTube is supported.</p>
+                <p class="mt-1 text-sm text-gray-500 italic">Only YouTube supported.</p>
               </div>
-              
+
+              <!-- Duration -->
               <div>
-                <label class="block mb-2 text-gray-800 font-medium">Duration (seconds)</label>
+                <label class="block mb-2 font-medium">Duration (seconds)</label>
                 <div class="relative">
                   <input name="duration_sec" type="number" min="5" required
-                    class="w-full rounded-lg border border-gray-200 bg-white text-gray-800 py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-600 transition-all" />
-                  <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                    <i class="fas fa-clock text-gray-400"></i>
-                  </div>
+                         class="w-full rounded-lg border border-gray-200 py-2 pl-10 pr-4" />
+                  <span class="absolute inset-y-0 left-0 flex items-center pl-3"><i
+                      class="fas fa-clock text-gray-400"></i></span>
                 </div>
-                <p class="mt-1 text-sm text-gray-500 italic">Length of your video in seconds</p>
               </div>
             </div>
 
+            <!-- Title -->
             <div>
-              <label class="block mb-2 text-gray-800 font-medium">Title</label>
+              <label class="block mb-2 font-medium">Title</label>
               <div class="relative">
-                <input name="title" maxlength="100" required placeholder="Enter an engaging title for your video"
-                  class="w-full rounded-lg border border-gray-200 bg-white text-gray-800 py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-600 transition-all" />
-                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <i class="fas fa-heading text-gray-400"></i>
-                </div>
+                <input name="title" maxlength="100" required placeholder="Enter an engaging title"
+                       class="w-full rounded-lg border border-gray-200 py-2 pl-10 pr-4" />
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3"><i
+                    class="fas fa-heading text-gray-400"></i></span>
               </div>
-              <p class="mt-1 text-sm text-gray-500 italic">Catchy titles improve click-through rates</p>
             </div>
 
+            <!-- Description -->
             <div>
-              <label class="block mb-2 text-gray-800 font-medium">Description</label>
-              <!-- Added required attribute -->
-              <textarea name="description" rows="4" required placeholder="Describe what your video is about..."
-                class="w-full rounded-lg border border-gray-200 bg-white text-gray-800 py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-600 transition-all"></textarea>
-              <p class="mt-1 text-sm text-gray-500 italic">A thorough description helps with SEO and viewer understanding</p>
+              <label class="block mb-2 font-medium">Description</label>
+              <textarea name="description" rows="4" required placeholder="Describe what your video is about…"
+                        class="w-full rounded-lg border border-gray-200 py-2 px-4"></textarea>
             </div>
 
+            <!-- Tags -->
             <div>
-              <label class="block mb-2 text-gray-800 font-medium">Tags <span class="text-gray-500">(pipe-separated)</span></label>
+              <label class="block mb-2 font-medium">Tags <span class="text-gray-500">(pipe-separated)</span></label>
               <div class="relative">
                 <textarea name="tags" rows="2" placeholder="cardiology|heart health|angioplasty"
-                  class="w-full rounded-lg border border-gray-200 bg-white text-gray-800 py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-600 transition-all"></textarea>
-                <div class="absolute top-3 left-0 flex items-center pl-3 pointer-events-none">
-                  <i class="fas fa-hashtag text-gray-400"></i>
-                </div>
+                          class="w-full rounded-lg border border-gray-200 py-2 pl-10 pr-4"></textarea>
+                <span class="absolute top-3 left-0 flex items-center pl-3"><i
+                    class="fas fa-hashtag text-gray-400"></i></span>
               </div>
-              <p class="mt-1 text-sm text-gray-500 italic">Tags help your video appear in searches</p>
             </div>
 
+            <!-- Checkboxes + Category -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label class="flex items-center">
-                  <input type="checkbox" name="is_hd" checked class="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
-                  <span class="ml-2"><i class="fas fa-tv mr-1"></i> HD video</span>
-                </label>
-              </div>
-              <div>
-                <label class="flex items-center">
-                  <input type="checkbox" name="has_captions" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
-                  <span class="ml-2"><i class="fas fa-closed-captioning mr-1"></i> Includes captions</span>
-                </label>
-              </div>
+              <label class="flex items-center">
+                <input type="checkbox" name="is_hd" checked
+                       class="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                <span class="ml-2"><i class="fas fa-tv mr-1"></i> HD video</span>
+              </label>
+
+              <label class="flex items-center">
+                <input type="checkbox" name="has_captions"
+                       class="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                <span class="ml-2"><i class="fas fa-closed-captioning mr-1"></i> Includes captions</span>
+              </label>
+
+              <!-- Category selector -->
               <div class="md:col-span-2">
-                <label class="block mb-2 text-gray-800 font-medium">
-                  <i class="fas fa-calendar-alt mr-1"></i> Publish date/time
-                </label>
+                <label class="block mb-2 font-medium">YouTube Category</label>
+                <select name="category_id"
+                        class="w-full rounded-lg border border-gray-200 py-2 px-4">
+                  <option value="27" selected>27 – Education</option>
+                  <option value="22">22 – People &amp; Blogs</option>
+                  <option value="26">26 – How-to &amp; Style</option>
+                  <option value="24">24 – Entertainment</option>
+                  <!-- add more if you like -->
+                </select>
+              </div>
+
+              <!-- Publish date/time -->
+              <div class="md:col-span-2">
+                <label class="block mb-2 font-medium"><i class="fas fa-calendar-alt mr-1"></i> Publish date/time</label>
                 <input name="publish_datetime" type="datetime-local"
-                  class="w-full rounded-lg border border-gray-200 bg-white text-gray-800 py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-600 transition-all" />
-                <p class="mt-1 text-sm text-gray-500 italic">Timing affects viewership</p>
+                       class="w-full rounded-lg border border-gray-200 py-2 px-4" />
               </div>
             </div>
 
             <div class="flex justify-end mt-8">
-              <button type="submit" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-sm hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center gap-2">
+              <button type="submit"
+                      class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-sm flex items-center gap-2">
                 <i class="fa-solid fa-wand-magic-sparkles"></i>
-                <span>Optimise</span>
+                Optimise
               </button>
             </div>
           </form>
         </div>
       </div>
 
-      <!-- RESULTS (Step 2) -->
+      <!-- ══ STEP 2 – Results -->
       <div id="step2" class="hidden">
+
         <h2 class="mb-6 font-bold text-gray-800 flex items-center">
           <i class="fas fa-chart-line mr-2 text-blue-600"></i>
-          Step 2 – Results
+          Step&nbsp;2 – Results
         </h2>
 
-        <!-- Engagement Score Card -->
-        <div class="mb-8 rounded-xl bg-white p-6 shadow-md border border-gray-200 transition-all hover:shadow-lg">
-          <h3 class="mb-4 font-semibold text-gray-800 flex items-center">
-            <i class="fas fa-gauge-high mr-2 text-blue-600"></i> 
-            Predicted Engagement
+        <!-- Engagement Card -->
+        <div class="mb-8 rounded-xl bg-white p-6 shadow-md border border-gray-200">
+          <h3 class="mb-4 font-semibold flex items-center text-gray-800">
+            <i class="fas fa-gauge-high mr-2 text-blue-600"></i> Predicted engagement
           </h3>
-          <div class="w-full flex flex-col md:flex-row items-center gap-6">
-            <div class="w-full md:w-1/3">
-              <canvas id="engagementChart"></canvas>
-            </div>
+          <div class="flex flex-col md:flex-row gap-6 items-center">
+            <canvas id="engagementChart" class="w-full md:w-1/3"></canvas>
             <div class="w-full md:w-2/3">
               <div class="relative w-full h-4 bg-gray-300 rounded-full overflow-hidden">
-                <div id="engagementProgress" class="absolute inset-0 bg-blue-600 rounded-full" style="width: 0%"></div>
+                <div id="engagementProgress" class="absolute inset-0 bg-blue-600 rounded-full" style="width:0%"></div>
               </div>
               <p class="mt-3 text-center">
-                Engagement Score: <strong id="engagementScore" class="text-2xl text-blue-600">N/A</strong> / 100
+                Score: <strong id="engagementScore" class="text-2xl text-blue-600">–</strong>
               </p>
-              <p class="text-center text-xs text-gray-500 mt-2">
-                Based on machine learning analysis of similar content
-              </p>
+              <p class="text-center text-xs text-gray-500">Based on machine-learning analysis of similar content</p>
             </div>
           </div>
         </div>
 
-        <!-- Sample Outlines Tabs -->
+        <!-- Outlines -->
         <div class="mb-8 rounded-xl bg-white p-8 shadow-md border border-gray-200">
-          <h3 class="mb-4 font-semibold text-gray-800 flex items-center">
-            <i class="fas fa-clipboard-list mr-2 text-blue-600"></i> 
-            AI-Generated Outlines
+          <h3 class="mb-4 font-semibold flex items-center text-gray-800">
+            <i class="fas fa-clipboard-list mr-2 text-blue-600"></i> AI-generated outlines
           </h3>
-          <div class="border-b border-gray-200">
-            <ul id="outlineTabs" class="flex flex-wrap justify-center -mb-px">
-              <li data-index="0" class="mr-2">
-                <a class="inline-block py-2 px-4 border-b-2 border-blue-600 text-blue-600 font-semibold">Outline 1</a>
-              </li>
-              <li data-index="1" class="mr-2">
-                <a class="inline-block py-2 px-4 border-b-2 border-transparent text-gray-500 hover:text-gray-700">Outline 2</a>
-              </li>
-              <li data-index="2">
-                <a class="inline-block py-2 px-4 border-b-2 border-transparent text-gray-500 hover:text-gray-700">Outline 3</a>
-              </li>
-            </ul>
+          
+          <!-- Template chooser -->
+          <div class="mb-6 flex space-x-4 justify-center">
+            <button type="button" class="template-btn px-4 py-2 bg-blue-600 text-white rounded-lg" data-template="0">
+              Overview
+            </button>
+            <button type="button" class="template-btn px-4 py-2 bg-gray-200 text-gray-800 rounded-lg" data-template="1">
+              Educational
+            </button>
+            <button type="button" class="template-btn px-4 py-2 bg-gray-200 text-gray-800 rounded-lg" data-template="2">
+              Case Study
+            </button>
           </div>
-          <div id="outlinesContainer" class="px-4 py-4">
-            <div class="block" data-index="0">
-              <ul id="outlineList0" class="pl-5 space-y-2 list-disc"></ul>
+
+          <!-- Three video+outline containers -->
+          <div id="templatesWrapper">
+            <!-- Overview template -->
+            <div class="template-container" data-template="0">
+              <div class="video-player mb-4 bg-gray-100 rounded-lg p-4">
+                <div class="aspect-video bg-gray-200 rounded flex items-center justify-center">
+                  <i class="fas fa-play-circle text-4xl text-gray-400"></i>
+                </div>
+                <p class="mt-2 text-sm text-gray-600 text-center">Quick, engaging overview</p>
+              </div>
+              <ul id="outlineList0" class="pl-5 list-disc space-y-2"></ul>
             </div>
-            <div class="hidden" data-index="1">
-              <ul id="outlineList1" class="pl-5 space-y-2 list-disc"></ul>
+
+            <!-- Educational template -->
+            <div class="template-container hidden" data-template="1">
+              <div class="video-player mb-4 bg-gray-100 rounded-lg p-4">
+                <div class="aspect-video bg-gray-200 rounded flex items-center justify-center">
+                  <i class="fas fa-chalkboard-teacher text-4xl text-gray-400"></i>
+                </div>
+                <p class="mt-2 text-sm text-gray-600 text-center">Detailed educational content</p>
+              </div>
+              <ul id="outlineList1" class="pl-5 list-disc space-y-2"></ul>
             </div>
-            <div class="hidden" data-index="2">
-              <ul id="outlineList2" class="pl-5 space-y-2 list-disc"></ul>
+
+            <!-- Case Study template -->
+            <div class="template-container hidden" data-template="2">
+              <div class="video-player mb-4 bg-gray-100 rounded-lg p-4">
+                <div class="aspect-video bg-gray-200 rounded flex items-center justify-center">
+                  <i class="fas fa-user-md text-4xl text-gray-400"></i>
+                </div>
+                <p class="mt-2 text-sm text-gray-600 text-center">Patient story format</p>
+              </div>
+              <ul id="outlineList2" class="pl-5 list-disc space-y-2"></ul>
             </div>
           </div>
+
           <div class="text-center mt-6">
-            <button id="reEvalBtn" class="px-4 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 font-medium rounded-lg transition-all hover:-translate-y-0.5 flex items-center gap-2 mx-auto">
-              <i class="fas fa-sync-alt"></i>
-              <span>Re-evaluate with these changes</span>
+            <button id="reEvalBtn" class="px-4 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 font-medium rounded-lg flex gap-2 mx-auto">
+              <i class="fas fa-sync-alt"></i> Re-evaluate
             </button>
           </div>
         </div>
 
-        <!-- Improvement Tips Dropdown -->
-        <div class="mb-8 bg-white rounded-xl shadow-md border border-gray-200 transition-all hover:shadow-lg p-6">
+        <!-- Tips -->
+        <div class="mb-8 rounded-xl bg-white p-6 shadow-md border border-gray-200">
           <h3 class="text-lg font-semibold mb-4 flex items-center">
-            <i class="fas fa-lightbulb mr-2 text-yellow-400"></i> 
-            Improvement Tips <span class="text-xs text-gray-500 ml-2">(click to expand)</span>
+            <i class="fas fa-lightbulb mr-2 text-yellow-400"></i> Improvement tips
+            <span class="text-xs text-gray-500 ml-2">(click to expand)</span>
           </h3>
           <details id="allTipsDropdown" class="group">
-            <summary class="cursor-pointer font-semibold text-amber-500 bg-gradient-to-r from-amber-50 to-orange-50 rounded-md py-2 px-4 inline-flex items-center gap-2 transition-all hover:-translate-y-0.5 hover:bg-gradient-to-r hover:from-amber-100 hover:to-orange-100">
-              <span class="flex items-center">
-                <span class="transform transition-transform duration-200 group-open:rotate-180 inline-block mr-2">
-                  <i class="fas fa-chevron-down text-sm"></i>
-                </span>
-                Show All Tips
-              </span>
+            <summary
+              class="cursor-pointer font-semibold text-amber-500 bg-amber-50 hover:bg-amber-100 rounded-md py-2 px-4 inline-flex items-center gap-2">
+              <i class="fas fa-chevron-down transition-transform group-open:rotate-180"></i> Show all tips
             </summary>
-            <ul id="allTipsList" class="mt-4 space-y-3 list-none pl-0"></ul>
+            <div id="tipsContainer" class="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <!-- JS will inject tip cards here -->
+            </div>
           </details>
         </div>
 
-        <!-- Similar Videos Filter + Cards -->
-        <div class="mb-8 rounded-xl bg-white p-6 shadow-md border border-gray-200 transition-all hover:shadow-lg">
-          <h3 class="mb-4 font-semibold text-gray-800 flex items-center">
-            <i class="fas fa-film mr-2 text-blue-600"></i> 
-            Similar High-Performing Videos
+        <!-- Similar Videos -->
+        <div class="mb-8 rounded-xl bg-white p-6 shadow-md border border-gray-200">
+          <h3 class="mb-4 font-semibold flex items-center text-gray-800">
+            <i class="fas fa-film mr-2 text-blue-600"></i> Similar high-performing videos
           </h3>
-          <div class="mb-5">
-            <div class="relative">
-              <input
-                type="text"
-                id="videoFilter"
-                placeholder="Filter by title or tag..."
-                class="w-full rounded-lg border border-gray-200 bg-white text-gray-800 py-2 pl-10 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-600 transition-all"
-              />
-              <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                <i class="fas fa-search text-gray-400"></i>
-              </div>
-              <div class="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer video-filter-clear">
-                <i class="fas fa-times-circle text-gray-400 hover:text-gray-600"></i>
-              </div>
-            </div>
+          <div class="mb-5 relative">
+            <input id="videoFilter" type="text" placeholder="Filter by title or tag…"
+                   class="w-full rounded-lg border border-gray-200 py-2 pl-10 pr-10" />
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"><i
+                class="fas fa-search text-gray-400"></i></span>
+            <span
+              class="video-filter-clear absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"><i
+                class="fas fa-times-circle text-gray-400"></i></span>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="videoCards"></div>
+          <div id="videoCards"
+               class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
         </div>
-        
-        <!-- Add back button -->
-        <div class="text-center mt-8">
-          <button id="goBackBtn" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition-all hover:-translate-y-0.5 flex items-center gap-2 mx-auto">
-            <i class="fas fa-arrow-left"></i>
-            <span>Edit Video Details</span>
+
+        <!-- Back button -->
+        <div class="text-center">
+          <button id="goBackBtn"
+                  class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg flex items-center gap-2 mx-auto">
+            <i class="fas fa-arrow-left"></i> Edit video details
           </button>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- ══ Script -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      const API_BASE_URL = "https://medipulse-832734119496.us-west2.run.app";
+      /* ══ Constants & template management ════════════════════ */
+      const API_BASE_URL = "http://localhost:8115";
+      const clamp = x => Math.max(0, Math.min(x, 100));
+
+      /* ══ DOM refs ═════════════════════════════════════════ */
       const form = document.getElementById("videoForm");
       const step1 = document.getElementById("step1");
       const step2 = document.getElementById("step2");
       const loading = document.getElementById("loadingOverlay");
+      const notif = document.getElementById("notification");
       const instructionStep1 = document.getElementById("instructionStep1");
       const instructionStep2 = document.getElementById("instructionStep2");
       const instructionDetail = document.getElementById("instructionDetail");
-      
-      // Add clear filter functionality
-      if (document.querySelector('.video-filter-clear')) {
-        document.querySelector('.video-filter-clear').addEventListener('click', () => {
-          const filterInput = document.getElementById('videoFilter');
-          filterInput.value = '';
-          filterInput.dispatchEvent(new Event('input'));
-        });
-      }
-      
-      // Add back button functionality
-      if (document.getElementById('goBackBtn')) {
-        document.getElementById('goBackBtn').addEventListener('click', () => {
-          step2.classList.add('hidden');
-          step1.classList.remove('hidden');
+
+      // Template state
+      const outlinesPerTemplate = { 0: [], 1: [], 2: [] };
+      let currentTemplate = 0;
+
+      function renderOutlines(templateIdx) {
+        const ul = document.getElementById("outlineList" + templateIdx);
+        ul.innerHTML = "";
+        
+        outlinesPerTemplate[templateIdx].forEach((text, index) => {
+          // Calculate simulated timestamp (3 min per section)
+          const mins = Math.floor((index + 1) * 3);
+          const secs = "00";
+          const timestamp = `${mins}:${secs}`;
           
-          // Update instruction steps
-          instructionStep1.querySelector('.instruction-number').classList.add('bg-white', 'text-blue-600');
-          instructionStep1.querySelector('.instruction-number').classList.remove('bg-blue-600', 'text-white');
+          const li = document.createElement("li");
+          li.className = "mb-6 list-none"; // Remove bullet points
           
-          instructionStep2.querySelector('.instruction-number').classList.add('bg-white', 'text-blue-600');
-          instructionStep2.querySelector('.instruction-number').classList.remove('bg-blue-600', 'text-white');
+          li.innerHTML = `
+            <div class="bg-white rounded-lg shadow hover:shadow-lg transition-shadow overflow-hidden">
+              <!-- Thumbnail with play icon and timestamp -->
+              <div class="relative">
+                <div class="aspect-video bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
+                  <i class="fab fa-youtube text-red-600 text-6xl opacity-75 hover:opacity-100 transition-opacity"></i>
+                </div>
+                <div class="absolute bottom-2 right-2 bg-black/75 text-white text-xs px-1.5 py-0.5 rounded">
+                  ${timestamp}
+                </div>
+              </div>
+              
+              <!-- Content -->
+              <div class="p-4">
+                <!-- Title (editable) -->
+                <div class="mb-2 text-lg font-semibold text-gray-800" 
+                     contenteditable="true" 
+                     spellcheck="false">
+                  ${text}
+                </div>
+                
+                <!-- Metadata -->
+                <div class="flex items-center gap-3 text-xs text-gray-500">
+                  <span class="flex items-center">
+                    <i class="fas fa-clock mr-1 text-gray-400"></i>
+                    Section ${index + 1}
+                  </span>
+                  <span class="flex items-center">
+                    <i class="fas fa-pen mr-1 text-gray-400"></i>
+                    Click to edit
+                  </span>
+                </div>
+              </div>
+            </div>
+          `;
           
-          instructionDetail.textContent = 'Enter the details of your hospital video to receive AI-powered optimization suggestions';
+          ul.appendChild(li);
         });
       }
 
-      // Chart.js gauge and helper function
-      let engagementChart = new Chart(document.getElementById("engagementChart"), {
-        type: "doughnut",
-        data: {
-          datasets: [{
-            data: [0, 100],
-            backgroundColor: ["#3b82f6","#e5e7eb"]
-          }]
-        },
-        options: {
-          circumference: Math.PI,
-          rotation: -Math.PI,
-          cutout: "75%",
-          plugins: { legend: { display: false } }
-        }
-      });
-      function clamp(x){ return Math.max(0, Math.min(x,100)); }
-
-      // handle outline tabs
-      const outlineTabs = document.getElementById("outlineTabs");
-      if (outlineTabs) {
-        outlineTabs.onclick = e => {
-          if(!e.target.closest("li")) return;
-          
-          outlineTabs.querySelectorAll("li a").forEach(a => {
-            a.classList.remove("border-blue-600", "text-blue-600", "font-semibold");
-            a.classList.add("border-transparent", "text-gray-500");
+      // Wire up template switcher
+      document.querySelectorAll(".template-btn").forEach(btn => {
+        btn.addEventListener("click", e => {
+          document.querySelectorAll(".template-btn").forEach(b => {
+            b.classList.toggle("bg-blue-600", b === btn);
+            b.classList.toggle("text-white", b === btn);
+            b.classList.toggle("bg-gray-200", b !== btn);
+            b.classList.toggle("text-gray-800", b !== btn);
           });
-          
-          const selected = e.target.closest("li");
-          selected.querySelector("a").classList.remove("border-transparent", "text-gray-500");
-          selected.querySelector("a").classList.add("border-blue-600", "text-blue-600", "font-semibold");
-          
-          const idx = selected.dataset.index;
-          document.querySelectorAll("#outlinesContainer > div")
-            .forEach(div => {
-              if(div.dataset.index===idx) {
-                div.classList.remove('hidden');
-                div.classList.add('block');
-              } else {
-                div.classList.remove('block');
-                div.classList.add('hidden');
-              }
-            });
-        };
-      }
 
-      let currentPayload = null, tipsArray = [];
+          const newIdx = Number(btn.dataset.template);
+          document.querySelectorAll(".template-container").forEach(div => {
+            div.classList.toggle("hidden", Number(div.dataset.template) !== newIdx);
+          });
 
-      function showNotification(message) {
-        const notif = document.getElementById("notification");
-        notif.querySelector('.notification-message').textContent = message;
+          currentTemplate = newIdx;
+          renderOutlines(currentTemplate);
+        });
+      });
+
+      /* ══ Gauge setup ══════════════════════════════════════ */
+      const engagementChart = new Chart(document.getElementById("engagementChart"), {
+        type: "doughnut",
+        data: { datasets: [{ data: [0, 100], backgroundColor: ["#3b82f6", "#e5e7eb"] }] },
+        options: { circumference: Math.PI, rotation: -Math.PI, cutout: "75%", plugins: { legend: { display: false } } }
+      });
+
+      const setGauge = val => {
+        engagementChart.data.datasets[0].data = [clamp(val), 100 - clamp(val)];
+        engagementChart.update({ duration: 800 });
+        document.getElementById("engagementProgress").style.width = clamp(val) + "%";
+        document.getElementById("engagementScore").textContent = val.toFixed(2);
+      };
+
+      /* ══ Notification util ════════════════════════════════ */
+      const showNotification = msg => {
+        notif.querySelector(".notification-message").textContent = msg;
         notif.style.top = "20px";
-        setTimeout(() => {
-          notif.style.top = "-100px";
-        }, 3000);
-      }
+        setTimeout(() => (notif.style.top = "-100px"), 3000);
+      };
 
-      async function runOptimize(){
+      /* ══ State ════════════════════════════════════════════ */
+      let currentPayload = null;
+
+      /* ══ Form submit – Step 1 ═════════════════════════════ */
+      form.addEventListener("submit", async evt => {
+        evt.preventDefault();
+
+        // ─ Collect & validate fields
         const fd = new FormData(form);
-        const tags = fd.get("tags") || "";
-        const pubDate = fd.get("publish_datetime") || "";
-        
-        let hasEmptyFields = false;
-        
-        if(tags.trim() === "" && !window.tagNotificationShown) {
-          setTimeout(() => {
-            showNotification("Tags aren't filled out");
-            window.tagNotificationShown = true;
-          }, 0);
-          hasEmptyFields = true;
-        }
-        
-        if(pubDate.trim() === "" && !window.dateNotificationShown) {
-          setTimeout(() => {
-            showNotification("Date isn't filled out");
-            window.dateNotificationShown = true;
-          }, 1000); // Changed from 500 to 1000ms for 1 second delay
-          hasEmptyFields = true;
-        }
-        
-        if(hasEmptyFields) return false;
 
-        // Reset notification flags if fields are filled
-        if(tags.trim() !== "") window.tagNotificationShown = false;
-        if(pubDate.trim() !== "") window.dateNotificationShown = false;
-        
-        // Update instructions
-        instructionStep1.querySelector('.instruction-number').classList.remove('bg-white', 'text-blue-600');
-        instructionStep1.querySelector('.instruction-number').classList.add('bg-blue-600', 'text-white');
-        
-        instructionStep2.querySelector('.instruction-number').classList.remove('bg-white', 'text-blue-600');
-        instructionStep2.querySelector('.instruction-number').classList.add('bg-blue-600', 'text-white');
-        
-        instructionDetail.textContent = 'View AI-powered suggestions and compare with similar high-performing videos';
-        
-        loading.style.display = "flex";
-        const data = {
+        // normalise tags → pipe-sep
+        const rawTags = (fd.get("tags") || "").replace(/#/g, "").replace(/[,;]/g, "|");
+        if (!rawTags.trim()) return showNotification("Please enter at least one tag.");
+        if (!fd.get("publish_datetime")) return showNotification("Please choose a publish date.");
+
+        // build payload
+        const dt = fd.get("publish_datetime") ? new Date(fd.get("publish_datetime")) : null;
+        currentPayload = {
           title: fd.get("title"),
           description: fd.get("description"),
-          duration_sec: +fd.get("duration_sec"),
-          tags: tags,
-          // Category ID removed; no longer sent
-          is_hd: fd.get("is_hd") === "on" ? 1 : 0,
-          has_captions: fd.get("has_captions") === "on" ? 1 : 0
+          duration_sec: Number(fd.get("duration_sec")),
+          tags: rawTags,
+          is_hd: fd.get("is_hd") ? 1 : 0,
+          has_captions: fd.get("has_captions") ? 1 : 0,
+          category_id: Number(fd.get("category_id")) || 0,
+          publish_dow: dt ? (dt.getDay() === 0 ? 6 : dt.getDay() - 1) : 0,
+          publish_hour: dt ? dt.getHours() : 12
         };
-        const pd = fd.get("publish_datetime");
-        if(pd){
-          const dt = new Date(pd);
-          data.publish_dow = dt.getDay() === 0 ? 6 : dt.getDay()-1;
-          data.publish_hour = dt.getHours();
-        } else {
-          data.publish_dow = 0; data.publish_hour = 12;
-        }
-        currentPayload = data;
+
+        /* UI: switches */
+        loading.style.display = "flex";
 
         try {
-          const res = await fetch(`${API_BASE_URL}/api/optimize`, {
+          const r = await fetch(`${API_BASE_URL}/api/optimize`, {
             method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(data)
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(currentPayload)
           });
-          const raw = await res.text();
-          const result = JSON.parse(raw.replace(/\bNaN\b/g,"null"));
-          loading.style.display = "none";
+          const resTxt = await r.text();
+          const res = JSON.parse(resTxt.replace(/\bNaN\b/g, "null"));
 
-          // switch to step2
+          /* UI – show Step 2 */
+          loading.style.display = "none";
           step1.classList.add("hidden");
           step2.classList.remove("hidden");
+          
+          /* Gauge */
+          setGauge(res.predicted_engagement);
 
-          const pred = clamp(result.predicted_engagement);
-          engagementChart.data.datasets[0].data = [pred, 100 - pred];
-          engagementChart.update({ duration: 800 });
-          document.getElementById("engagementScore").textContent = result.predicted_engagement.toFixed(2);
-          document.getElementById("engagementProgress").style.width = pred + '%';
+          // ── Tips & "Add to outline" buttons ─────────────────────────
+          const tips = res.gemini_tips || {};
+          const tipsContainer = document.getElementById("tipsContainer");
+          tipsContainer.innerHTML = "";
 
-          // set up three outlines from tips (first 3 tips each)
-          tipsArray = result.gemini_tips.tips
-            ? result.gemini_tips.tips.split("\n").filter(l=>l.trim())
-            : [];
-            
-          for(let i=0;i<3;i++){
-            const outlineUl = document.getElementById("outlineList"+i);
-            if (outlineUl) {
-              outlineUl.innerHTML = "";
-              if(tipsArray[i]) {
-                const parts = tipsArray[i].split(/[:\-–]/).slice(1).join("");
-                const li = document.createElement("li");
-                li.contentEditable="true";
-                li.className = "py-2 border-b border-gray-200 transition-all duration-200 text-gray-800 hover:bg-gray-50/30 hover:pl-1 focus:outline-none focus:bg-blue-500/10 focus:pl-2";
-                li.textContent = parts || tipsArray[i];
-                outlineUl.appendChild(li);
+          // For each category, make a card
+          Object.entries(tips).forEach(([category, { examples, suggestions }]) => {
+            const card = document.createElement("div");
+            card.className = "tip-card bg-white rounded-lg border border-gray-200 p-4 shadow-sm hover:shadow-md transition-all";
+            card.innerHTML = `
+              <h4 class="text-lg font-semibold mb-3 text-blue-700">${category.charAt(0).toUpperCase() + category.slice(1)}</h4>
+              <ul class="space-y-2">
+                ${examples.map(t =>
+                  `<li class="flex justify-between items-start bg-blue-50/50 rounded p-2">
+                     <span class="flex-1 text-gray-800">
+                       <i class="fas fa-quote-left mr-1 text-blue-400"></i>${t}
+                     </span>
+                     <button type="button" data-tip="${t.replace(/"/g,'&quot;')}"
+                             class="add-tip-btn ml-2 text-green-600 hover:text-green-800">
+                       <i class="fas fa-plus-circle"></i>
+                     </button>
+                   </li>`
+                ).join("")}
+              </ul>
+              ${suggestions.length
+                ? `<div class="mt-4 border-t border-gray-100 pt-3">
+                     <h5 class="font-medium mb-2 text-gray-700">Suggestions</h5>
+                     <ul class="space-y-2">
+                       ${suggestions.map(s =>
+                         `<li class="text-sm text-gray-600 italic">
+                            <i class="fas fa-lightbulb text-amber-400 mr-1"></i>${s}
+                          </li>`
+                       ).join("")}
+                     </ul>
+                   </div>`
+                : ""
               }
-            }
-          }
-
-          // Instead of rendering each tip as its own <details>, render all in one <ul>
-          const tipsList = document.getElementById("allTipsList");
-          if (tipsList) {
-            tipsList.innerHTML = "";
-            if (result.gemini_tips.tips) {
-              tipsArray.forEach((tip, i) => {
-                const li = document.createElement("li");
-                li.className = "mb-3";
-                
-                // Process tip text to enhance typography
-                const enhancedTip = tip.replace(/\*(.*?)\*/g, '<strong class="text-blue-600 font-semibold">$1</strong>');
-                
-                li.innerHTML = `
-                  <div class="flex items-start gap-4 bg-white rounded-lg p-4 border-l-4 border-green-500 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all">
-                    <div class="flex-1 text-gray-800 text-base leading-relaxed">
-                      ${enhancedTip}
-                    </div>
-                    <button class="flex-shrink-0 bg-green-500 hover:bg-green-600 text-white rounded-md p-2 transition-colors">
-                      <i class="fas fa-plus text-sm"></i>
-                    </button>
-                  </div>
-                `;
-                
-                tipsList.appendChild(li);
-                
-                // Add "+" button functionality
-                li.querySelector("button").onclick = () => {
-                  const active = outlineTabs.querySelector("li a.border-blue-600").closest('li').dataset.index;
-                  const outlineLi = document.createElement("li");
-                  outlineLi.contentEditable = "true";
-                  outlineLi.className = "py-2 border-b border-gray-200 transition-all duration-200 text-gray-800 hover:bg-gray-50/30 hover:pl-1 focus:outline-none focus:bg-blue-500/10 focus:pl-2";
-                  outlineLi.textContent = tip.replace(/\*(.*?)\*/g, '$1'); // Remove asterisks in outline
-                  document.getElementById("outlineList" + active).appendChild(outlineLi);
-                };
-              });
-            } else {
-              tipsList.innerHTML = `
-                <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded">
-                  ${result.gemini_tips.error || "Failed to generate tips"}
-                </div>
-              `;
-            }
-          }
-
-          // video cards
-          const cards = document.getElementById("videoCards");
-          if (cards) {
-            cards.innerHTML = "";
-            (result.reference_videos||[]).forEach(v=>{
-              const videoCard = document.createElement("div");
-              videoCard.className="rounded-xl overflow-hidden shadow-md transition-all duration-300 hover:-translate-y-2 hover:shadow-xl bg-white";
-              videoCard.innerHTML=`
-                <div class="overflow-hidden">
-                  <img src="https://img.youtube.com/vi/${v["video id"] || ""}/hqdefault.jpg" alt="Thumbnail" class="w-full h-48 object-cover transition-transform duration-500 hover:scale-105">
-                </div>
-                <div class="p-5">
-                  <h4 class="font-medium text-gray-800 mb-2">${v["video title"]}</h4>
-                  <div class="flex items-center text-xs text-gray-500 mb-2">
-                    <span class="mr-3"><i class="fas fa-eye mr-1"></i> ${v["view count"]}</span>
-                    <span class="mr-3"><i class="fas fa-thumbs-up mr-1"></i> ${v["like count"]}</span>
-                    ${v["tags"].split('|').length > 3 ? 
-                      `<span class="mr-3"><i class="fas fa-comment mr-1"></i> ${v["comment count"]}</span>` : ''}
-                  </div>
-                  <p class="text-xs text-gray-600"><strong>Length:</strong> ${v["length_sec"]}s</p>
-                  <div class="flex flex-wrap gap-1 mt-3">
-                    ${(v["tags"] || "").split('|').slice(0,3).map(tag => 
-                      `<span class="px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded">${tag}</span>`
-                    ).join('')}
-                    ${v["tags"] && v["tags"].split('|').length > 3 ? 
-                      `<span class="px-2 py-1 text-xs bg-gray-100 text-gray-800 rounded">+${v["tags"].split('|').length - 3} more</span>` : ''}
-                  </div>
-                </div>
-              `;
-              cards.appendChild(videoCard);
-              
-              // Make entire card clickable to YouTube
-              if (v["video id"]) {
-                videoCard.style.cursor = 'pointer';
-                videoCard.addEventListener('click', () => {
-                  window.open(`https://www.youtube.com/watch?v=${v["video id"]}`, '_blank');
-                });
-              }
-            });
-          }
-
-          // filter
-          const videoFilter = document.getElementById("videoFilter");
-          if (videoFilter && cards) {
-            videoFilter.oninput = ev => {
-              const q = ev.target.value.toLowerCase();
-              cards.childNodes.forEach(card => {
-                card.style.display = card.textContent.toLowerCase().includes(q) ? "" : "none";
-              });
-            };
-          }
-        } catch (error) {
-          console.error("Optimization failed:", error);
-          loading.style.display = "none";
-        }
-      }
-
-      // initial form submit
-      form.addEventListener("submit", e=>{ 
-        e.preventDefault();
-        runOptimize();        
-      });
-      
-      // re-evaluate button
-      const reEvalBtn = document.getElementById("reEvalBtn");
-      if (reEvalBtn) {
-        reEvalBtn.onclick = () => {
-          // animate from current predicted to improved
-          loading.style.display = "flex";
-          fetch(`${API_BASE_URL}/api/optimize`, {
-            method:"POST",
-            headers:{"Content-Type":"application/json"},
-            body: JSON.stringify(currentPayload)
-          })
-          .then(r=>r.json())
-          .then(result=>{
-            loading.style.display = "none";
-            const imp = clamp(result.improved_engagement);
-            engagementChart.data.datasets[0].data = [imp,100-imp];
-            engagementChart.update({duration:800});
-            document.getElementById("engagementScore").textContent = result.improved_engagement.toFixed(2);
-            document.getElementById("engagementProgress").style.width = imp + '%';
-          })
-          .catch(error => {
-            console.error("Re-evaluation failed:", error);
-            loading.style.display = "none";
+            `;
+            tipsContainer.appendChild(card);
           });
-        };
-      }
+
+          // Hook up the "Add" buttons with delegated handler
+          tipsContainer.addEventListener("click", e => {
+            if (!e.target.closest(".add-tip-btn")) return;
+            
+            const btn = e.target.closest(".add-tip-btn");
+            const tipText = btn.getAttribute("data-tip");
+            
+            // Add to current template's array and re-render
+            outlinesPerTemplate[currentTemplate].push(tipText);
+            renderOutlines(currentTemplate);
+          });
+
+          /* Similar video cards */
+          const cards = document.getElementById("videoCards"); cards.innerHTML = "";
+          (res.reference_videos || []).forEach(v => {
+            const div = document.createElement("div");
+            div.className = "bg-white rounded-xl shadow-md hover:shadow-xl transition-all overflow-hidden";
+            div.innerHTML = `
+              <img src="https://img.youtube.com/vi/${v["video id"]}/hqdefault.jpg"
+                   class="w-full h-48 object-cover">
+              <div class="p-5">
+                <h4 class="font-medium mb-2">${v["video title"]}</h4>
+                <p class="text-xs text-gray-500 mb-2">
+                  <i class="fas fa-eye mr-1"></i>${v["view count"]} &nbsp;
+                  <i class="fas fa-thumbs-up mr-1"></i>${v["like count"]}
+                </p>
+                <p class="text-xs text-gray-600 mb-3"><strong>Length:</strong> ${v["length_sec"]} s</p>
+                ${(v.tags || "").split("|").slice(0, 3).map(t =>
+                  `<span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">${t}</span>`
+                ).join(" ")}
+              </div>`;
+            if (v["video id"]) div.onclick = () =>
+              window.open(`https://www.youtube.com/watch?v=${v["video id"]}`, "_blank");
+            div.style.cursor = "pointer";
+            cards.appendChild(div);
+          });
+
+        } catch (e) {
+          console.error(e); loading.style.display = "none";
+          showNotification("Optimisation failed – check console.");
+        }
+      });
+
+      /* Back button */
+      document.getElementById("goBackBtn").onclick = () => {
+        step2.classList.add("hidden");
+        step1.classList.remove("hidden");
+        instructionStep2.querySelector(".instruction-number").classList.add("bg-white", "text-blue-600");
+        instructionStep2.querySelector(".instruction-number").classList.remove("bg-blue-600", "text-white");
+        instructionDetail.textContent = "Enter video details to receive AI suggestions.";
+      };
+
+      /* Clear-filter button */
+      document.querySelector(".video-filter-clear").onclick =
+        () => { const f = document.getElementById("videoFilter"); f.value = ""; f.dispatchEvent(new Event("input")); };
+
+      /* Filter live */
+      document.getElementById("videoFilter").oninput = ev => {
+        const q = ev.target.value.toLowerCase();
+        document.querySelectorAll("#videoCards > div").forEach(card => {
+          card.style.display = card.textContent.toLowerCase().includes(q) ? "" : "none";
+        });
+      };
+
+      /* Re-evaluate button (improved score) */
+      document.getElementById("reEvalBtn").onclick = async () => {
+        if (!currentPayload) return;
+        loading.style.display = "flex";
+        try {
+          const r = await fetch(`${API_BASE_URL}/api/optimize`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(currentPayload)
+          });
+          const res = await r.json();
+          loading.style.display = "none";
+          setGauge(res.improved_engagement);
+        } catch (e) {
+          console.error(e); loading.style.display = "none";
+          showNotification("Re-evaluation failed.");
+        }
+      };
     });
   </script>
-</body>});
+</body>
 </html>
