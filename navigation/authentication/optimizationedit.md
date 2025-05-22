@@ -418,7 +418,7 @@ menu: nav/home.html
             videoTitle: "Palomar Health Birth Center",
             videoDescription: "Learn about our world-class birth center from one of our patients.",
             videoCategoryLabel: "People & Blogs",
-            topicCategories: "Health",
+            topicCategories: "",
             viewCount: 170967
           },
           {
@@ -429,7 +429,7 @@ menu: nav/home.html
             videoTitle: "Palomar Health NICU",
             videoDescription: "Take a tour of our state-of-the-art NICU.",
             videoCategoryLabel: "People & Blogs",
-            topicCategories: "Health",
+            topicCategories: "",
             viewCount: 444
           },
           {
@@ -649,7 +649,7 @@ menu: nav/home.html
             videoTitle: "Palomar Health Recipe - Beet-Apple Salad",
             videoDescription: "Learn how to prepare a beet-apple salad!",
             videoCategoryLabel: "Nonprofits & Activism",
-            topicCategories: "Food,Lifestyle_(sociology)",
+            topicCategories: "Food,Lifestyle",
             viewCount: 1563
           },
           {
@@ -660,7 +660,7 @@ menu: nav/home.html
             videoTitle: "Holiday Eating with a Gluten-Free Diet - Julie Vargas",
             videoDescription: "",
             videoCategoryLabel: "Nonprofits & Activism",
-            topicCategories: "Health,Lifestyle_(sociology)",
+            topicCategories: "Health,Lifestyle",
             viewCount: 22
           },
           {
@@ -671,7 +671,7 @@ menu: nav/home.html
             videoTitle: "Food Preparation Tips by Executive Chef John Medall",
             videoDescription: "",
             videoCategoryLabel: "Nonprofits & Activism",
-            topicCategories: "Food,Lifestyle_(sociology)",
+            topicCategories: "Food,Lifestyle",
             viewCount: 160
           },
           {
@@ -700,10 +700,15 @@ menu: nav/home.html
 
         // Process the CSV data into our video format
         videos = csvData.map(item => {
-          // Extract categories from the topicCategories field
-          const categories = item.topicCategories ? 
-            item.topicCategories.split(',').map(cat => cat.trim().replace('_', '')) : 
-            ['General'];
+          // Extract categories from the topicCategories field and process them
+          let categories = [];
+          if (item.topicCategories) {
+            categories = item.topicCategories
+              .split(',')
+              .map(cat => cat.trim())
+              .filter(cat => cat !== "Health")  // Filter out Health
+              .map(cat => cat === "Lifestyle_(sociology)" ? "Lifestyle" : cat); // Convert Lifestyle_(sociology) to Lifestyle
+          }
           
           return {
             id: item.videoId,
@@ -745,7 +750,16 @@ menu: nav/home.html
         
         videos.forEach(video => {
           if (video.categories) {
-            video.categories.forEach(category => allCategories.add(category));
+            video.categories.forEach(category => {
+              // Skip "Health" category and convert "Lifestyle_(sociology)" to "Lifestyle"
+              if (category === "Health") return;
+              
+              if (category === "Lifestyle_(sociology)") {
+                allCategories.add("Lifestyle");
+              } else {
+                allCategories.add(category);
+              }
+            });
           }
         });
         
@@ -786,8 +800,17 @@ menu: nav/home.html
             video.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
             (video.description && video.description.toLowerCase().includes(searchQuery.toLowerCase()));
           
-          const matchesCategory = currentCategory === 'all' || 
-            (video.categories && video.categories.includes(currentCategory));
+          let matchesCategory = currentCategory === 'all';
+          
+          if (!matchesCategory && video.categories) {
+            if (currentCategory === 'Lifestyle') {
+              // Match both "Lifestyle" and any legacy "Lifestyle_(sociology)" values
+              matchesCategory = video.categories.includes('Lifestyle') || 
+                               video.categories.includes('Lifestyle_(sociology)');
+            } else {
+              matchesCategory = video.categories.includes(currentCategory);
+            }
+          }
           
           return matchesSearch && matchesCategory;
         });
@@ -1091,7 +1114,7 @@ menu: nav/home.html
     const newHTML = `
       <div class="header-container">
         <h1 class="title is-2" style="color: #4f46e5;">
-          <i class="fas fa-chart-line mr-2"></i> Hospital Video Optimiser
+          Hospital Video Optimizer
         </h1>
         <p class="subtitle is-5">Enhance your hospital's video content with AI-powered insights</p>
       </div>
