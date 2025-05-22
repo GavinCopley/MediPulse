@@ -1,7 +1,7 @@
 ---
 layout: base
 title: Palomar Health Video Gallery
-permalink: /optimize/edit
+permalink: /optimize/edit/
 search_exclude: true
 menu: nav/home.html
 ---
