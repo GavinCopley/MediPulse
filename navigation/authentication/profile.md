@@ -1,5 +1,5 @@
 ---
-layout: needsAuth
+layout: base
 title: Profile Settings
 permalink: /profile
 menu: nav/home.html
