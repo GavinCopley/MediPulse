@@ -9,7 +9,7 @@ menu: nav/home.html
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Hospital Video Optimiser</title>
+  <title>Generate an Optimal Video</title>
 
   <!-- FontAwesome -->
   <link
@@ -28,7 +28,7 @@ menu: nav/home.html
   <div id="loadingOverlay" class="fixed inset-0 z-50 hidden items-center justify-center bg-white/90 backdrop-blur-sm">
     <div class="text-center">
       <i class="fas fa-circle-notch fa-spin fa-2x mb-3 text-blue-600"></i>
-      <div class="text-xl font-semibold text-blue-600">Optimising Your Content...</div>
+      <div class="text-xl font-semibold text-blue-600">Optimizing Your Content...</div>
       <div class="mt-2 text-xs text-gray-500">Processing with AI</div>
     </div>
   </div>
@@ -41,8 +41,30 @@ menu: nav/home.html
 
   <section class="py-12 px-6">
     <div class="container mx-auto max-w-5xl">
-      <h1 class="mb-5 text-center text-4xl font-bold text-gray-800">
-        <i class="fa-solid fa-chart-line text-blue-600 mr-2"></i> Hospital Video Optimiser
+      <!-- Oval Navigation Bar (centered with decreased top padding) -->
+      <div class="flex justify-center mb-8 mt-2">
+        <div style="display: inline-block; background-color: #f5f5f5; border-radius: 30px; padding: 1px 3px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); width: 420px;">
+          <div class="buttons has-addons" style="margin: 0; border-radius: 25px; overflow: hidden; position: relative; display: flex; height: 36px;">
+            <!-- Blue background overlay for active button (moved to Generate New) -->
+            <div style="position: absolute; top: 0; left: 33%; bottom: 0; width: 34%; background-color: #4f46e5; border-radius: 25px; z-index: 1;"></div>
+            <a href="{{site.baseurl}}/optimize" class="button is-rounded" style="margin: 0; border-color: transparent; background-color: transparent; position: relative; z-index: 2; flex: 1; padding: 0 4px; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; white-space: nowrap;">
+              <span class="icon"><i class="fas fa-wand-magic-sparkles"></i></span>
+              <span>&nbsp;Main</span>
+            </a>
+            <a href="{{site.baseurl}}/optimize/generate" class="button is-rounded" style="margin: 0; border-color: transparent; background-color: transparent; position: relative; z-index: 2; color: white; flex: 1; padding: 0 4px; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; white-space: nowrap;">
+              <span class="icon"><i class="fas fa-plus-circle"></i></span>
+              <span>&nbsp;Generate New</span>
+            </a>
+            <a href="{{site.baseurl}}/optimize/edit" class="button is-rounded" style="margin: 0; border-color: transparent; background-color: transparent; position: relative; z-index: 2; flex: 1; padding: 0 4px; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; white-space: nowrap;">
+              <span class="icon"><i class="fas fa-edit"></i></span>
+              <span>&nbsp;Edit Existing</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <h1 class="mb-5 text-center text-4xl font-bold text-gray-800" style="color: #4f46e5;">
+        Generate an Optimal Video
       </h1>
       <p class="mb-10 text-center text-xl text-gray-600">
         Enhance your hospital's video content with AI-powered insights

@@ -288,14 +288,36 @@ menu: nav/home.html
   <div id="loadingOverlay" class="fixed inset-0 z-50 hidden items-center justify-center bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm">
     <div class="text-center">
       <i class="fas fa-circle-notch fa-spin fa-2x mb-3 text-blue-600 dark:text-blue-400"></i>
-      <div class="text-xl font-semibold text-blue-600 dark:text-blue-400">Optimising Your Content...</div>
+      <div class="text-xl font-semibold text-blue-600 dark:text-blue-400">Optimizing Your Content...</div>
       <div class="mt-2 text-xs text-gray-500 dark:text-gray-400">Processing with AI</div>
+    </div>
+  </div>
+
+  <!-- Oval Navigation Bar -->
+  <div class="has-text-centered my-4">
+    <div style="display: inline-block; background-color: #f5f5f5; border-radius: 30px; padding: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+      <div class="buttons has-addons" style="margin: 0; border-radius: 25px; overflow: hidden; position: relative;">
+        <!-- Blue background overlay for active button -->
+        <div style="position: absolute; top: 0; right: 0; bottom: 0; width: 38%; background-color: #4f46e5; border-radius: 25px; z-index: 1;"></div>
+        <a href="{{site.baseurl}}/optimize" class="button is-rounded" style="margin: 0; border-color: transparent; background-color: transparent; position: relative; z-index: 2;">
+          <span class="icon"><i class="fas fa-wand-magic-sparkles"></i></span>
+          <span>Main</span>
+        </a>
+        <a href="{{site.baseurl}}/optimize/generate" class="button is-rounded" style="margin: 0; border-color: transparent; background-color: transparent; position: relative; z-index: 2;">
+          <span class="icon"><i class="fas fa-plus-circle"></i></span>
+          <span>Generate New</span>
+        </a>
+        <a href="{{site.baseurl}}/optimize/edit" class="button is-rounded" style="margin: 0; border-color: transparent; background-color: transparent; position: relative; z-index: 2; color: white;">
+          <span class="icon"><i class="fas fa-edit"></i></span>
+          <span>Edit Existing</span>
+        </a>
+      </div>
     </div>
   </div>
 
   <div class="container">
     <div class="header-container">
-      <h1 class="title is-2" style="color: #4f46e5;">
+      <h1 class="title is-2 font-bold" style="color: #4f46e5; font-weight: 700;">
         Optimize an Existing Video
       </h1>
       <p class="subtitle is-5">Select an existing Palomar Health video to optimize it</p>
