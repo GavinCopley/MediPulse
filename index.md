@@ -25,7 +25,7 @@ menu: nav/home.html
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center">
                 <h2 class="text-4xl font-bold text-indigo-900 mb-6 slide-in-left">Our Mission</h2>
-                <p class="text-2xl text-indigo-700 max-w-4xl mx-auto leading-relaxed slide-in-right">To provide hospitals with evualations of their youtube chanels and ways to improve their videos in order to increase viewership</p>
+                <p class="text-2xl text-indigo-700 max-w-4xl mx-auto leading-relaxed slide-in-right">To provide hospitals with evaluations of their YouTube channels and ways to improve their videos in order to increase viewership</p>
             </div>
         </div>
     </section>
@@ -41,7 +41,7 @@ menu: nav/home.html
                         </svg>
                     </div>
                     <h3 class="text-2xl font-semibold text-indigo-900 mb-4">Performance Metrics</h3>
-                    <p class="text-lg text-gray-600">Comprehensive data on youtube videos chance of success.</p>
+                    <p class="text-lg text-gray-600">Comprehensive data on YouTube videos chance of success.</p>
                 </div>
                 <div class="bg-indigo-50 rounded-xl p-10 text-center transform transition-all duration-300 hover:scale-105 hover:shadow-xl slide-in-bottom">
                     <div class="text-indigo-600 mb-6">
@@ -50,7 +50,7 @@ menu: nav/home.html
                         </svg>
                     </div>
                     <h3 class="text-2xl font-semibold text-indigo-900 mb-4">Specialized Rankings</h3>
-                    <p class="text-lg text-gray-600">Detailed analiyzing of descriptions and hashtags to predict preformance.</p>
+                    <p class="text-lg text-gray-600">Detailed analyzing of descriptions and hashtags to predict performance.</p>
                 </div>
                 <div class="bg-indigo-50 rounded-xl p-10 text-center transform transition-all duration-300 hover:scale-105 hover:shadow-xl slide-in-right">
                     <div class="text-indigo-600 mb-6">
@@ -59,7 +59,7 @@ menu: nav/home.html
                         </svg>
                     </div>
                     <h3 class="text-2xl font-semibold text-indigo-900 mb-4">Real-time Updates</h3>
-                    <p class="text-lg text-gray-600">Stay informed with the latest trends inorder to improve channel.</p>
+                    <p class="text-lg text-gray-600">Stay informed with the latest trends in order to improve channel.</p>
                 </div>
             </div>
             </div>
@@ -69,8 +69,8 @@ menu: nav/home.html
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
                 <div>
-                    <h2 class="text-4xl font-bold text-indigo-900 mb-6 slide-in-left">Improving social media pressence</h2>
-                    <p class="text-xl text-gray-600 mb-8 leading-relaxed slide-in-right">MediPulse provides comprehensive data to help you improve your youtube channel:</p>
+                    <h2 class="text-4xl font-bold text-indigo-900 mb-6 slide-in-left">Improving social media presence</h2>
+                    <p class="text-xl text-gray-600 mb-8 leading-relaxed slide-in-right">MediPulse provides comprehensive data to help you improve your YouTube channel:</p>
                     <ul class="space-y-4 text-gray-600">
                         <li class="flex items-center text-lg slide-in-left">
                             <svg class="w-6 h-6 text-indigo-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -88,7 +88,7 @@ menu: nav/home.html
                             <svg class="w-6 h-6 text-indigo-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
-                            Increase sucess
+                            Increase success
                         </li>
                     </ul>
                 </div>
