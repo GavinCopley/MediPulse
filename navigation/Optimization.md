@@ -23,63 +23,60 @@ menu: nav/home.html
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
 </head>
 
-<body class="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-slate-900 text-gray-800 dark:text-gray-100 transition-all duration-300">
+<body class="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 text-gray-800 transition-all duration-300">
   <!-- Loading overlay -->
-  <div id="loadingOverlay" class="fixed inset-0 z-50 hidden items-center justify-center bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm">
+  <div id="loadingOverlay" class="fixed inset-0 z-50 hidden items-center justify-center bg-white/90 backdrop-blur-sm">
     <div class="text-center">
-      <i class="fas fa-circle-notch fa-spin fa-2x mb-3 text-blue-600 dark:text-blue-400"></i>
-      <div class="text-xl font-semibold text-blue-600 dark:text-blue-400">Optimising Your Content...</div>
-      <div class="mt-2 text-xs text-gray-500 dark:text-gray-400">Processing with AI</div>
+      <i class="fas fa-circle-notch fa-spin fa-2x mb-3 text-blue-600"></i>
+      <div class="text-xl font-semibold text-blue-600">Optimising Your Content...</div>
+      <div class="mt-2 text-xs text-gray-500">Processing with AI</div>
     </div>
   </div>
 
   <section class="py-12 px-6">
     <div class="container mx-auto max-w-5xl">
-      <h1 class="mb-5 text-center text-4xl font-bold text-gray-800 dark:text-gray-100">
-        <i class="fa-solid fa-chart-line text-blue-600 dark:text-blue-400 mr-2"></i> Hospital Video Optimiser
+      <h1 class="mb-5 text-center text-4xl font-bold text-gray-800">
+        <i class="fa-solid fa-chart-line text-blue-600 mr-2"></i> Hospital Video Optimiser
       </h1>
-      <p class="mb-10 text-center text-xl text-gray-600 dark:text-gray-300">
+      <p class="mb-10 text-center text-xl text-gray-600">
         Enhance your hospital's video content with AI-powered insights
       </p>
       
       <!-- Instructions Header -->
-      <div class="relative mb-8 rounded-xl bg-white dark:bg-slate-800 p-6 shadow-md dark:shadow-lg border border-gray-200 dark:border-gray-700">
-        <button id="darkModeToggle" class="absolute top-4 right-4 cursor-pointer bg-transparent border-none text-gray-800 dark:text-gray-100 text-xl transition-transform hover:rotate-30">
-          <i class="fas fa-moon"></i>
-        </button>
-        <h3 class="mb-3 text-center text-lg font-semibold text-gray-800 dark:text-gray-100">How It Works</h3>
+      <div class="relative mb-8 rounded-xl bg-white p-6 shadow-md border border-gray-200">
+        <h3 class="mb-3 text-center text-lg font-semibold text-gray-800">How It Works</h3>
         
         <div class="my-4 flex justify-around items-center">
           <div id="instructionStep1" class="flex flex-col items-center relative flex-1 active">
-            <div class="instruction-number w-16 h-16 rounded-full bg-white dark:bg-slate-800 border-2 border-blue-600 flex items-center justify-center text-xl font-bold text-blue-600 mb-4 relative z-10 active:bg-blue-600 active:text-white">1</div>
-            <div class="font-semibold text-center text-gray-800 dark:text-gray-100">Describe Video</div>
+            <div class="instruction-number w-16 h-16 rounded-full bg-white border-2 border-blue-600 flex items-center justify-center text-xl font-bold text-blue-600 mb-4 relative z-10 active:bg-blue-600 active:text-white">1</div>
+            <div class="font-semibold text-center text-gray-800">Describe Video</div>
           </div>
-          <div class="w-1/3 h-0.5 bg-gray-200 dark:bg-gray-700"></div>
+          <div class="w-1/3 h-0.5 bg-gray-200"></div>
           <div id="instructionStep2" class="flex flex-col items-center relative flex-1">
-            <div class="instruction-number w-16 h-16 rounded-full bg-white dark:bg-slate-800 border-2 border-blue-600 flex items-center justify-center text-xl font-bold text-blue-600 mb-4 relative z-10 active:bg-blue-600 active:text-white">2</div>
-            <div class="font-semibold text-center text-gray-800 dark:text-gray-100">See Results</div>
+            <div class="instruction-number w-16 h-16 rounded-full bg-white border-2 border-blue-600 flex items-center justify-center text-xl font-bold text-blue-600 mb-4 relative z-10 active:bg-blue-600 active:text-white">2</div>
+            <div class="font-semibold text-center text-gray-800">See Results</div>
           </div>
         </div>
         
         <p class="mt-3 text-center">
-          <span id="instructionDetail" class="text-gray-500 dark:text-gray-400">Enter the details of your hospital video to receive AI-powered optimization suggestions</span>
+          <span id="instructionDetail" class="text-gray-500">Enter the details of your hospital video to receive AI-powered optimization suggestions</span>
         </p>
       </div>
 
       <!-- FORM (Step 1) -->
       <div id="step1" class="block">
-        <div class="rounded-xl bg-white dark:bg-slate-800 p-6 shadow-md dark:shadow-lg border border-gray-200 dark:border-gray-700 transition-all hover:shadow-lg">
-          <h2 class="mb-6 font-bold text-gray-800 dark:text-gray-100 flex items-center">
-            <i class="fas fa-pencil-alt mr-2 text-blue-600 dark:text-blue-400"></i>
+        <div class="rounded-xl bg-white p-6 shadow-md border border-gray-200 transition-all hover:shadow-lg">
+          <h2 class="mb-6 font-bold text-gray-800 flex items-center">
+            <i class="fas fa-pencil-alt mr-2 text-blue-600"></i>
             Step 1 – Describe your video
           </h2>
           
           <form id="videoForm" class="space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div>
-                <label class="block mb-2 text-gray-800 dark:text-gray-100 font-medium">Platform</label>
+                <label class="block mb-2 text-gray-800 font-medium">Platform</label>
                 <div class="relative">
-                  <select name="platform" disabled class="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-100 py-2 pl-10 pr-4 appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-600 transition-all">
+                  <select name="platform" disabled class="w-full rounded-lg border border-gray-200 bg-white text-gray-800 py-2 pl-10 pr-4 appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-600 transition-all">
                     <option value="youtube" selected>YouTube</option>
                     <option value="tiktok">TikTok</option>
                     <option value="instagram">Instagram Reels</option>
@@ -88,63 +85,63 @@ menu: nav/home.html
                     <i class="fab fa-youtube text-red-500"></i>
                   </div>
                 </div>
-                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400 italic">Currently only YouTube is supported.</p>
+                <p class="mt-1 text-sm text-gray-500 italic">Currently only YouTube is supported.</p>
               </div>
               
               <div>
-                <label class="block mb-2 text-gray-800 dark:text-gray-100 font-medium">Category ID</label>
+                <label class="block mb-2 text-gray-800 font-medium">Category ID</label>
                 <div class="relative">
                   <input name="category_id" type="number" min="1" value="27"
-                    class="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-100 py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-600 transition-all" />
+                    class="w-full rounded-lg border border-gray-200 bg-white text-gray-800 py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-600 transition-all" />
                   <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                     <i class="fas fa-tag text-gray-400"></i>
                   </div>
                 </div>
-                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400 italic">Leave default if unsure.</p>
+                <p class="mt-1 text-sm text-gray-500 italic">Leave default if unsure.</p>
               </div>
               
               <div>
-                <label class="block mb-2 text-gray-800 dark:text-gray-100 font-medium">Duration (seconds)</label>
+                <label class="block mb-2 text-gray-800 font-medium">Duration (seconds)</label>
                 <div class="relative">
                   <input name="duration_sec" type="number" min="5" required
-                    class="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-100 py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-600 transition-all" />
+                    class="w-full rounded-lg border border-gray-200 bg-white text-gray-800 py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-600 transition-all" />
                   <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                     <i class="fas fa-clock text-gray-400"></i>
                   </div>
                 </div>
-                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400 italic">Length of your video in seconds</p>
+                <p class="mt-1 text-sm text-gray-500 italic">Length of your video in seconds</p>
               </div>
             </div>
 
             <div>
-              <label class="block mb-2 text-gray-800 dark:text-gray-100 font-medium">Title</label>
+              <label class="block mb-2 text-gray-800 font-medium">Title</label>
               <div class="relative">
                 <input name="title" maxlength="100" required placeholder="Enter an engaging title for your video"
-                  class="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-100 py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-600 transition-all" />
+                  class="w-full rounded-lg border border-gray-200 bg-white text-gray-800 py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-600 transition-all" />
                 <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                   <i class="fas fa-heading text-gray-400"></i>
                 </div>
               </div>
-              <p class="mt-1 text-sm text-gray-500 dark:text-gray-400 italic">Catchy titles improve click-through rates</p>
+              <p class="mt-1 text-sm text-gray-500 italic">Catchy titles improve click-through rates</p>
             </div>
 
             <div>
-              <label class="block mb-2 text-gray-800 dark:text-gray-100 font-medium">Description</label>
+              <label class="block mb-2 text-gray-800 font-medium">Description</label>
               <textarea name="description" rows="4" placeholder="Describe what your video is about..."
-                class="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-100 py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-600 transition-all"></textarea>
-              <p class="mt-1 text-sm text-gray-500 dark:text-gray-400 italic">A thorough description helps with SEO and viewer understanding</p>
+                class="w-full rounded-lg border border-gray-200 bg-white text-gray-800 py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-600 transition-all"></textarea>
+              <p class="mt-1 text-sm text-gray-500 italic">A thorough description helps with SEO and viewer understanding</p>
             </div>
 
             <div>
-              <label class="block mb-2 text-gray-800 dark:text-gray-100 font-medium">Tags <span class="text-gray-500">(pipe-separated)</span></label>
+              <label class="block mb-2 text-gray-800 font-medium">Tags <span class="text-gray-500">(pipe-separated)</span></label>
               <div class="relative">
                 <textarea name="tags" rows="2" placeholder="cardiology|heart health|angioplasty"
-                  class="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-100 py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-600 transition-all"></textarea>
+                  class="w-full rounded-lg border border-gray-200 bg-white text-gray-800 py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-600 transition-all"></textarea>
                 <div class="absolute top-3 left-0 flex items-center pl-3 pointer-events-none">
                   <i class="fas fa-hashtag text-gray-400"></i>
                 </div>
               </div>
-              <p class="mt-1 text-sm text-gray-500 dark:text-gray-400 italic">Tags help your video appear in searches</p>
+              <p class="mt-1 text-sm text-gray-500 italic">Tags help your video appear in searches</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-6 gap-6">
@@ -161,12 +158,12 @@ menu: nav/home.html
                 </label>
               </div>
               <div class="md:col-span-2">
-                <label class="block mb-2 text-gray-800 dark:text-gray-100 font-medium">
+                <label class="block mb-2 text-gray-800 font-medium">
                   <i class="fas fa-calendar-alt mr-1"></i> Publish date/time
                 </label>
                 <input name="publish_datetime" type="datetime-local"
-                  class="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-100 py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-600 transition-all" />
-                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400 italic">Timing affects viewership</p>
+                  class="w-full rounded-lg border border-gray-200 bg-white text-gray-800 py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-600 transition-all" />
+                <p class="mt-1 text-sm text-gray-500 italic">Timing affects viewership</p>
               </div>
             </div>
 
@@ -182,29 +179,29 @@ menu: nav/home.html
 
       <!-- RESULTS (Step 2) -->
       <div id="step2" class="hidden">
-        <h2 class="mb-6 font-bold text-gray-800 dark:text-gray-100 flex items-center">
-          <i class="fas fa-chart-line mr-2 text-blue-600 dark:text-blue-400"></i>
+        <h2 class="mb-6 font-bold text-gray-800 flex items-center">
+          <i class="fas fa-chart-line mr-2 text-blue-600"></i>
           Step 2 – Results
         </h2>
 
         <!-- Engagement Score Card -->
-        <div class="mb-8 rounded-xl bg-white dark:bg-slate-800 p-6 shadow-md dark:shadow-lg border border-gray-200 dark:border-gray-700 transition-all hover:shadow-lg">
-          <h3 class="mb-4 font-semibold text-gray-800 dark:text-gray-100 flex items-center">
-            <i class="fas fa-gauge-high mr-2 text-blue-600 dark:text-blue-400"></i> 
+        <div class="mb-8 rounded-xl bg-white p-6 shadow-md border border-gray-200 transition-all hover:shadow-lg">
+          <h3 class="mb-4 font-semibold text-gray-800 flex items-center">
+            <i class="fas fa-gauge-high mr-2 text-blue-600"></i> 
             Predicted Engagement
           </h3>
-          <div class="flex flex-col md:flex-row items-center gap-6">
+          <div class="w-full flex flex-col md:flex-row items-center gap-6">
             <div class="w-full md:w-1/3">
               <canvas id="engagementChart"></canvas>
             </div>
             <div class="w-full md:w-2/3">
-              <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
-                <div id="engagementProgress" class="bg-blue-600 h-3 rounded-full" style="width: 0%"></div>
+              <div class="relative w-full h-4 bg-gray-300 rounded-full overflow-hidden">
+                <div id="engagementProgress" class="absolute inset-0 bg-blue-600 rounded-full" style="width: 0%"></div>
               </div>
               <p class="mt-3 text-center">
-                Engagement Score: <strong id="engagementScore" class="text-2xl text-blue-600 dark:text-blue-400">N/A</strong> / 100
+                Engagement Score: <strong id="engagementScore" class="text-2xl text-blue-600">N/A</strong> / 100
               </p>
-              <p class="text-center text-xs text-gray-500 dark:text-gray-400 mt-2">
+              <p class="text-center text-xs text-gray-500 mt-2">
                 Based on machine learning analysis of similar content
               </p>
             </div>
@@ -212,21 +209,21 @@ menu: nav/home.html
         </div>
 
         <!-- Sample Outlines Tabs -->
-        <div class="mb-8 rounded-xl bg-white dark:bg-slate-800 p-8 shadow-md dark:shadow-lg border border-gray-200 dark:border-gray-700">
-          <h3 class="mb-4 font-semibold text-gray-800 dark:text-gray-100 flex items-center">
-            <i class="fas fa-clipboard-list mr-2 text-blue-600 dark:text-blue-400"></i> 
+        <div class="mb-8 rounded-xl bg-white p-8 shadow-md border border-gray-200">
+          <h3 class="mb-4 font-semibold text-gray-800 flex items-center">
+            <i class="fas fa-clipboard-list mr-2 text-blue-600"></i> 
             AI-Generated Outlines
           </h3>
-          <div class="border-b border-gray-200 dark:border-gray-700">
+          <div class="border-b border-gray-200">
             <ul id="outlineTabs" class="flex flex-wrap justify-center -mb-px">
               <li data-index="0" class="mr-2">
                 <a class="inline-block py-2 px-4 border-b-2 border-blue-600 text-blue-600 font-semibold">Outline 1</a>
               </li>
               <li data-index="1" class="mr-2">
-                <a class="inline-block py-2 px-4 border-b-2 border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 hover:border-gray-300">Outline 2</a>
+                <a class="inline-block py-2 px-4 border-b-2 border-transparent text-gray-500 hover:text-gray-700">Outline 2</a>
               </li>
               <li data-index="2">
-                <a class="inline-block py-2 px-4 border-b-2 border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 hover:border-gray-300">Outline 3</a>
+                <a class="inline-block py-2 px-4 border-b-2 border-transparent text-gray-500 hover:text-gray-700">Outline 3</a>
               </li>
             </ul>
           </div>
@@ -242,7 +239,7 @@ menu: nav/home.html
             </div>
           </div>
           <div class="text-center mt-6">
-            <button id="reEvalBtn" class="px-4 py-2 bg-blue-100 hover:bg-blue-200 dark:bg-blue-900/30 dark:hover:bg-blue-800/40 text-blue-700 dark:text-blue-300 font-medium rounded-lg transition-all hover:-translate-y-0.5 flex items-center gap-2 mx-auto">
+            <button id="reEvalBtn" class="px-4 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 font-medium rounded-lg transition-all hover:-translate-y-0.5 flex items-center gap-2 mx-auto">
               <i class="fas fa-sync-alt"></i>
               <span>Re-evaluate with these changes</span>
             </button>
@@ -250,13 +247,13 @@ menu: nav/home.html
         </div>
 
         <!-- Improvement Tips Dropdown -->
-        <div class="mb-8 bg-white dark:bg-slate-800 rounded-xl shadow-md border border-gray-200 dark:border-gray-700 transition-all hover:shadow-lg p-6">
+        <div class="mb-8 bg-white rounded-xl shadow-md border border-gray-200 transition-all hover:shadow-lg p-6">
           <h3 class="text-lg font-semibold mb-4 flex items-center">
             <i class="fas fa-lightbulb mr-2 text-yellow-400"></i> 
             Improvement Tips <span class="text-xs text-gray-500 ml-2">(click to expand)</span>
           </h3>
           <details id="allTipsDropdown" class="group">
-            <summary class="cursor-pointer font-semibold text-amber-500 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/10 dark:to-orange-900/10 rounded-md py-2 px-4 inline-flex items-center gap-2 transition-all hover:-translate-y-0.5 hover:bg-gradient-to-r hover:from-amber-100 hover:to-orange-100 dark:hover:from-amber-900/20 dark:hover:to-orange-900/20">
+            <summary class="cursor-pointer font-semibold text-amber-500 bg-gradient-to-r from-amber-50 to-orange-50 rounded-md py-2 px-4 inline-flex items-center gap-2 transition-all hover:-translate-y-0.5 hover:bg-gradient-to-r hover:from-amber-100 hover:to-orange-100">
               <span class="flex items-center">
                 <span class="transform transition-transform duration-200 group-open:rotate-180 inline-block mr-2">
                   <i class="fas fa-chevron-down text-sm"></i>
@@ -269,9 +266,9 @@ menu: nav/home.html
         </div>
 
         <!-- Similar Videos Filter + Cards -->
-        <div class="mb-8 rounded-xl bg-white dark:bg-slate-800 p-6 shadow-md dark:shadow-lg border border-gray-200 dark:border-gray-700 transition-all hover:shadow-lg">
-          <h3 class="mb-4 font-semibold text-gray-800 dark:text-gray-100 flex items-center">
-            <i class="fas fa-film mr-2 text-blue-600 dark:text-blue-400"></i> 
+        <div class="mb-8 rounded-xl bg-white p-6 shadow-md border border-gray-200 transition-all hover:shadow-lg">
+          <h3 class="mb-4 font-semibold text-gray-800 flex items-center">
+            <i class="fas fa-film mr-2 text-blue-600"></i> 
             Similar High-Performing Videos
           </h3>
           <div class="mb-5">
@@ -280,13 +277,13 @@ menu: nav/home.html
                 type="text"
                 id="videoFilter"
                 placeholder="Filter by title or tag..."
-                class="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-100 py-2 pl-10 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-600 transition-all"
+                class="w-full rounded-lg border border-gray-200 bg-white text-gray-800 py-2 pl-10 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-600 transition-all"
               />
               <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                 <i class="fas fa-search text-gray-400"></i>
               </div>
               <div class="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer video-filter-clear">
-                <i class="fas fa-times-circle text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"></i>
+                <i class="fas fa-times-circle text-gray-400 hover:text-gray-600"></i>
               </div>
             </div>
           </div>
@@ -295,7 +292,7 @@ menu: nav/home.html
         
         <!-- Add back button -->
         <div class="text-center mt-8">
-          <button id="goBackBtn" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 font-medium rounded-lg transition-all hover:-translate-y-0.5 flex items-center gap-2 mx-auto">
+          <button id="goBackBtn" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition-all hover:-translate-y-0.5 flex items-center gap-2 mx-auto">
             <i class="fas fa-arrow-left"></i>
             <span>Edit Video Details</span>
           </button>
@@ -315,40 +312,6 @@ menu: nav/home.html
       const instructionStep2 = document.getElementById("instructionStep2");
       const instructionDetail = document.getElementById("instructionDetail");
       
-      // Dark mode toggle
-      const darkModeToggle = document.getElementById("darkModeToggle");
-      
-      // Check for saved preference
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme) {
-        if (savedTheme === 'dark') {
-          document.documentElement.classList.add('dark');
-        } else {
-          document.documentElement.classList.remove('dark');
-        }
-        updateThemeIcon();
-      }
-      
-      darkModeToggle.addEventListener('click', () => {
-        if (document.documentElement.classList.contains('dark')) {
-          document.documentElement.classList.remove('dark');
-          localStorage.setItem('theme', 'light');
-        } else {
-          document.documentElement.classList.add('dark');
-          localStorage.setItem('theme', 'dark');
-        }
-        updateThemeIcon();
-      });
-      
-      function updateThemeIcon() {
-        const icon = darkModeToggle.querySelector('i');
-        if (document.documentElement.classList.contains('dark')) {
-          icon.className = 'fas fa-sun';
-        } else {
-          icon.className = 'fas fa-moon';
-        }
-      }
-
       // Add clear filter functionality
       if (document.querySelector('.video-filter-clear')) {
         document.querySelector('.video-filter-clear').addEventListener('click', () => {
@@ -365,10 +328,10 @@ menu: nav/home.html
           step1.classList.remove('hidden');
           
           // Update instruction steps
-          instructionStep1.querySelector('.instruction-number').classList.add('bg-white', 'dark:bg-slate-800', 'text-blue-600');
+          instructionStep1.querySelector('.instruction-number').classList.add('bg-white', 'text-blue-600');
           instructionStep1.querySelector('.instruction-number').classList.remove('bg-blue-600', 'text-white');
           
-          instructionStep2.querySelector('.instruction-number').classList.add('bg-white', 'dark:bg-slate-800', 'text-blue-600');
+          instructionStep2.querySelector('.instruction-number').classList.add('bg-white', 'text-blue-600');
           instructionStep2.querySelector('.instruction-number').classList.remove('bg-blue-600', 'text-white');
           
           instructionDetail.textContent = 'Enter the details of your hospital video to receive AI-powered optimization suggestions';
@@ -403,11 +366,11 @@ menu: nav/home.html
           
           outlineTabs.querySelectorAll("li a").forEach(a => {
             a.classList.remove("border-blue-600", "text-blue-600", "font-semibold");
-            a.classList.add("border-transparent", "text-gray-500", "dark:text-gray-400");
+            a.classList.add("border-transparent", "text-gray-500");
           });
           
           const selected = e.target.closest("li");
-          selected.querySelector("a").classList.remove("border-transparent", "text-gray-500", "dark:text-gray-400");
+          selected.querySelector("a").classList.remove("border-transparent", "text-gray-500");
           selected.querySelector("a").classList.add("border-blue-600", "text-blue-600", "font-semibold");
           
           const idx = selected.dataset.index;
@@ -428,10 +391,10 @@ menu: nav/home.html
 
       async function runOptimize(){
         // Update instructions
-        instructionStep1.querySelector('.instruction-number').classList.remove('bg-white', 'dark:bg-slate-800', 'text-blue-600');
+        instructionStep1.querySelector('.instruction-number').classList.remove('bg-white', 'text-blue-600');
         instructionStep1.querySelector('.instruction-number').classList.add('bg-blue-600', 'text-white');
         
-        instructionStep2.querySelector('.instruction-number').classList.remove('bg-white', 'dark:bg-slate-800', 'text-blue-600');
+        instructionStep2.querySelector('.instruction-number').classList.remove('bg-white', 'text-blue-600');
         instructionStep2.querySelector('.instruction-number').classList.add('bg-blue-600', 'text-white');
         
         instructionDetail.textContent = 'View AI-powered suggestions and compare with similar high-performing videos';
@@ -450,8 +413,8 @@ menu: nav/home.html
         };
         const pd = fd.get("publish_datetime");
         if(pd){
-          const dt=new Date(pd);
-          data.publish_dow = dt.getDay()===0?6:dt.getDay()-1;
+          const dt = new Date(pd);
+          data.publish_dow = dt.getDay()===0 ? 6 : dt.getDay()-1;
           data.publish_hour = dt.getHours();
         } else {
           data.publish_dow = 0; data.publish_hour = 12;
@@ -493,7 +456,7 @@ menu: nav/home.html
                 const parts = tipsArray[i].split(/[:\-–]/).slice(1).join("");
                 const li = document.createElement("li");
                 li.contentEditable="true";
-                li.className = "py-2 border-b border-gray-200 dark:border-gray-700 transition-all duration-200 text-gray-800 dark:text-gray-100 hover:bg-gray-50/30 hover:pl-1 focus:outline-none focus:bg-blue-500/10 focus:pl-2";
+                li.className = "py-2 border-b border-gray-200 transition-all duration-200 text-gray-800 hover:bg-gray-50/30 hover:pl-1 focus:outline-none focus:bg-blue-500/10 focus:pl-2";
                 li.textContent = parts || tipsArray[i];
                 outlineUl.appendChild(li);
               }
@@ -510,11 +473,11 @@ menu: nav/home.html
                 li.className = "mb-3";
                 
                 // Process tip text to enhance typography
-                const enhancedTip = tip.replace(/\*(.*?)\*/g, '<strong class="text-blue-600 dark:text-blue-400 font-semibold">$1</strong>');
+                const enhancedTip = tip.replace(/\*(.*?)\*/g, '<strong class="text-blue-600 font-semibold">$1</strong>');
                 
                 li.innerHTML = `
-                  <div class="flex items-start gap-4 bg-white dark:bg-slate-800 rounded-lg p-4 border-l-4 border-green-500 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all">
-                    <div class="flex-1 text-gray-800 dark:text-gray-100 text-base leading-relaxed">
+                  <div class="flex items-start gap-4 bg-white rounded-lg p-4 border-l-4 border-green-500 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all">
+                    <div class="flex-1 text-gray-800 text-base leading-relaxed">
                       ${enhancedTip}
                     </div>
                     <button class="flex-shrink-0 bg-green-500 hover:bg-green-600 text-white rounded-md p-2 transition-colors">
@@ -528,7 +491,7 @@ menu: nav/home.html
                   const active = outlineTabs.querySelector("li a.border-blue-600").closest('li').dataset.index;
                   const outlineLi = document.createElement("li");
                   outlineLi.contentEditable = "true";
-                  outlineLi.className = "py-2 border-b border-gray-200 dark:border-gray-700 transition-all duration-200 text-gray-800 dark:text-gray-100 hover:bg-gray-50/30 hover:pl-1 focus:outline-none focus:bg-blue-500/10 focus:pl-2";
+                  outlineLi.className = "py-2 border-b border-gray-200 transition-all duration-200 text-gray-800 hover:bg-gray-50/30 hover:pl-1 focus:outline-none focus:bg-blue-500/10 focus:pl-2";
                   outlineLi.textContent = tip.replace(/\*(.*?)\*/g, '$1'); // Remove asterisks in outline
                   document.getElementById("outlineList" + active).appendChild(outlineLi);
                 };
@@ -537,7 +500,7 @@ menu: nav/home.html
               });
             } else {
               tipsList.innerHTML = `
-                <div class="bg-red-100 dark:bg-red-900/30 border-l-4 border-red-500 text-red-700 dark:text-red-400 p-4 rounded">
+                <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded">
                   ${result.gemini_tips.error || "Failed to generate tips"}
                 </div>
               `;
@@ -550,29 +513,26 @@ menu: nav/home.html
             cards.innerHTML = "";
             (result.reference_videos||[]).forEach(v=>{
               const videoCard = document.createElement("div");
-              videoCard.className="rounded-xl overflow-hidden shadow-md dark:shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-xl bg-white dark:bg-slate-800";
+              videoCard.className="rounded-xl overflow-hidden shadow-md transition-all duration-300 hover:-translate-y-2 hover:shadow-xl bg-white";
               
               videoCard.innerHTML=`
                 <div class="overflow-hidden">
                   <img src="https://img.youtube.com/vi/${v["video id"] || ""}/hqdefault.jpg" alt="Thumbnail" class="w-full h-48 object-cover transition-transform duration-500 hover:scale-105">
-                  <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-red-600/80 rounded-full flex items-center justify-center cursor-pointer">
-                    <i class="fas fa-play text-white text-lg"></i>
-                  </div>
                 </div>
                 <div class="p-5">
-                  <h4 class="font-medium text-gray-800 dark:text-gray-100 mb-2">${v["video title"]}</h4>
-                  <div class="flex items-center text-xs text-gray-500 dark:text-gray-400 mb-2">
+                  <h4 class="font-medium text-gray-800 mb-2">${v["video title"]}</h4>
+                  <div class="flex items-center text-xs text-gray-500 mb-2">
                     <span class="mr-3"><i class="fas fa-eye mr-1"></i> ${v["view count"]}</span>
                     <span class="mr-3"><i class="fas fa-thumbs-up mr-1"></i> ${v["like count"]}</span>
                     <span><i class="fas fa-comment mr-1"></i> ${v["comment count"]}</span>
                   </div>
-                  <p class="text-xs text-gray-600 dark:text-gray-300"><strong>Length:</strong> ${v["length_sec"]}s</p>
+                  <p class="text-xs text-gray-600"><strong>Length:</strong> ${v["length_sec"]}s</p>
                   <div class="flex flex-wrap gap-1 mt-3">
                     ${(v["tags"] || "").split('|').slice(0,3).map(tag => 
-                      `<span class="px-2 py-1 text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 rounded">${tag}</span>`
+                      `<span class="px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded">${tag}</span>`
                     ).join('')}
                     ${v["tags"] && v["tags"].split('|').length > 3 ? 
-                      `<span class="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-300 rounded">+${v["tags"].split('|').length - 3} more</span>` : ''}
+                      `<span class="px-2 py-1 text-xs bg-gray-100 text-gray-800 rounded">+${v["tags"].split('|').length - 3} more</span>` : ''}
                   </div>
                 </div>
               `;
