@@ -1,5 +1,5 @@
 ---
-layout: needsAuth
+layout: base
 title: Settings
 permalink: /settings
 menu: nav/home.html
