@@ -20,7 +20,6 @@ menu: nav/home.html
             <div class="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
         </div>
     </div>
-
     <!-- Mission Statement -->
     <section class="py-24 bg-indigo-50 fade-in-section">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -30,7 +29,6 @@ menu: nav/home.html
             </div>
         </div>
     </section>
-
     <!-- Core Values -->
     <section class="py-24 bg-white fade-in-section">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -66,7 +64,6 @@ menu: nav/home.html
             </div>
             </div>
     </section>
-
     <!-- Healthcare Impact -->
     <section class="py-24 bg-indigo-50 fade-in-section">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -101,7 +98,6 @@ menu: nav/home.html
             </div>
         </div>
     </section>
-
     <!-- Reviews Section -->
     <section class="py-24 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -220,7 +216,6 @@ menu: nav/home.html
             </div>
         </div>
     </section>
-
     <!-- Call to Action -->
     <section class="py-24 bg-indigo-600 fade-in-section">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -229,7 +224,6 @@ menu: nav/home.html
             <a href="noauth" class="inline-block bg-white text-indigo-600 px-8 py-4 rounded-xl text-xl font-semibold hover:bg-indigo-50 transition-all duration-300 hover:scale-105 hover:shadow-xl slide-in-bottom delay-2">Explore Hospital Data</a>
         </div>
     </section>
-
     <!-- Copyright Footer -->
     <footer class="bg-white py-8 fade-in-section">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -240,7 +234,6 @@ menu: nav/home.html
         </div>
     </footer>
 </div>
-
 <div id="auth-view" class="hidden">
     <div class="min-h-screen bg-gray-100 p-8">
         <!-- Profile Dropdown -->
@@ -250,7 +243,6 @@ menu: nav/home.html
                 <h1 class="text-2xl font-bold text-gray-800" id="welcome-message">Welcome back!</h1>
                 <p class="text-gray-600 mt-2" id="user-stats">Loading your stats...</p>
             </div>
-
             <!-- Dashboard Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
                 <!-- Recent Posts Card -->
@@ -278,7 +270,28 @@ menu: nav/home.html
                         </a>
                     </div>
                 </div>
-
+                <!-- Hospital Information Card -->
+                <div class="bg-white rounded-2xl shadow-lg p-8 flex flex-col justify-between hover:shadow-2xl transition">
+                    <div>
+                        <div class="flex items-center mb-4">
+                            <span class="inline-block bg-teal-100 p-3 rounded-full mr-3">
+                                <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                </svg>
+                            </span>
+                            <h2 class="text-xl font-bold text-teal-900">Hospital Information</h2>
+                        </div>
+                        <p class="text-gray-600 mb-6">Browse and compare hospitals across the country and their social media presence.</p>
+                    </div>
+                    <div class="flex justify-end">
+                        <a href="{{site.baseurl}}/hospitalinfo" class="inline-flex items-center bg-teal-600 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-teal-700 transition">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16l2.879-2.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242zM21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            Browse Hospitals
+                        </a>
+                    </div>
+                </div>
                 <!-- Hospital Data Analytics Card -->
                 <div class="bg-white rounded-2xl shadow-lg p-8 flex flex-col justify-between hover:shadow-2xl transition">
                     <div>
@@ -301,7 +314,6 @@ menu: nav/home.html
                         </a>
                     </div>
                 </div>
-
                 <!-- Video Optimization Card -->
                 <div class="bg-white rounded-2xl shadow-lg p-8 flex flex-col justify-between hover:shadow-2xl transition">
                     <div>
@@ -325,7 +337,6 @@ menu: nav/home.html
                     </div>
                 </div>
             </div>
-
             <!-- Recent Activity Card -->
             <div class="bg-white rounded-2xl shadow-lg p-8 mt-8 hover:shadow-2xl transition">
                 <div class="flex items-center mb-4">
@@ -341,7 +352,6 @@ menu: nav/home.html
                     <p class="text-gray-500">Loading activity...</p>
                 </div>
             </div>
-
             <!-- Floating Action Button for New Post (Mobile) -->
             <a href="{{site.baseurl}}/make_post" class="fixed bottom-8 right-8 z-50 bg-indigo-600 text-white rounded-full shadow-lg p-4 flex items-center justify-center hover:bg-indigo-700 transition md:hidden" title="Create New Post">
                 <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">

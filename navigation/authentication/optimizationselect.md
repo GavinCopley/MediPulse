@@ -16,7 +16,7 @@ menu: nav/home.html
   <section class="section mt-8">
     <div class="container">
       <h1 class="text-4xl font-bold text-center mb-5 text-indigo-700">
-        <i class="fa-solid fa-chart-line text-indigo-600 mr-2"></i> Hospital Video Optimiser
+        <i class="fa-solid fa-chart-line text-indigo-600 mr-2"></i> Hospital Video Optimizer
       </h1>
       <p class="text-xl text-center text-gray-600 mb-12">Choose your optimization tool</p>
       <div class="max-w-5xl mx-auto">
