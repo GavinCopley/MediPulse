@@ -101,7 +101,7 @@ menu: nav/home.html
 </div>
 
 <script>
-  const pythonURI = "https://medipulse-832734119496.us-west2.run.app";
+  const pythonURI = "http://127.0.0.1:8115";
   
   document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('search-form');
@@ -301,7 +301,7 @@ menu: nav/home.html
           </div>` : '';
         
         // Check for emergency services
-        const hasEmergency = hospital.emergency_services && hospital.emergency_services.toLowerCase() === 'yes';
+        const hasEmergency = hospital.emergency_services && hospital.emergency_services.toLowerCase().includes("24/7");
         const emergencyBadge = hasEmergency ? 
           `<span class="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-bl">24/7 Emergency</span>` : '';
         
@@ -333,11 +333,11 @@ menu: nav/home.html
                   <p class="mt-3 text-sm text-gray-600">${hospital.description || 'No description available.'}</p>
                   ${insurancesHTML}
                   <div class="mt-4 flex justify-between items-center">
-                    <div class="text-xs ${hospital.accepting_new_patients ? 'text-green-600' : 'text-orange-600'} font-medium">
+                    <div class="text-xs ${hospital.accepting === 'Yes' ? 'text-green-600' : 'text-orange-600'} font-medium">
                       <svg class="inline-block w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${hospital.accepting_new_patients ? 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z' : 'M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z'}"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${hospital.accepting === 'Yes' ? 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z' : 'M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z'}"></path>
                       </svg>
-                      ${hospital.accepting_new_patients ? 'Accepting new patients' : 'Not accepting new patients'}
+                      ${hospital.accepting === 'Yes' ? 'Accepting new patients' : 'Not accepting new patients'}
                     </div>
                     <button data-hospital-name="${hospital.name}" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium hospital-details">View details →</button>
                   </div>
@@ -369,8 +369,8 @@ menu: nav/home.html
       showModal();
       modalTitle.textContent = hospitalName;
       
-      // Make API request for hospital details
-      fetch(`${pythonURI}/api/hospital-search/${encodeURIComponent(hospitalName)}`)
+      // Make API request for hospital details with real-time info
+      fetch(`${pythonURI}/api/hospital-search/${encodeURIComponent(hospitalName)}?real_time=true`)
         .then(response => {
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -379,7 +379,7 @@ menu: nav/home.html
         })
         .then(data => {
           if (data.status === 'success' && data.hospital) {
-            displayHospitalDetails(data.hospital);
+            displayHospitalDetails(data.hospital, data.real_time_info);
           } else {
             throw new Error('Hospital details not found');
           }
@@ -405,7 +405,7 @@ menu: nav/home.html
         });
     }
     
-    function displayHospitalDetails(hospital) {
+    function displayHospitalDetails(hospital, realTimeInfo) {
       // Format departments as list items if available
       const departments = hospital.departments ? hospital.departments.split(',').map(d => d.trim()).filter(d => d.length > 0) : [];
       const departmentsHTML = departments.length > 0 ?
@@ -439,7 +439,7 @@ menu: nav/home.html
           <h4 class="font-medium text-gray-900 mb-4">Patient Reviews</h4>
           ${reviews.map(review => {
             // Parse review - assume format "Name: Comment" or just "Comment"
-            const parts = review.includes(':') ? review.split(':', 2) : ['Anonymous', review];
+            const parts = review.includes('–') ? review.split('–', 2) : ['Anonymous', review];
             const name = parts[0].trim();
             const comment = parts[1].trim();
             
@@ -449,6 +449,90 @@ menu: nav/home.html
             </div>`;
           }).join('')}
         </div>` : '';
+      
+      // Format real-time information if available
+      let realTimeInfoHTML = '';
+      if (realTimeInfo && !realTimeInfo.error) {
+        realTimeInfoHTML = `
+          <div class="mb-6 border-t border-gray-200 pt-6">
+            <div class="flex items-center mb-4">
+              <div class="bg-green-100 rounded-full p-2 mr-3">
+                <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <h4 class="font-medium text-gray-900">Latest Hospital Information</h4>
+            </div>
+            
+            ${realTimeInfo.achievements ? `
+              <div class="mb-4">
+                <h5 class="text-sm font-medium text-gray-800 mb-2">Notable Achievements</h5>
+                <ul class="list-disc pl-5 text-sm text-gray-600 space-y-1">
+                  ${Array.isArray(realTimeInfo.achievements) ? 
+                    realTimeInfo.achievements.map(item => `<li>${typeof item === 'object' ? (item.title || item.text || JSON.stringify(item)) : item}</li>`).join('') :
+                    `<li>${typeof realTimeInfo.achievements === 'object' ? (realTimeInfo.achievements.title || realTimeInfo.achievements.text || JSON.stringify(realTimeInfo.achievements)) : realTimeInfo.achievements}</li>`}
+                </ul>
+              </div>` : ''}
+              
+            ${realTimeInfo.technology ? `
+              <div class="mb-4">
+                <h5 class="text-sm font-medium text-gray-800 mb-2">Technology & Facilities</h5>
+                <ul class="list-disc pl-5 text-sm text-gray-600 space-y-1">
+                  ${Array.isArray(realTimeInfo.technology) ? 
+                    realTimeInfo.technology.map(item => `<li>${typeof item === 'object' ? (item.title || item.text || JSON.stringify(item)) : item}</li>`).join('') :
+                    `<li>${typeof realTimeInfo.technology === 'object' ? (realTimeInfo.technology.title || realTimeInfo.technology.text || JSON.stringify(realTimeInfo.technology)) : realTimeInfo.technology}</li>`}
+                </ul>
+              </div>` : ''}
+              
+            ${realTimeInfo.programs ? `
+              <div class="mb-4">
+                <h5 class="text-sm font-medium text-gray-800 mb-2">Special Programs</h5>
+                <ul class="list-disc pl-5 text-sm text-gray-600 space-y-1">
+                  ${Array.isArray(realTimeInfo.programs) ? 
+                    realTimeInfo.programs.map(item => `<li>${typeof item === 'object' ? (item.title || item.text || JSON.stringify(item)) : item}</li>`).join('') :
+                    `<li>${typeof realTimeInfo.programs === 'object' ? (realTimeInfo.programs.title || realTimeInfo.programs.text || JSON.stringify(realTimeInfo.programs)) : realTimeInfo.programs}</li>`}
+                </ul>
+              </div>` : ''}
+              
+            ${realTimeInfo.community_initiatives ? `
+              <div class="mb-4">
+                <h5 class="text-sm font-medium text-gray-800 mb-2">Community Initiatives</h5>
+                <ul class="list-disc pl-5 text-sm text-gray-600 space-y-1">
+                  ${Array.isArray(realTimeInfo.community_initiatives) ? 
+                    realTimeInfo.community_initiatives.map(item => `<li>${typeof item === 'object' ? (item.title || item.text || JSON.stringify(item)) : item}</li>`).join('') :
+                    `<li>${typeof realTimeInfo.community_initiatives === 'object' ? (realTimeInfo.community_initiatives.title || realTimeInfo.community_initiatives.text || JSON.stringify(realTimeInfo.community_initiatives)) : realTimeInfo.community_initiatives}</li>`}
+                </ul>
+              </div>` : ''}
+          </div>
+        `;
+      } else if (realTimeInfo && realTimeInfo.error) {
+        realTimeInfoHTML = `
+          <div class="mb-6 border-t border-gray-200 pt-6">
+            <div class="bg-yellow-50 rounded-md p-4">
+              <div class="flex items-center">
+                <svg class="h-5 w-5 text-yellow-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                <div class="text-sm text-yellow-700">Real-time data is currently unavailable</div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      // Additional ratings
+      let additionalRatingsHTML = '';
+      if (hospital.additional_ratings) {
+        additionalRatingsHTML = `
+          <div class="mb-6">
+            <h5 class="text-sm font-medium text-gray-800 mb-2">Awards & Recognitions</h5>
+            <div class="bg-green-50 text-green-800 text-xs font-semibold px-3 py-2 rounded-md">
+              ${hospital.additional_ratings}
+            </div>
+          </div>
+        `;
+      }
       
       // Build the complete modal content
       modalContent.innerHTML = `
@@ -463,6 +547,8 @@ menu: nav/home.html
               <h4 class="font-medium text-gray-900 mb-2">About</h4>
               <p class="text-gray-600">${hospital.description || 'No description available.'}</p>
             </div>
+            
+            ${additionalRatingsHTML}
             
             ${departmentsHTML}
             
@@ -556,7 +642,7 @@ menu: nav/home.html
             <div class="mb-6">
               <h4 class="font-medium text-gray-900 mb-2">Emergency Services</h4>
               <p class="text-gray-600 flex items-center">
-                ${hospital.emergency_services === 'Yes' ? 
+                ${hospital.emergency_services && hospital.emergency_services.includes("24/7") ? 
                   `<svg class="h-4 w-4 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                    </svg> Available 24/7` : 
@@ -577,13 +663,14 @@ menu: nav/home.html
                   <span class="ml-1 text-sm text-gray-500">Overall Rating</span>
                 </div>
               </div>
-              <div class="text-sm ${hospital.accepting_new_patients ? 'text-green-600' : 'text-orange-600'} font-medium">
-                ${hospital.accepting_new_patients ? 'Accepting new patients' : 'Not accepting new patients'}
+              <div class="text-sm ${hospital.accepting === 'Yes' ? 'text-green-600' : 'text-orange-600'} font-medium">
+                ${hospital.accepting === 'Yes' ? 'Accepting new patients' : 'Not accepting new patients'}
               </div>
             </div>
           </div>
         </div>
         
+        ${realTimeInfoHTML}
         ${reviewsHTML}
         
         <div class="border-t border-gray-200 pt-6">
