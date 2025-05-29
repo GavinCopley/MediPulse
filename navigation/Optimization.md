@@ -329,16 +329,7 @@ menu: nav/home.html
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       /* ══ Constants & helpers ═════════════════════════════ */
-      // ① ONE line – pick ONE of the three flavours ↓↓↓
-      // a) Hard-code (quick-and-dirty)
-      const OPTIMIZE_URL = 'https://video-optimiser-xyz.a.run.app/api/optimize';
-      // b) Read from Jekyll _config.yml (preferred for GH Pages)
-      // In _config.yml ➜ api_url: "https://video-optimiser-xyz.a.run.app"
-      // then here ➜
-      // const OPTIMIZE_URL = '{{ site.api_url }}/api/optimize';
-      // c) Let Flask inject (if you ever serve the template from Flask)
-      // const OPTIMIZE_URL = '{{ api_root }}/optimize';
-      
+      const API_BASE_URL = "http://localhost:8115";
       const clamp = x => Math.max(0, Math.min(x, 99)); // Cap at 99 instead of 100
       const formatTime = secs => `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, "0")}`;
 
@@ -517,7 +508,7 @@ menu: nav/home.html
 
         loading.style.display = "flex";
         try {
-          const r = await fetch(`${OPTIMIZE_URL}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
+          const r = await fetch(`${API_BASE_URL}/api/optimize`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
           const resTxt = await r.text();
           const res = JSON.parse(resTxt.replace(/\bNaN\b/g, "null"));
           loading.style.display = "none";
