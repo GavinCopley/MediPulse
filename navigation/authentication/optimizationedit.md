@@ -285,12 +285,18 @@ menu: nav/home.html
 
 <body>
   <!-- Loading overlay -->
-  <div id="loadingOverlay" class="fixed inset-0 z-50 hidden items-center justify-center bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm">
+  <div id="loadingOverlay" class="fixed inset-0 z-50 hidden items-center justify-center bg-white/90 backdrop-blur-sm">
     <div class="text-center">
-      <i class="fas fa-circle-notch fa-spin fa-2x mb-3 text-blue-600 dark:text-blue-400"></i>
-      <div class="text-xl font-semibold text-blue-600 dark:text-blue-400">Optimizing Your Content...</div>
-      <div class="mt-2 text-xs text-gray-500 dark:text-gray-400">Processing with AI</div>
+      <i class="fas fa-circle-notch fa-spin fa-2x mb-3 text-blue-600"></i>
+      <div class="text-xl font-semibold text-blue-600">Re-optimizing your content...</div>
+      <div class="mt-2 text-xs text-gray-500">Processing with AI</div>
     </div>
+  </div>
+
+  <!-- Notification -->
+  <div id="notification" class="fixed -top-20 left-1/2 -translate-x-1/2 bg-red-600 text-white px-6 py-3 rounded-lg shadow-md flex items-center space-x-2 transition-all duration-500 z-50">
+    <i class="fas fa-exclamation-circle"></i>
+    <span class="notification-message"></span>
   </div>
 
   <!-- Oval Navigation Bar -->
@@ -1110,155 +1116,197 @@ menu: nav/home.html
     // Store current HTML to be able to go back
     const originalHTML = container.innerHTML;
     
-    // Create new HTML based on Optimization.md template
+    // Create new HTML based on Optimization.md template with improved structure
     const newHTML = `
-      <div class="header-container">
-        <h1 class="title is-2" style="color: #4f46e5;">
-          Hospital Video Optimizer
-        </h1>
-        <p class="subtitle is-5">Enhance your hospital's video content with AI-powered insights</p>
-      </div>
-      
-      <!-- Instructions Header -->
-      <div class="box mb-6">
-        <h3 class="has-text-centered is-size-5 has-text-weight-semibold mb-3">How It Works</h3>
-        
-        <div class="is-flex is-justify-content-space-around is-align-items-center my-4">
-          <div class="is-flex is-flex-direction-column is-align-items-center is-relative" style="flex: 1">
-            <div class="is-flex is-align-items-center is-justify-content-center has-background-primary has-text-white" 
-                 style="width: 40px; height: 40px; border-radius: 50%; margin-bottom: 1rem;">1</div>
-            <div class="has-text-weight-semibold has-text-centered">Describe Video</div>
-          </div>
-          <div style="width: 33%; height: 2px; background-color: #eaeaea;"></div>
-          <div class="is-flex is-flex-direction-column is-align-items-center is-relative" style="flex: 1">
-            <div class="is-flex is-align-items-center is-justify-content-center has-background-primary has-text-white" 
-                 style="width: 40px; height: 40px; border-radius: 50%; margin-bottom: 1rem;">2</div>
-            <div class="has-text-weight-semibold has-text-centered">See Results</div>
-          </div>
-        </div>
-        
-        <p class="has-text-centered has-text-grey-light mt-3">
-          View AI-powered suggestions and compare with similar high-performing videos
-        </p>
-      </div>
-
-      <!-- Engagement Score Card -->
-      <div class="box mb-6">
-        <h3 class="is-size-5 has-text-weight-semibold mb-4">
-          <i class="fas fa-gauge-high mr-2 has-text-primary"></i> 
-          Predicted Engagement
-        </h3>
-        <div class="columns is-vcentered">
-          <div class="column is-one-third">
-            <canvas id="engagementChart"></canvas>
-          </div>
-          <div class="column is-two-thirds">
-            <progress id="engagementProgress" class="progress is-primary" value="0" max="100"></progress>
-            <p class="has-text-centered">
-              Engagement Score: <strong id="engagementScore" class="is-size-3 has-text-primary">${result.predicted_engagement ? result.predicted_engagement.toFixed(2) : 'N/A'}</strong> / 100
-            </p>
-            <p class="has-text-centered is-size-7 has-text-grey">
-              Based on machine learning analysis of similar content
-            </p>
-          </div>
+      <!-- Loading overlay -->
+      <div id="loadingOverlay" class="fixed inset-0 z-50 hidden items-center justify-center bg-white/90 backdrop-blur-sm">
+        <div class="text-center">
+          <i class="fas fa-circle-notch fa-spin fa-2x mb-3 text-blue-600"></i>
+          <div class="text-xl font-semibold text-blue-600">Re-optimizing your content...</div>
+          <div class="mt-2 text-xs text-gray-500">Processing with AI</div>
         </div>
       </div>
 
-      <!-- Sample Outlines Tabs -->
-      <div class="box mb-6 p-5">
-        <h3 class="is-size-5 has-text-weight-semibold mb-4">
-          <i class="fas fa-clipboard-list mr-2 has-text-primary"></i> 
-          AI-Generated Outlines
-        </h3>
-        <div class="tabs is-centered">
-          <ul id="outlineTabs">
-            <li class="is-active" data-index="0"><a>Outline 1</a></li>
-            <li data-index="1"><a>Outline 2</a></li>
-            <li data-index="2"><a>Outline 3</a></li>
-          </ul>
-        </div>
-        <div id="outlinesContainer" class="px-4 py-4">
-          <div class="is-active" data-index="0">
-            <ul id="outlineList0" class="pl-5 ml-3"></ul>
-          </div>
-          <div class="is-hidden" data-index="1">
-            <ul id="outlineList1" class="pl-5 ml-3"></ul>
-          </div>
-          <div class="is-hidden" data-index="2">
-            <ul id="outlineList2" class="pl-5 ml-3"></ul>
-          </div>
-        </div>
-        <div class="has-text-centered mt-5">
-          <button id="reEvalBtn" class="button is-light is-info">
-            <span class="icon">
-              <i class="fas fa-sync-alt"></i>
-            </span>
-            <span>Re-evaluate with these changes</span>
-          </button>
-        </div>
+      <!-- Notification -->
+      <div id="notification" class="fixed -top-20 left-1/2 -translate-x-1/2 bg-red-600 text-white px-6 py-3 rounded-lg shadow-md flex items-center space-x-2 transition-all duration-500 z-50">
+        <i class="fas fa-exclamation-circle"></i>
+        <span class="notification-message"></span>
       </div>
 
-      <!-- Improvement Tips Dropdown -->
-      <div class="box mb-6">
-        <h3 class="is-size-5 has-text-weight-semibold mb-4">
-          <i class="fas fa-lightbulb mr-2 has-text-warning"></i> 
-          Improvement Tips <span class="is-size-7 has-text-grey ml-2">(click to expand)</span>
-        </h3>
-        <details id="allTipsDropdown">
-          <summary class="has-text-warning has-text-weight-semibold has-background-warning-light p-3 is-clickable" 
-                   style="border-radius: 6px; display: inline-block;">
-            <span class="is-flex is-align-items-center">
-              <i class="fas fa-chevron-down mr-2 is-size-7"></i>
-              Show All Tips
-            </span>
-          </summary>
-          <ul id="allTipsList" class="mt-4 space-y-3 pl-0" style="list-style: none;"></ul>
-        </details>
-      </div>
+      <div class="py-12 px-6 min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 text-gray-800">
+        <div class="mx-auto max-w-5xl">
+          
+          <h1 class="mb-5 text-center text-4xl font-bold text-gray-800">
+            <i class="fa-solid fa-chart-line text-blue-600 mr-2"></i>
+            Video Optimization Results
+          </h1>
+          <p class="mb-10 text-center text-xl text-gray-600">
+            AI-powered insights for "${videoData.videoTitle}"
+          </p>
 
-      <!-- Similar Videos Filter + Cards -->
-      <div class="box mb-6">
-        <h3 class="is-size-5 has-text-weight-semibold mb-4">
-          <i class="fas fa-film mr-2 has-text-primary"></i> 
-          Similar High-Performing Videos
-        </h3>
-        <div class="mb-5">
-          <div class="control has-icons-left has-icons-right">
-            <input
-              type="text"
-              id="videoFilter"
-              class="input"
-              placeholder="Filter by title or tag..."
-            />
-            <span class="icon is-small is-left">
-              <i class="fas fa-search"></i>
-            </span>
-            <span class="icon is-small is-right video-filter-clear" style="pointer-events: all; cursor: pointer;">
-              <i class="fas fa-times-circle"></i>
-            </span>
+          <!-- Engagement Score Card -->
+          <div class="mb-8 rounded-xl bg-white p-6 shadow-md border border-gray-200">
+            <h3 class="mb-4 font-semibold flex items-center text-gray-800">
+              <i class="fas fa-gauge-high mr-2 text-blue-600"></i> 
+              Predicted Engagement
+            </h3>
+            <div class="flex flex-col md:flex-row gap-6 items-center">
+              <canvas id="engagementChart" class="w-full md:w-1/3"></canvas>
+              <div class="w-full md:w-2/3">
+                <div class="relative w-full h-4 bg-gray-300 rounded-full overflow-hidden">
+                  <div id="engagementProgress" class="absolute inset-0 bg-blue-600 rounded-full transition-all duration-800" style="width:0%"></div>
+                </div>
+                <p class="mt-3 text-center">
+                  Score: <strong id="engagementScore" class="text-2xl text-blue-600">${result.predicted_engagement ? result.predicted_engagement.toFixed(2) : 'N/A'}</strong> / 100
+                </p>
+                <p class="text-center text-xs text-gray-500">
+                  Based on machine-learning analysis of similar content
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- AI-Generated Outlines -->
+          <div class="mb-8 rounded-xl bg-white p-8 shadow-md border border-gray-200">
+            <h3 class="mb-4 font-semibold flex items-center text-gray-800">
+              <i class="fas fa-clipboard-list mr-2 text-blue-600"></i> 
+              AI-Generated Outlines
+            </h3>
+
+            <!-- Template chooser -->
+            <div class="mb-6 flex space-x-4 justify-center">
+              <button type="button" class="template-btn px-4 py-2 bg-blue-600 text-white rounded-lg" data-template="0">Outline 1</button>
+              <button type="button" class="template-btn px-4 py-2 bg-gray-200 text-gray-800 rounded-lg" data-template="1">Outline 2</button>
+              <button type="button" class="template-btn px-4 py-2 bg-gray-200 text-gray-800 rounded-lg" data-template="2">Outline 3</button>
+            </div>
+
+            <!-- Wrapper holding three outline cards -->
+            <div id="templatesWrapper" class="flex flex-col gap-8">
+
+              <!-- Outline 1 -->
+              <div class="template-container" data-template="0">
+                <div class="outline-card bg-white rounded-lg border border-gray-200 shadow hover:shadow-lg transition overflow-hidden">
+                  <!-- Thumbnail -->
+                  <div class="relative group">
+                    <img src="https://img.youtube.com/vi/${videoData.videoId}/hqdefault.jpg" alt="thumbnail" class="thumbnail-img w-full aspect-video object-cover bg-black">
+                    <div class="absolute inset-0 bg-black/60 flex items-center justify-center group-hover:bg-black/40 transition-colors">
+                      <i class="fab fa-youtube text-red-600 text-6xl opacity-85"></i>
+                    </div>
+                    <div class="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-1.5 py-0.5 rounded duration-text">0:00</div>
+                    <button class="copy-btn absolute top-2 right-2 bg-white/75 backdrop-blur px-2 py-0.5 text-xs rounded cursor-pointer shadow">
+                      <i class="fas fa-copy mr-1"></i> Copy
+                    </button>
+                  </div>
+                  <div class="p-4">
+                    <h4 class="title text-lg font-semibold text-gray-800 mb-1 break-words hover:bg-blue-50 focus:bg-blue-50 focus:outline-none p-1" contenteditable="true">${videoData.videoTitle}</h4>
+                    <p class="description text-sm text-gray-600 whitespace-pre-wrap mb-2 hover:bg-blue-50 focus:bg-blue-50 focus:outline-none p-1" contenteditable="true">${videoData.videoDescription || ""}</p>
+                    <div class="tags space-x-1 text-xs text-blue-700 font-medium"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Outline 2 -->
+              <div class="template-container hidden" data-template="1">
+                <div class="outline-card bg-white rounded-lg border border-gray-200 shadow hover:shadow-lg transition overflow-hidden">
+                  <div class="relative group">
+                    <img src="https://img.youtube.com/vi/${videoData.videoId}/hqdefault.jpg" alt="thumbnail" class="thumbnail-img w-full aspect-video object-cover bg-black">
+                    <div class="absolute inset-0 bg-black/60 flex items-center justify-center group-hover:bg-black/40 transition-colors">
+                      <i class="fab fa-youtube text-red-600 text-6xl opacity-85"></i>
+                    </div>
+                    <div class="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-1.5 py-0.5 rounded duration-text">0:00</div>
+                    <button class="copy-btn absolute top-2 right-2 bg-white/75 backdrop-blur px-2 py-0.5 text-xs rounded cursor-pointer shadow">
+                      <i class="fas fa-copy mr-1"></i> Copy
+                    </button>
+                  </div>
+                  <div class="p-4">
+                    <h4 class="title text-lg font-semibold text-gray-800 mb-1 break-words hover:bg-blue-50 focus:bg-blue-50 focus:outline-none p-1" contenteditable="true">${videoData.videoTitle}</h4>
+                    <p class="description text-sm text-gray-600 whitespace-pre-wrap mb-2 hover:bg-blue-50 focus:bg-blue-50 focus:outline-none p-1" contenteditable="true">${videoData.videoDescription || ""}</p>
+                    <div class="tags space-x-1 text-xs text-blue-700 font-medium"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Outline 3 -->
+              <div class="template-container hidden" data-template="2">
+                <div class="outline-card bg-white rounded-lg border border-gray-200 shadow hover:shadow-lg transition overflow-hidden">
+                  <div class="relative group">
+                    <img src="https://img.youtube.com/vi/${videoData.videoId}/hqdefault.jpg" alt="thumbnail" class="thumbnail-img w-full aspect-video object-cover bg-black">
+                    <div class="absolute inset-0 bg-black/60 flex items-center justify-center group-hover:bg-black/40 transition-colors">
+                      <i class="fab fa-youtube text-red-600 text-6xl opacity-85"></i>
+                    </div>
+                    <div class="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-1.5 py-0.5 rounded duration-text">0:00</div>
+                    <button class="copy-btn absolute top-2 right-2 bg-white/75 backdrop-blur px-2 py-0.5 text-xs rounded cursor-pointer shadow">
+                      <i class="fas fa-copy mr-1"></i> Copy
+                    </button>
+                  </div>
+                  <div class="p-4">
+                    <h4 class="title text-lg font-semibold text-gray-800 mb-1 break-words hover:bg-blue-50 focus:bg-blue-50 focus:outline-none p-1" contenteditable="true">${videoData.videoTitle}</h4>
+                    <p class="description text-sm text-gray-600 whitespace-pre-wrap mb-2 hover:bg-blue-50 focus:bg-blue-50 focus:outline-none p-1" contenteditable="true">${videoData.videoDescription || ""}</p>
+                    <div class="tags space-x-1 text-xs text-blue-700 font-medium"></div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="flex justify-between items-center mt-6">
+              <button id="undoBtn" class="px-4 py-2 bg-red-50 hover:bg-red-100 text-red-600 font-medium rounded-lg flex gap-2">
+                <i class="fas fa-undo-alt"></i> Undo All
+              </button>
+              <button id="reEvalBtn" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg flex gap-2">
+                <i class="fas fa-sync-alt"></i> Re-evaluate
+              </button>
+            </div>
+          </div>
+
+          <!-- Improvement Tips -->
+          <div class="mb-8 rounded-xl bg-white p-6 shadow-md border border-gray-200">
+            <h3 class="text-lg font-semibold mb-4 flex items-center">
+              <i class="fas fa-lightbulb mr-2 text-yellow-400"></i> 
+              Improvement Tips 
+              <span class="text-xs text-gray-500 ml-2">(click to expand)</span>
+            </h3>
+            <details id="allTipsDropdown" class="group">
+              <summary class="cursor-pointer font-semibold text-amber-500 bg-amber-50 hover:bg-amber-100 rounded-md py-2 px-4 inline-flex items-center gap-2">
+                <i class="fas fa-chevron-down transition-transform group-open:rotate-180"></i> 
+                Show all tips
+              </summary>
+              <div id="tipsContainer" class="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+            </details>
+          </div>
+
+          <!-- Similar High-Performing Videos -->
+          <div class="mb-8 rounded-xl bg-white p-6 shadow-md border border-gray-200">
+            <h3 class="mb-4 font-semibold flex items-center text-gray-800">
+              <i class="fas fa-film mr-2 text-blue-600"></i> 
+              Similar High-Performing Videos
+            </h3>
+            <div class="mb-5 relative">
+              <input id="videoFilter" type="text" placeholder="Filter by title or tag..." class="w-full rounded-lg border border-gray-200 py-2 pl-10 pr-10" />
+              <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <i class="fas fa-search text-gray-400"></i>
+              </span>
+              <span class="video-filter-clear absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer">
+                <i class="fas fa-times-circle text-gray-400"></i>
+              </span>
+            </div>
+            <div id="videoCards" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+          </div>
+          
+          <!-- Back button -->
+          <div class="text-center mb-12">
+            <button id="goBackBtn" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg flex items-center gap-2 mx-auto">
+              <i class="fas fa-arrow-left"></i> Back to Video Selection
+            </button>
           </div>
         </div>
-        <div class="columns is-multiline" id="videoCards"></div>
-      </div>
-      
-      <!-- Add back button with more bottom padding -->
-      <div class="has-text-centered mt-6 mb-6" style="padding-bottom: 5rem; margin-bottom: 3rem;">
-        <button id="goBackBtn" class="button is-light">
-          <span class="icon">
-            <i class="fas fa-arrow-left"></i>
-          </span>
-          <span>Back to Video Selection</span>
-        </button>
       </div>
     `;
     
     // Replace container content
     container.innerHTML = newHTML;
     
-    // Now add all the JavaScript for the optimization results functionality
-    
-    // Initialize chart
-    // Need to load Chart.js first if it's not already loaded
+    // Initialize the optimization page with enhanced functionality
     if (typeof Chart === 'undefined') {
       const script = document.createElement('script');
       script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
@@ -1270,277 +1318,384 @@ menu: nav/home.html
   }
 
   function initializeOptimizationPage(result, videoData, originalHTML) {
+    // Constants and helpers from Optimization.md
+    const clamp = x => Math.max(0, Math.min(x, 99)); // Cap at 99 instead of 100
+    const formatTime = secs => `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, "0")}`;
+    
+    // Template and tip state
+    let currentTemplate = 0;
+    const originalContent = {};
+    const activeTipBtn = {};
+
     // Initialize engagement chart
     const engagementChart = new Chart(document.getElementById("engagementChart"), {
       type: "doughnut",
-      data: {
-        datasets: [{
-          data: [0, 100],
-          backgroundColor: ["#4f46e5","#e5e7eb"]
-        }]
+      data: { 
+        datasets: [{ 
+          data: [0, 100], 
+          backgroundColor: ["#3b82f6", "#e5e7eb"] 
+        }] 
       },
-      options: {
-        circumference: Math.PI,
-        rotation: -Math.PI,
-        cutout: "75%",
-        plugins: { legend: { display: false } }
+      options: { 
+        circumference: Math.PI, 
+        rotation: -Math.PI, 
+        cutout: "75%", 
+        plugins: { legend: { display: false } } 
       }
     });
-    
-    // Helper function
-    function clamp(x){ return Math.max(0, Math.min(x,100)); }
-    
-    // Animate engagement score
-    const pred = clamp(result.predicted_engagement || 0);
-    engagementChart.data.datasets[0].data = [pred, 100-pred];
-    engagementChart.update({duration: 800});
-    document.getElementById("engagementProgress").value = pred;
-    
-    // Handle outline tabs
-    const outlineTabs = document.getElementById("outlineTabs");
-    if (outlineTabs) {
-      outlineTabs.addEventListener('click', (e) => {
-        if (!e.target.closest("li")) return;
-        
-        // Remove active class from all tabs
-        outlineTabs.querySelectorAll("li").forEach(li => {
-          li.classList.remove("is-active");
-        });
-        
-        // Add active class to clicked tab
-        const selected = e.target.closest("li");
-        selected.classList.add("is-active");
-        
-        // Show/hide corresponding content
-        const idx = selected.dataset.index;
-        document.querySelectorAll("#outlinesContainer > div").forEach(div => {
-          if (div.dataset.index === idx) {
-            div.classList.remove('is-hidden');
-            div.classList.add('is-active');
-          } else {
-            div.classList.remove('is-active');
-            div.classList.add('is-hidden');
-          }
-        });
-      });
-    }
-    
-    // Process tips
-    const tipsArray = result.gemini_tips && result.gemini_tips.tips
-      ? result.gemini_tips.tips.split("\n").filter(l => l.trim())
-      : [];
+
+    // Set gauge function
+    const setGauge = v => {
+      const clampedValue = clamp(v);
+      engagementChart.data.datasets[0].data = [clampedValue, 100 - clampedValue];
+      engagementChart.update({ duration: 800 });
+      document.getElementById("engagementProgress").style.width = clampedValue + "%";
+      document.getElementById("engagementScore").textContent = clampedValue.toFixed(2);
+    };
+
+    // Notification helper
+    const notify = (msg, type = 'error') => {
+      const notificationEl = document.getElementById("notification");
+      notificationEl.querySelector(".notification-message").textContent = msg;
       
-    // Set up outlines from tips
-    for (let i = 0; i < 3; i++) {
-      const outlineUl = document.getElementById("outlineList" + i);
-      if (outlineUl) {
-        outlineUl.innerHTML = "";
-        if (tipsArray[i]) {
-          const parts = tipsArray[i].split(/[:\-–]/).slice(1).join("");
-          const li = document.createElement("li");
-          li.contentEditable = "true";
-          li.className = "py-2 border-b";
-          li.style.borderColor = "#eaeaea";
-          li.textContent = parts || tipsArray[i];
-          outlineUl.appendChild(li);
-        }
-      }
-    }
-    
-    // All tips list
-    const tipsList = document.getElementById("allTipsList");
-    if (tipsList) {
-      tipsList.innerHTML = "";
-      if (result.gemini_tips && result.gemini_tips.tips) {
-        tipsArray.forEach((tip, i) => {
-          const li = document.createElement("li");
-          li.className = "mb-3";
-          
-          // Process tip text to enhance typography
-          const enhancedTip = tip.replace(/\*(.*?)\*/g, '<strong style="color: #4f46e5; font-weight: 600;">$1</strong>');
-          
-          li.innerHTML = `
-            <div class="box p-4" style="border-left: 4px solid #48c774;">
-              <div class="columns is-vcentered">
-                <div class="column">
-                  <p>${enhancedTip}</p>
-                </div>
-                <div class="column is-narrow">
-                  <button class="button is-small is-success">
-                    <i class="fas fa-plus"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-          `;
-          
-          // Add "+" button functionality
-          li.querySelector("button").addEventListener('click', () => {
-            const active = outlineTabs.querySelector("li.is-active").dataset.index;
-            const outlineLi = document.createElement("li");
-            outlineLi.contentEditable = "true";
-            outlineLi.className = "py-2 border-b";
-            outlineLi.style.borderColor = "#eaeaea";
-            outlineLi.textContent = tip.replace(/\*(.*?)\*/g, '$1'); // Remove asterisks in outline
-            document.getElementById("outlineList" + active).appendChild(outlineLi);
-          });
-          
-          tipsList.appendChild(li);
-        });
+      if (type === 'success') {
+        notificationEl.classList.remove('bg-red-600');
+        notificationEl.classList.add('bg-green-600');
       } else {
-        tipsList.innerHTML = `
-          <div class="notification is-danger is-light">
-            ${result.gemini_tips && result.gemini_tips.error ? result.gemini_tips.error : "Failed to generate tips"}
+        notificationEl.classList.remove('bg-green-600');
+        notificationEl.classList.add('bg-red-600');
+      }
+      
+      notificationEl.style.top = "20px";
+      setTimeout(() => (notificationEl.style.top = "-100px"), 3000);
+    };
+
+    // Set initial engagement score
+    const pred = clamp(result.predicted_engagement || 0);
+    setGauge(pred);
+
+    // Template switcher functionality
+    document.querySelectorAll(".template-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const idx = Number(btn.dataset.template);
+        currentTemplate = idx;
+        document.querySelectorAll(".template-btn").forEach(b => {
+          const on = b === btn;
+          b.classList.toggle("bg-blue-600", on);
+          b.classList.toggle("text-white", on);
+          b.classList.toggle("bg-gray-200", !on);
+          b.classList.toggle("text-gray-800", !on);
+        });
+        document.querySelectorAll(".template-container").forEach(div => {
+          div.classList.toggle("hidden", Number(div.dataset.template) !== idx);
+        });
+      });
+    });
+
+    // Initialize original content for all templates
+    document.querySelectorAll(".template-container").forEach(cont => {
+      const idx = Number(cont.dataset.template);
+      originalContent[idx] = {
+        title: videoData.videoTitle,
+        desc: videoData.videoDescription || "",
+        tags: videoData.tags || "",
+        length: formatTime(0) // Default duration
+      };
+      activeTipBtn[idx] = {};
+
+      // Set up tags display
+      const tagBox = cont.querySelector(".tags");
+      if (videoData.tags) {
+        tagBox.innerHTML = "";
+        videoData.tags.split("|").forEach(t => {
+          const span = document.createElement("span");
+          span.textContent = "#" + t.trim();
+          tagBox.appendChild(span);
+        });
+      }
+    });
+
+    // Copy functionality for outlines
+    const copyOutlineToClipboard = (templateIdx) => {
+      const container = document.querySelector(`.template-container[data-template="${templateIdx}"]`);
+      if (!container) return;
+      
+      const title = container.querySelector('.title').textContent;
+      const description = container.querySelector('.description').textContent;
+      const tags = Array.from(container.querySelector('.tags').children)
+        .map(el => el.textContent.replace('#', ''))
+        .join('|');
+      const duration = container.querySelector('.duration-text').textContent;
+      
+      const text = `TITLE: ${title}\n\nDESCRIPTION: ${description}\n\nTAGS: ${tags}\n\nDURATION: ${duration}`;
+      
+      navigator.clipboard.writeText(text)
+        .then(() => notify('Outline copied to clipboard!', 'success'))
+        .catch(err => notify('Failed to copy: ' + err));
+    };
+
+    // Add copy button functionality
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const templateIdx = btn.closest('.template-container').dataset.template;
+        copyOutlineToClipboard(templateIdx);
+      });
+    });
+
+    // Reset field helper
+    const resetField = (templateIdx, cat) => {
+      const cont = document.querySelector(`.template-container[data-template="${templateIdx}"]`);
+      if (!cont) return;
+      const orig = originalContent[templateIdx];
+      if (cat === "title") cont.querySelector(".title").textContent = orig.title;
+      if (cat === "description") cont.querySelector(".description").textContent = orig.desc;
+      if (cat === "tags") {
+        const tagBox = cont.querySelector(".tags");
+        tagBox.innerHTML = "";
+        orig.tags.split("|").forEach(t => {
+          const span = document.createElement("span");
+          span.textContent = "#" + t.trim();
+          tagBox.appendChild(span);
+        });
+      }
+      if (cat === "length") cont.querySelector(".duration-text").textContent = orig.length;
+    };
+
+    // Process and display tips
+    const tipsContainer = document.getElementById("tipsContainer");
+    tipsContainer.innerHTML = "";
+    
+    if (result.gemini_tips && typeof result.gemini_tips === 'object') {
+      Object.entries(result.gemini_tips).forEach(([cat, data]) => {
+        if (cat === 'tips' || cat === 'error') return; // Skip these keys
+        
+        const examples = data.examples || [];
+        const suggestions = data.suggestions || [];
+        
+        const card = document.createElement("div");
+        card.className = "tip-card bg-white rounded-lg border border-gray-200 p-4 shadow-sm hover:shadow-md transition-all";
+        card.innerHTML = `
+          <h4 class="text-lg font-semibold mb-3 text-blue-700">${cat.charAt(0).toUpperCase() + cat.slice(1)}</h4>
+          <ul class="space-y-2">
+            ${examples.map(t => `
+              <li class="flex justify-between items-start bg-blue-50/50 rounded p-2">
+                <span class="flex-1 text-gray-800">
+                  <i class="fas fa-quote-left mr-1 text-blue-400"></i>${t}
+                </span>
+                <button type="button" data-cat="${cat}" data-tip="${t.replace(/"/g,'&quot;')}" class="add-tip-btn ml-2 text-green-600 hover:text-green-800">
+                  <i class="fas fa-plus-circle"></i>
+                </button>
+              </li>
+            `).join("")}
+          </ul>
+          ${suggestions.length ? `
+          <div class="mt-4 border-t border-gray-100 pt-3">
+            <h5 class="font-medium mb-2 text-gray-700">Suggestions</h5>
+            <ul class="space-y-2">
+              ${suggestions.map(s => `
+                <li class="text-sm text-gray-600 italic">
+                  <i class="fas fa-lightbulb text-amber-400 mr-1"></i>${s}
+                </li>
+              `).join("")}
+            </ul>
+          </div>` : ""}
+        `;
+        tipsContainer.appendChild(card);
+      });
+    } else {
+      // Fallback for simple tips format
+      const tipsArray = result.gemini_tips && result.gemini_tips.tips
+        ? result.gemini_tips.tips.split("\n").filter(l => l.trim())
+        : [];
+        
+      if (tipsArray.length > 0) {
+        const card = document.createElement("div");
+        card.className = "tip-card bg-white rounded-lg border border-gray-200 p-4 shadow-sm hover:shadow-md transition-all";
+        card.innerHTML = `
+          <h4 class="text-lg font-semibold mb-3 text-blue-700">General Tips</h4>
+          <ul class="space-y-2">
+            ${tipsArray.map(tip => `
+              <li class="flex justify-between items-start bg-blue-50/50 rounded p-2">
+                <span class="flex-1 text-gray-800">
+                  <i class="fas fa-lightbulb mr-1 text-amber-400"></i>${tip}
+                </span>
+              </li>
+            `).join("")}
+          </ul>
+        `;
+        tipsContainer.appendChild(card);
+      } else {
+        tipsContainer.innerHTML = `
+          <div class="col-span-full text-center text-gray-500 py-8">
+            <i class="fas fa-exclamation-triangle text-2xl mb-2"></i>
+            <p>No optimization tips available</p>
           </div>
         `;
       }
     }
-    
-    // Video cards
-    const cards = document.getElementById("videoCards");
-    if (cards) {
-      cards.innerHTML = "";
-      (result.reference_videos || []).forEach(v => {
-        const videoCard = document.createElement("div");
-        videoCard.className = "column is-4";
-        
-        videoCard.innerHTML = `
-          <div class="card" style="height: 100%; cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s ease;">
-            <div class="card-image" style="position: relative;">
-              <figure class="image is-16by9">
-                <img src="https://img.youtube.com/vi/${v["video id"] || ""}/hqdefault.jpg" alt="Thumbnail">
-                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-                            width: 50px; height: 50px; background-color: rgba(79, 70, 229, 0.8); 
-                            border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                  <i class="fas fa-play has-text-white"></i>
-                </div>
-              </figure>
-            </div>
-            <div class="card-content">
-              <p class="title is-6">${v["video title"] || ""}</p>
-              <div class="is-flex is-size-7 has-text-grey mb-2">
-                <span class="mr-3"><i class="fas fa-eye mr-1"></i> ${v["view count"] || "0"}</span>
-                <span class="mr-3"><i class="fas fa-thumbs-up mr-1"></i> ${v["like count"] || "0"}</span>
-                <span><i class="fas fa-comment mr-1"></i> ${v["comment count"] || "0"}</span>
-              </div>
-              <p class="is-size-7 has-text-grey-dark"><strong>Length:</strong> ${v["length_sec"] || "0"}s</p>
-              <div class="tags mt-3 is-flex is-flex-wrap-wrap" style="max-width: 100%;">
-                ${v["tags"] ? 
-                  v["tags"].split('|').slice(0, 3).map(tag => 
-                    `<span class="tag is-info is-light mr-1 mb-1" style="word-break: break-word; max-width: 100%; white-space: normal; height: auto; line-height: 1.2; padding: 0.3rem 0.5rem;">${tag}</span>`
-                  ).join('') : ''
-                }
-                ${v["tags"] && v["tags"].split('|').length > 3 ? 
-                  `<span class="tag is-light mr-1 mb-1">+${v["tags"].split('|').length - 3} more</span>` : ''}
-              </div>
-            </div>
-          </div>
-        `;
-        
-        cards.appendChild(videoCard);
-        
-        // Make card clickable to YouTube
-        if (v["video id"]) {
-          videoCard.addEventListener('click', () => {
-            window.open(`https://www.youtube.com/watch?v=${v["video id"]}`, '_blank');
-          });
-        }
+
+    // Tips click delegation
+    tipsContainer.addEventListener("click", e => {
+      const addBtn = e.target.closest(".add-tip-btn");
+      const remBtn = e.target.closest(".remove-tip-btn");
+      if (!addBtn && !remBtn) return;
+
+      const idx = currentTemplate;
+      activeTipBtn[idx] = activeTipBtn[idx] || {};
+
+      if (remBtn) {
+        const cat = remBtn.dataset.cat;
+        resetField(idx, cat);
+        remBtn.classList.replace("fa-minus-circle", "fa-plus-circle");
+        remBtn.classList.remove("text-red-600", "remove-tip-btn");
+        remBtn.classList.add("text-green-600", "add-tip-btn");
+        activeTipBtn[idx][cat] = null;
+        return;
+      }
+
+      const cat = addBtn.dataset.cat;
+      const tip = addBtn.dataset.tip;
+
+      // If another tip of same category is active, revert it first
+      const prev = activeTipBtn[idx][cat];
+      if (prev) prev.click();
+
+      const cont = document.querySelector(`.template-container[data-template="${idx}"]`);
+      if (cat === "title") cont.querySelector(".title").textContent = tip;
+      if (cat === "description") cont.querySelector(".description").textContent = tip;
+      if (cat === "tags") {
+        const tagBox = cont.querySelector(".tags");
+        tagBox.innerHTML = "";
+        tip.split("|").forEach(t => {
+          const span = document.createElement("span");
+          span.textContent = "#" + t.trim();
+          tagBox.appendChild(span);
+        });
+      }
+      if (cat === "length") cont.querySelector(".duration-text").textContent = formatTime(Number(tip));
+
+      addBtn.classList.replace("fa-plus-circle", "fa-minus-circle");
+      addBtn.classList.remove("text-green-600", "add-tip-btn");
+      addBtn.classList.add("text-red-600", "remove-tip-btn");
+      activeTipBtn[idx][cat] = addBtn;
+    });
+
+    // Undo All button
+    document.getElementById("undoBtn").onclick = () => {
+      const idx = currentTemplate;
+      if (!originalContent[idx]) return;
+      ["title", "description", "tags", "length"].forEach(cat => {
+        if (activeTipBtn[idx] && activeTipBtn[idx][cat]) activeTipBtn[idx][cat].click();
       });
-    }
-    
+    };
+
+    // Similar videos display
+    const cards = document.getElementById("videoCards");
+    cards.innerHTML = "";
+    (result.reference_videos || []).forEach(v => {
+      const div = document.createElement("div");
+      div.className = "bg-white rounded-xl shadow-md hover:shadow-xl transition-all overflow-hidden cursor-pointer";
+      div.innerHTML = `
+        <img src="https://img.youtube.com/vi/${v["video id"] || ""}/hqdefault.jpg" class="w-full h-48 object-cover">
+        <div class="p-5">
+          <h4 class="font-medium mb-2 line-clamp-2">${v["video title"] || ""}</h4>
+          <p class="text-xs text-gray-500 mb-2">
+            <i class="fas fa-eye mr-1"></i>${v["view count"] || "0"}
+            <i class="fas fa-thumbs-up mr-1 ml-3"></i>${v["like count"] || "0"}
+            <i class="fas fa-comment mr-1 ml-3"></i>${v["comment count"] || "0"}
+          </p>
+          <p class="text-xs text-gray-600 mb-3">
+            <strong>Length:</strong> ${v["length_sec"] || "0"}s
+          </p>
+          <div class="flex flex-wrap gap-1">
+            ${(v.tags || "").split("|").slice(0, 3).map(t => 
+              `<span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">#${t}</span>`
+            ).join("")}
+            ${(v.tags || "").split("|").length > 3 ? 
+              `<span class="inline-block bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded">+${(v.tags || "").split("|").length - 3} more</span>` : ""}
+          </div>
+        </div>
+      `;
+      
+      if (v["video id"]) {
+        div.onclick = () => window.open(`https://www.youtube.com/watch?v=${v["video id"]}`, "_blank");
+      }
+      cards.appendChild(div);
+    });
+
     // Filter functionality
     const videoFilter = document.getElementById("videoFilter");
-    if (videoFilter && cards) {
-      videoFilter.addEventListener('input', (e) => {
-        const q = e.target.value.toLowerCase();
-        cards.querySelectorAll('.column').forEach(card => {
-          card.style.display = card.textContent.toLowerCase().includes(q) ? "" : "none";
-        });
+    videoFilter.addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase();
+      document.querySelectorAll("#videoCards > div").forEach(card => {
+        card.style.display = card.textContent.toLowerCase().includes(q) ? "" : "none";
       });
-    }
-    
+    });
+
     // Clear filter button
-    const clearFilter = document.querySelector('.video-filter-clear');
-    if (clearFilter) {
-      clearFilter.addEventListener('click', () => {
-        videoFilter.value = '';
-        videoFilter.dispatchEvent(new Event('input'));
-      });
-    }
-    
+    document.querySelector('.video-filter-clear').addEventListener('click', () => {
+      videoFilter.value = '';
+      videoFilter.dispatchEvent(new Event('input'));
+    });
+
     // Re-evaluate button
-    const reEvalBtn = document.getElementById("reEvalBtn");
-    if (reEvalBtn) {
-      reEvalBtn.addEventListener('click', () => {
-        // Show loading overlay
-        document.getElementById('loadingOverlay').style.display = "flex";
+    document.getElementById("reEvalBtn").addEventListener('click', () => {
+      document.getElementById('loadingOverlay').style.display = "flex";
+      
+      const reEvalBtn = document.getElementById("reEvalBtn");
+      const originalText = reEvalBtn.innerHTML;
+      reEvalBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Processing...';
+      reEvalBtn.disabled = true;
+      
+      // Prepare updated data
+      const publishDate = new Date(videoData.publishedAt);
+      const updatedData = {
+        title: videoData.videoTitle,
+        description: videoData.videoDescription || "",
+        duration_sec: parseInt(videoData.durationSec || "0"),
+        tags: videoData.tags || "",
+        category_id: parseInt(videoData.videoCategoryId || "22"),
+        is_hd: videoData.definition === 'hd' ? 1 : 0,
+        has_captions: videoData.caption === 'true' ? 1 : 0,
+        publish_dow: publishDate.getDay() === 0 ? 6 : publishDate.getDay() - 1,
+        publish_hour: publishDate.getHours()
+      };
+      
+      fetch("https://medipulse-832734119496.us-west2.run.app/api/optimize", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedData)
+      })
+      .then(response => {
+        if (!response.ok) throw new Error('API request failed');
+        return response.text();
+      })
+      .then(rawText => {
+        const processedText = rawText.replace(/\bNaN\b/g, "null");
+        return JSON.parse(processedText);
+      })
+      .then(newResult => {
+        document.getElementById('loadingOverlay').style.display = "none";
+        reEvalBtn.innerHTML = originalText;
+        reEvalBtn.disabled = false;
         
-        // Show loading animation
-        reEvalBtn.classList.add('is-loading');
-        
-        // Prepare updated data from outlines
-        const updatedData = {
-          title: videoData.videoTitle,
-          description: videoData.videoDescription || "",
-          duration_sec: parseInt(videoData.durationSec || "0"),
-          tags: videoData.tags || "",
-          category_id: parseInt(videoData.videoCategoryId || "22"),
-          is_hd: videoData.definition === 'hd' ? 1 : 0,
-          has_captions: videoData.caption === 'true' ? 1 : 0,
-          publish_dow: new Date(videoData.publishedAt).getDay() === 0 ? 6 : new Date(videoData.publishedAt).getDay() - 1,
-          publish_hour: new Date(videoData.publishedAt).getHours()
-        };
-        
-        // Re-run optimization
-        fetch("https://medipulse-832734119496.us-west2.run.app/api/optimize", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(updatedData)
-        })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('API request failed');
-          }
-          return response.text();
-        })
-        .then(rawText => {
-          // Handle potential NaN values in the response
-          const processedText = rawText.replace(/\bNaN\b/g, "null");
-          return JSON.parse(processedText);
-        })
-        .then(newResult => {
-          // Hide loading overlay
-          document.getElementById('loadingOverlay').style.display = "none";
-          
-          reEvalBtn.classList.remove('is-loading');
-          
-          // Update engagement score
-          const imp = clamp(newResult.improved_engagement || newResult.predicted_engagement || 0);
-          engagementChart.data.datasets[0].data = [imp, 100-imp];
-          engagementChart.update({duration: 800});
-          document.getElementById("engagementScore").textContent = (newResult.improved_engagement || newResult.predicted_engagement).toFixed(2);
-          document.getElementById("engagementProgress").value = imp;
-        })
-        .catch(error => {
-          console.error("Re-evaluation failed:", error);
-          
-          // Hide loading overlay
-          document.getElementById('loadingOverlay').style.display = "none";
-          
-          reEvalBtn.classList.remove('is-loading');
-          alert("Sorry, there was an error processing your request.");
-        });
+        const improved = clamp(newResult.improved_engagement || newResult.predicted_engagement || 0);
+        setGauge(improved);
+        notify('Video re-optimized successfully!', 'success');
+      })
+      .catch(error => {
+        console.error("Re-evaluation failed:", error);
+        document.getElementById('loadingOverlay').style.display = "none";
+        reEvalBtn.innerHTML = originalText;
+        reEvalBtn.disabled = false;
+        notify("Re-evaluation failed. Please try again.");
       });
-    }
+    });
     
     // Back button functionality
-    const goBackBtn = document.getElementById("goBackBtn");
-    if (goBackBtn) {
-      goBackBtn.addEventListener('click', () => {
-        // Use window.location.reload() to refresh the page
-        // This is the simplest and most reliable solution
-        window.location.reload();
-      });
-    }
+    document.getElementById("goBackBtn").addEventListener('click', () => {
+      window.location.reload();
+    });
   }
 </script>
