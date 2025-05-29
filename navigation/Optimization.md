@@ -345,7 +345,7 @@ menu: nav/home.html
       let currentTemplate = 0;
       const originalContent = {};   // { templateIdx: { title, desc, tags, length } }
       const activeTipBtn   = {};   // { templateIdx: { cat: btnEl } }
-
+      
       // Helper function to copy outline to clipboard
       const copyOutlineToClipboard = (templateIdx) => {
         const container = document.querySelector(`.template-container[data-template="${templateIdx}"]`);
@@ -361,7 +361,7 @@ menu: nav/home.html
         const text = `TITLE: ${title}\n\nDESCRIPTION: ${description}\n\nTAGS: ${tags}\n\nDURATION: ${duration}`;
         
         navigator.clipboard.writeText(text)
-          .then(() => notify('Outline copied to clipboard!', 'success'))
+          .then(() => notify('Outline copied to clipboard!'))
           .catch(err => notify('Failed to copy: ' + err));
       };
 
@@ -588,14 +588,19 @@ menu: nav/home.html
         }
       });
 
-      /* ══ Outlines template setup ══════════════════════════ */
-      // Make outline elements editable
+      /* ══ Make outline templates editable once loaded ══ */
       document.querySelectorAll('.template-container').forEach(container => {
         // Make title and description editable
-        container.querySelector('.title').setAttribute('contenteditable', 'true');
-        container.querySelector('.description').setAttribute('contenteditable', 'true');
+        const titleEl = container.querySelector('.title');
+        const descEl = container.querySelector('.description');
+        titleEl.setAttribute('contenteditable', 'true');
+        descEl.setAttribute('contenteditable', 'true');
         
-        // Add copy button to the container
+        // Add styling hints for editable elements
+        titleEl.classList.add('hover:bg-blue-50', 'focus:bg-blue-50', 'focus:outline-none', 'p-1');
+        descEl.classList.add('hover:bg-blue-50', 'focus:bg-blue-50', 'focus:outline-none', 'p-1');
+        
+        // Add copy button
         const copyBtn = document.createElement('button');
         copyBtn.className = 'absolute top-2 right-2 bg-white/75 backdrop-blur px-2 py-0.5 text-xs rounded cursor-pointer shadow';
         copyBtn.innerHTML = '<i class="fas fa-copy mr-1"></i> Copy';
@@ -607,12 +612,6 @@ menu: nav/home.html
         const thumbnailContainer = container.querySelector('.relative.group');
         thumbnailContainer.appendChild(copyBtn);
       });
-
-      /* Modify the outline UI structure - remove re-eval button and keep undo */
-      const outlineActionsContainer = document.querySelector('.flex.justify-between.items-center.mt-6');
-      outlineActionsContainer.classList.replace('justify-between', 'justify-center');
-      const reEvalBtn = document.getElementById('reEvalBtn');
-      if (reEvalBtn) reEvalBtn.remove();
       
       /* ══ Misc: back button, filter ════════════════ */
       document.getElementById("goBackBtn").onclick = () => { step2.classList.add("hidden"); step1.classList.remove("hidden"); };
