@@ -1152,11 +1152,8 @@ menu: nav/home.html
             </h3>
             <div class="flex flex-col md:flex-row gap-6 items-center">
               <div class="w-full md:w-1/3 flex justify-center">
-                <div class="relative" style="width: 200px; height: 100px;">
-                  <canvas id="engagementChart" width="200" height="100" style="max-width: 200px; max-height: 100px;"></canvas>
-                  <div class="absolute inset-0 flex items-center justify-center" style="top: 20px;">
-                    <span id="engagementScore" class="text-lg font-bold text-blue-600">0</span>
-                  </div>
+                <div class="relative" style="width: 240px; height: 120px;">
+                  <canvas id="engagementChart" width="240" height="120" style="max-width: 240px; max-height: 120px;"></canvas>
                 </div>
               </div>
               <div class="w-full md:w-2/3">
@@ -1164,8 +1161,8 @@ menu: nav/home.html
                   <div id="engagementProgress" class="absolute inset-0 bg-blue-600 rounded-full transition-all duration-800" style="width:0%"></div>
                 </div>
                 <div class="text-center space-y-2">
-                  <p class="text-lg font-medium text-gray-700">
-                    Engagement Score: <span class="text-blue-600 font-bold">${result.predicted_engagement ? result.predicted_engagement.toFixed(1) : 'N/A'}</span> / 100
+                  <p class="text-xl font-medium text-gray-700">
+                    Engagement Score: <span id="engagementScore" class="text-blue-600 font-bold text-2xl">${result.predicted_engagement ? result.predicted_engagement.toFixed(1) : 'N/A'}</span> / 100
                   </p>
                   <p class="text-sm text-gray-500">
                     Based on machine-learning analysis of similar content
