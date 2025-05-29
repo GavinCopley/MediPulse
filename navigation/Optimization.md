@@ -292,6 +292,7 @@ menu: nav/home.html
 
           <div class="flex justify-between items-center mt-6">
             <button id="undoBtn" class="px-4 py-2 bg-red-50 hover:bg-red-100 text-red-600 font-medium rounded-lg flex gap-2"><i class="fas fa-undo-alt"></i> Undo All</button>
+            <button id="reEvalBtn" class="px-4 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 font-medium rounded-lg flex gap-2"><i class="fas fa-sync-alt"></i> Re-evaluate</button>
           </div>
         </div>
 
@@ -330,7 +331,7 @@ menu: nav/home.html
     document.addEventListener("DOMContentLoaded", () => {
       /* ══ Constants & helpers ═════════════════════════════ */
       const API_BASE_URL = "http://localhost:8115";
-      const clamp = x => Math.max(0, Math.min(x, 99)); // Cap at 99 instead of 100
+      const clamp = x => Math.max(0, Math.min(x, 100));
       const formatTime = secs => `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, "0")}`;
 
       /* ══ DOM refs ═══════════════════════════════════════ */
@@ -345,25 +346,6 @@ menu: nav/home.html
       let currentTemplate = 0;
       const originalContent = {};   // { templateIdx: { title, desc, tags, length } }
       const activeTipBtn   = {};   // { templateIdx: { cat: btnEl } }
-
-      // Helper function to copy outline to clipboard
-      const copyOutlineToClipboard = (templateIdx) => {
-        const container = document.querySelector(`.template-container[data-template="${templateIdx}"]`);
-        if (!container) return;
-        
-        const title = container.querySelector('.title').textContent;
-        const description = container.querySelector('.description').textContent;
-        const tags = Array.from(container.querySelector('.tags').children)
-          .map(el => el.textContent.replace('#', ''))
-          .join('|');
-        const duration = container.querySelector('.duration-text').textContent;
-        
-        const text = `TITLE: ${title}\n\nDESCRIPTION: ${description}\n\nTAGS: ${tags}\n\nDURATION: ${duration}`;
-        
-        navigator.clipboard.writeText(text)
-          .then(() => notify('Outline copied to clipboard!', 'success'))
-          .catch(err => notify('Failed to copy: ' + err));
-      };
 
       /* ══ Template switcher buttons ══════════════════════ */
       document.querySelectorAll(".template-btn").forEach(btn => {
@@ -588,37 +570,17 @@ menu: nav/home.html
         }
       });
 
-      /* ══ Outlines template setup ══════════════════════════ */
-      // Make outline elements editable
-      document.querySelectorAll('.template-container').forEach(container => {
-        // Make title and description editable
-        container.querySelector('.title').setAttribute('contenteditable', 'true');
-        container.querySelector('.description').setAttribute('contenteditable', 'true');
-        
-        // Add copy button to the container
-        const copyBtn = document.createElement('button');
-        copyBtn.className = 'absolute top-2 right-2 bg-white/75 backdrop-blur px-2 py-0.5 text-xs rounded cursor-pointer shadow';
-        copyBtn.innerHTML = '<i class="fas fa-copy mr-1"></i> Copy';
-        copyBtn.addEventListener('click', (e) => {
-          e.preventDefault();
-          copyOutlineToClipboard(container.dataset.template);
-        });
-        
-        const thumbnailContainer = container.querySelector('.relative.group');
-        thumbnailContainer.appendChild(copyBtn);
-      });
-
-      /* Modify the outline UI structure - remove re-eval button and keep undo */
-      const outlineActionsContainer = document.querySelector('.flex.justify-between.items-center.mt-6');
-      outlineActionsContainer.classList.replace('justify-between', 'justify-center');
-      const reEvalBtn = document.getElementById('reEvalBtn');
-      if (reEvalBtn) reEvalBtn.remove();
-      
-      /* ══ Misc: back button, filter ════════════════ */
+      /* ══ Misc: back button, filter, re-eval ════════════ */
       document.getElementById("goBackBtn").onclick = () => { step2.classList.add("hidden"); step1.classList.remove("hidden"); };
       document.querySelector(".video-filter-clear").onclick = () => { const f=document.getElementById("videoFilter"); f.value=""; f.dispatchEvent(new Event("input")); };
       document.getElementById("videoFilter").oninput = ev => {
         const q = ev.target.value.toLowerCase(); document.querySelectorAll("#videoCards > div").forEach(c=>c.style.display=c.textContent.toLowerCase().includes(q)?"":"none");
+      };
+      document.getElementById("reEvalBtn").onclick = async () => {
+        if (!payload) return; loading.style.display="flex";
+        try { const r=await fetch(`${API_BASE_URL}/api/optimize`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+          const res=await r.json(); loading.style.display="none"; setGauge(res.improved_engagement);
+        } catch(e){console.error(e); loading.style.display="none"; notify("Re-evaluation failed.");}
       };
     });
   </script>
