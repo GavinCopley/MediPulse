@@ -7,9 +7,11 @@
 
         <!-- Right Section - Navigation & Login -->
         <div class="flex items-center space-x-8">
-            <!-- Navigation Links -->
-            <a href="{{site.baseurl}}/hospitalforyou" class="text-black hover:text-indigo-600 text-lg font-medium">Hospitals For You</a>
-            <a href="{{site.baseurl}}/optimize" class="text-black hover:text-indigo-600 text-lg font-medium">Optimize</a>
+            <!-- Navigation Links - Only visible when authenticated -->
+            <div id="auth-nav-links" style="display: none;">
+                <a href="{{site.baseurl}}/hospitalforyou" class="text-black hover:text-indigo-600 text-lg font-medium mr-8">Hospitals For You</a>
+                <a href="{{site.baseurl}}/optimize" class="text-black hover:text-indigo-600 text-lg font-medium">Optimize</a>
+            </div>
 
             <!-- Login/Sign Up Button -->
             <a id="signup-login" href="{{site.baseurl}}/noauth" class="text-[#592ae8] hover:text-indigo-600 text-lg font-bold">Sign Up | Login</a>
@@ -70,10 +72,12 @@
                     // User is authenticated
                     if (loginLink) loginLink.hidden = true;
                     if (profileContainer) profileContainer.style.display = "block";
+                    document.getElementById("auth-nav-links").style.display = "flex"; // Show auth links
                 } else {
                     // User is not authenticated
                     if (loginLink) loginLink.hidden = false;
                     if (profileContainer) profileContainer.style.display = "none";
+                    document.getElementById("auth-nav-links").style.display = "none"; // Hide auth links
                 }
             })
             .catch((err) => {
@@ -81,6 +85,7 @@
                 // Ensure profile is hidden on error
                 if (loginLink) loginLink.hidden = false;
                 if (profileContainer) profileContainer.style.display = "none";
+                document.getElementById("auth-nav-links").style.display = "none"; // Hide auth links on error
             });
 
         const profileButton = document.getElementById("profile");
