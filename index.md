@@ -336,6 +336,28 @@ menu: nav/home.html
                         </a>
                     </div>
                 </div>
+                <!-- Hospitals for You Card -->
+                <div class="bg-white rounded-2xl shadow-lg p-8 flex flex-col justify-between hover:shadow-2xl transition">
+                    <div>
+                        <div class="flex items-center mb-4">
+                            <span class="inline-block bg-pink-100 p-3 rounded-full mr-3">
+                                <svg class="w-6 h-6 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                </svg>
+                            </span>
+                            <h2 class="text-xl font-bold text-pink-900">Hospitals for You</h2>
+                        </div>
+                        <p class="text-gray-600 mb-6">Get personalized hospital recommendations based on your location, preferences, and health needs.</p>
+                    </div>
+                    <div class="flex justify-end">
+                        <a href="{{site.baseurl}}/hospitalforyou" class="inline-flex items-center bg-pink-600 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-pink-700 transition">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                            </svg>
+                            Find My Hospitals
+                        </a>
+                    </div>
+                </div>
                 <!-- Hospital Comparisons Card -->
                 <div class="bg-white rounded-2xl shadow-lg p-8 flex flex-col justify-between hover:shadow-2xl transition">
                     <div>
