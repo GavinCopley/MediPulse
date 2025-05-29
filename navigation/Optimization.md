@@ -10,6 +10,8 @@ menu: nav/home.html
 
 <head>
   <meta charset="UTF-8" />
+  <title>Generate an Optimal Video</title>
+  <meta charset="utf-8" />
   <title>Hospital Video Optimiser</title>
 
   <!-- FontAwesome & Chart.js -->
@@ -290,7 +292,6 @@ menu: nav/home.html
 
           <div class="flex justify-between items-center mt-6">
             <button id="undoBtn" class="px-4 py-2 bg-red-50 hover:bg-red-100 text-red-600 font-medium rounded-lg flex gap-2"><i class="fas fa-undo-alt"></i> Undo All</button>
-            <button id="reEvalBtn" class="px-4 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 font-medium rounded-lg flex gap-2"><i class="fas fa-sync-alt"></i> Re-evaluate</button>
           </div>
         </div>
 
@@ -338,7 +339,7 @@ menu: nav/home.html
       // c) Let Flask inject (if you ever serve the template from Flask)
       // const OPTIMIZE_URL = '{{ api_root }}/optimize';
       
-      const clamp = x => Math.max(0, Math.min(x, 100));
+      const clamp = x => Math.max(0, Math.min(x, 99)); // Cap at 99 instead of 100
       const formatTime = secs => `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, "0")}`;
 
       /* ══ DOM refs ═══════════════════════════════════════ */
@@ -353,6 +354,25 @@ menu: nav/home.html
       let currentTemplate = 0;
       const originalContent = {};   // { templateIdx: { title, desc, tags, length } }
       const activeTipBtn   = {};   // { templateIdx: { cat: btnEl } }
+
+      // Helper function to copy outline to clipboard
+      const copyOutlineToClipboard = (templateIdx) => {
+        const container = document.querySelector(`.template-container[data-template="${templateIdx}"]`);
+        if (!container) return;
+        
+        const title = container.querySelector('.title').textContent;
+        const description = container.querySelector('.description').textContent;
+        const tags = Array.from(container.querySelector('.tags').children)
+          .map(el => el.textContent.replace('#', ''))
+          .join('|');
+        const duration = container.querySelector('.duration-text').textContent;
+        
+        const text = `TITLE: ${title}\n\nDESCRIPTION: ${description}\n\nTAGS: ${tags}\n\nDURATION: ${duration}`;
+        
+        navigator.clipboard.writeText(text)
+          .then(() => notify('Outline copied to clipboard!', 'success'))
+          .catch(err => notify('Failed to copy: ' + err));
+      };
 
       /* ══ Template switcher buttons ══════════════════════ */
       document.querySelectorAll(".template-btn").forEach(btn => {
@@ -473,8 +493,6 @@ menu: nav/home.html
       };
 
       /* ══ Form submit (Step 1) ═══════════════════════════ */
-      let lastPayload = null; // Store the last successful payload for re-evaluation
-
       form.addEventListener("submit", async ev => {
         ev.preventDefault();
         const fd = new FormData(form);
@@ -499,11 +517,7 @@ menu: nav/home.html
 
         loading.style.display = "flex";
         try {
-          const r = await fetch(OPTIMIZE_URL, { 
-            method: "POST", 
-            headers: { "Content-Type": "application/json" }, 
-            body: JSON.stringify(payload) 
-          });
+          const r = await fetch(`${OPTIMIZE_URL}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
           const resTxt = await r.text();
           const res = JSON.parse(resTxt.replace(/\bNaN\b/g, "null"));
           loading.style.display = "none";
@@ -578,83 +592,38 @@ menu: nav/home.html
             cards.appendChild(div);
           });
 
-          lastPayload = payload; // Save payload for re-evaulation later
-
         } catch (err) {
           console.error(err); loading.style.display = "none"; notify("Optimisation failed – check console.");
         }
       });
 
-      document.getElementById("reEvalBtn").onclick = async () => {
-        if (!lastPayload) return notify("No optimization data to re-evaluate.");
+      /* ══ Outlines template setup ══════════════════════════ */
+      // Make outline elements editable
+      document.querySelectorAll('.template-container').forEach(container => {
+        // Make title and description editable
+        container.querySelector('.title').setAttribute('contenteditable', 'true');
+        container.querySelector('.description').setAttribute('contenteditable', 'true');
         
-        // 1) Show loading state
-        const origBtnText = document.getElementById("reEvalBtn").innerHTML;
-        document.getElementById("reEvalBtn").innerHTML = '<i class="fas fa-spinner fa-spin"></i> Re-evaluating...';
-        document.getElementById("reEvalBtn").disabled = true;
-        loading.style.display = "flex";
+        // Add copy button to the container
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'absolute top-2 right-2 bg-white/75 backdrop-blur px-2 py-0.5 text-xs rounded cursor-pointer shadow';
+        copyBtn.innerHTML = '<i class="fas fa-copy mr-1"></i> Copy';
+        copyBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          copyOutlineToClipboard(container.dataset.template);
+        });
         
-        try {
-          // 2) Get current values from active template
-          const cont = document.querySelector(`.template-container[data-template="${currentTemplate}"]`);
-          const newTitle = cont.querySelector(".title").textContent.trim();
-          const newDesc = cont.querySelector(".description").textContent.trim();
-          const newTags = Array.from(cont.querySelector(".tags").children)
-            .map(el => el.textContent.replace(/^#/, "").trim())
-            .filter(Boolean)
-            .join("|");
-          const durText = cont.querySelector(".duration-text").textContent; 
-          const [m, s] = durText.split(":").map(Number);
-          const newDuration = (m * 60) + s;
-          
-          // 3) Create a fresh payload with the same structure as the initial one
-          const updatedPayload = {
-            title: newTitle,
-            description: newDesc,
-            duration_sec: newDuration,
-            tags: newTags,
-            is_hd: lastPayload.is_hd,
-            has_captions: lastPayload.has_captions,
-            category_id: lastPayload.category_id,
-            publish_dow: lastPayload.publish_dow,
-            publish_hour: lastPayload.publish_hour
-          };
-          
-          console.log("Re-evaluating with payload:", updatedPayload);
-          
-          const r = await fetch(OPTIMIZE_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(updatedPayload)
-          });
-          
-          if (!r.ok) {
-            throw new Error(`HTTP ${r.status}: ${await r.text()}`);
-          }
-          
-          const resTxt = await r.text();
-          const res = JSON.parse(resTxt.replace(/\bNaN\b/g, "null"));
-          
-          // 4) Update the score using the predicted_engagement (same field as initial request)
-          const newScore = res.predicted_engagement || 0;
-          setGauge(newScore);
-          
-          // 5) Update lastPayload for future re-evaluations
-          lastPayload = updatedPayload;
-          
-          notify(`Score updated: ${newScore.toFixed(1)}%`, false);
-          
-        } catch (error) {
-          console.error("Re-evaluation failed:", error);
-          notify(`Re-evaluation failed: ${error.message}`);
-        } finally {
-          loading.style.display = "none";
-          document.getElementById("reEvalBtn").innerHTML = origBtnText;
-          document.getElementById("reEvalBtn").disabled = false;
-        }
-      };
+        const thumbnailContainer = container.querySelector('.relative.group');
+        thumbnailContainer.appendChild(copyBtn);
+      });
 
-      /* ══ Misc: back button, filter, re-eval ════════════ */
+      /* Modify the outline UI structure - remove re-eval button and keep undo */
+      const outlineActionsContainer = document.querySelector('.flex.justify-between.items-center.mt-6');
+      outlineActionsContainer.classList.replace('justify-between', 'justify-center');
+      const reEvalBtn = document.getElementById('reEvalBtn');
+      if (reEvalBtn) reEvalBtn.remove();
+      
+      /* ══ Misc: back button, filter ════════════════ */
       document.getElementById("goBackBtn").onclick = () => { step2.classList.add("hidden"); step1.classList.remove("hidden"); };
       document.querySelector(".video-filter-clear").onclick = () => { const f=document.getElementById("videoFilter"); f.value=""; f.dispatchEvent(new Event("input")); };
       document.getElementById("videoFilter").oninput = ev => {
