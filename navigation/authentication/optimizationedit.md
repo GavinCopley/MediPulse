@@ -1151,17 +1151,26 @@ menu: nav/home.html
               Predicted Engagement
             </h3>
             <div class="flex flex-col md:flex-row gap-6 items-center">
-              <canvas id="engagementChart" class="w-full md:w-1/3"></canvas>
+              <div class="w-full md:w-1/3 flex justify-center">
+                <div class="relative" style="width: 200px; height: 100px;">
+                  <canvas id="engagementChart" width="200" height="100" style="max-width: 200px; max-height: 100px;"></canvas>
+                  <div class="absolute inset-0 flex items-center justify-center" style="top: 20px;">
+                    <span id="engagementScore" class="text-lg font-bold text-blue-600">0</span>
+                  </div>
+                </div>
+              </div>
               <div class="w-full md:w-2/3">
-                <div class="relative w-full h-4 bg-gray-300 rounded-full overflow-hidden">
+                <div class="relative w-full h-4 bg-gray-200 rounded-full overflow-hidden mb-4">
                   <div id="engagementProgress" class="absolute inset-0 bg-blue-600 rounded-full transition-all duration-800" style="width:0%"></div>
                 </div>
-                <p class="mt-3 text-center">
-                  Score: <strong id="engagementScore" class="text-2xl text-blue-600">${result.predicted_engagement ? result.predicted_engagement.toFixed(2) : 'N/A'}</strong> / 100
-                </p>
-                <p class="text-center text-xs text-gray-500">
-                  Based on machine-learning analysis of similar content
-                </p>
+                <div class="text-center space-y-2">
+                  <p class="text-lg font-medium text-gray-700">
+                    Engagement Score: <span class="text-blue-600 font-bold">${result.predicted_engagement ? result.predicted_engagement.toFixed(1) : 'N/A'}</span> / 100
+                  </p>
+                  <p class="text-sm text-gray-500">
+                    Based on machine-learning analysis of similar content
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -1333,14 +1342,20 @@ menu: nav/home.html
       data: { 
         datasets: [{ 
           data: [0, 100], 
-          backgroundColor: ["#3b82f6", "#e5e7eb"] 
+          backgroundColor: ["#3b82f6", "#e5e7eb"],
+          borderWidth: 0
         }] 
       },
       options: { 
+        responsive: false,
+        maintainAspectRatio: false,
         circumference: Math.PI, 
         rotation: -Math.PI, 
         cutout: "75%", 
-        plugins: { legend: { display: false } } 
+        plugins: { 
+          legend: { display: false },
+          tooltip: { enabled: false }
+        }
       }
     });
 
@@ -1350,7 +1365,7 @@ menu: nav/home.html
       engagementChart.data.datasets[0].data = [clampedValue, 100 - clampedValue];
       engagementChart.update({ duration: 800 });
       document.getElementById("engagementProgress").style.width = clampedValue + "%";
-      document.getElementById("engagementScore").textContent = clampedValue.toFixed(2);
+      document.getElementById("engagementScore").textContent = clampedValue.toFixed(1);
     };
 
     // Notification helper
