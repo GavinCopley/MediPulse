@@ -361,8 +361,8 @@ menu: nav/home.html
         const text = `TITLE: ${title}\n\nDESCRIPTION: ${description}\n\nTAGS: ${tags}\n\nDURATION: ${duration}`;
         
         navigator.clipboard.writeText(text)
-          .then(() => notify('Outline copied to clipboard!'))
-          .catch(err => notify('Failed to copy: ' + err));
+          .then(() => notify('Outline copied to clipboard!', 'success'))  // Use success type for copy notification
+          .catch(err => notify('Failed to copy: ' + err)); // This still uses default error type
       };
 
       /* ══ Template switcher buttons ══════════════════════ */
@@ -400,17 +400,29 @@ menu: nav/home.html
         options: { circumference: Math.PI, rotation: -Math.PI, cutout: "75%", plugins: { legend: { display: false } } }
       });
       const setGauge = v => {
-        engagementChart.data.datasets[0].data = [clamp(v), 100 - clamp(v)];
+        const clampedValue = clamp(v); // Apply clamp first and store the value
+        engagementChart.data.datasets[0].data = [clampedValue, 100 - clampedValue];
         engagementChart.update({ duration: 800 });
-        document.getElementById("engagementProgress").style.width = clamp(v) + "%";
-        document.getElementById("engagementScore").textContent = v.toFixed(2);
+        document.getElementById("engagementProgress").style.width = clampedValue + "%";
+        document.getElementById("engagementScore").textContent = clampedValue.toFixed(2); // Use the clamped value here
       };
 
       /* ══ Notification helper ═══════════════════════════ */
-      const notify = msg => {
-        notif.querySelector(".notification-message").textContent = msg;
-        notif.style.top = "20px";
-        setTimeout(() => (notif.style.top = "-100px"), 3000);
+      const notify = (msg, type = 'error') => {
+        const notificationEl = document.getElementById("notification");
+        notificationEl.querySelector(".notification-message").textContent = msg;
+        
+        // Set color based on notification type
+        if (type === 'success') {
+          notificationEl.classList.remove('bg-red-600');
+          notificationEl.classList.add('bg-green-600');
+        } else {
+          notificationEl.classList.remove('bg-green-600');
+          notificationEl.classList.add('bg-red-600');
+        }
+        
+        notificationEl.style.top = "20px";
+        setTimeout(() => (notificationEl.style.top = "-100px"), 3000);
       };
 
       /* ══ Reset field helper ═════════════════════════════ */
