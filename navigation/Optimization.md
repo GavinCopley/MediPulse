@@ -10,8 +10,6 @@ menu: nav/home.html
 
 <head>
   <meta charset="UTF-8" />
-  <title>Generate an Optimal Video</title>
-  <meta charset="utf-8" />
   <title>Hospital Video Optimiser</title>
 
   <!-- FontAwesome & Chart.js -->
@@ -330,7 +328,16 @@ menu: nav/home.html
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       /* ══ Constants & helpers ═════════════════════════════ */
-      const API_BASE_URL = "http://localhost:8115";
+      // ① ONE line – pick ONE of the three flavours ↓↓↓
+      // a) Hard-code (quick-and-dirty)
+      const OPTIMIZE_URL = 'https://video-optimiser-xyz.a.run.app/api/optimize';
+      // b) Read from Jekyll _config.yml (preferred for GH Pages)
+      // In _config.yml ➜ api_url: "https://video-optimiser-xyz.a.run.app"
+      // then here ➜
+      // const OPTIMIZE_URL = '{{ site.api_url }}/api/optimize';
+      // c) Let Flask inject (if you ever serve the template from Flask)
+      // const OPTIMIZE_URL = '{{ api_root }}/optimize';
+      
       const clamp = x => Math.max(0, Math.min(x, 100));
       const formatTime = secs => `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, "0")}`;
 
@@ -466,6 +473,8 @@ menu: nav/home.html
       };
 
       /* ══ Form submit (Step 1) ═══════════════════════════ */
+      let lastPayload = null; // Store the last successful payload for re-evaluation
+
       form.addEventListener("submit", async ev => {
         ev.preventDefault();
         const fd = new FormData(form);
@@ -490,7 +499,11 @@ menu: nav/home.html
 
         loading.style.display = "flex";
         try {
-          const r = await fetch(`${API_BASE_URL}/api/optimize`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
+          const r = await fetch(OPTIMIZE_URL, { 
+            method: "POST", 
+            headers: { "Content-Type": "application/json" }, 
+            body: JSON.stringify(payload) 
+          });
           const resTxt = await r.text();
           const res = JSON.parse(resTxt.replace(/\bNaN\b/g, "null"));
           loading.style.display = "none";
@@ -565,22 +578,87 @@ menu: nav/home.html
             cards.appendChild(div);
           });
 
+          lastPayload = payload; // Save payload for re-evaulation later
+
         } catch (err) {
           console.error(err); loading.style.display = "none"; notify("Optimisation failed – check console.");
         }
       });
+
+      document.getElementById("reEvalBtn").onclick = async () => {
+        if (!lastPayload) return notify("No optimization data to re-evaluate.");
+        
+        // 1) Show loading state
+        const origBtnText = document.getElementById("reEvalBtn").innerHTML;
+        document.getElementById("reEvalBtn").innerHTML = '<i class="fas fa-spinner fa-spin"></i> Re-evaluating...';
+        document.getElementById("reEvalBtn").disabled = true;
+        loading.style.display = "flex";
+        
+        try {
+          // 2) Get current values from active template
+          const cont = document.querySelector(`.template-container[data-template="${currentTemplate}"]`);
+          const newTitle = cont.querySelector(".title").textContent.trim();
+          const newDesc = cont.querySelector(".description").textContent.trim();
+          const newTags = Array.from(cont.querySelector(".tags").children)
+            .map(el => el.textContent.replace(/^#/, "").trim())
+            .filter(Boolean)
+            .join("|");
+          const durText = cont.querySelector(".duration-text").textContent; 
+          const [m, s] = durText.split(":").map(Number);
+          const newDuration = (m * 60) + s;
+          
+          // 3) Create a fresh payload with the same structure as the initial one
+          const updatedPayload = {
+            title: newTitle,
+            description: newDesc,
+            duration_sec: newDuration,
+            tags: newTags,
+            is_hd: lastPayload.is_hd,
+            has_captions: lastPayload.has_captions,
+            category_id: lastPayload.category_id,
+            publish_dow: lastPayload.publish_dow,
+            publish_hour: lastPayload.publish_hour
+          };
+          
+          console.log("Re-evaluating with payload:", updatedPayload);
+          
+          const r = await fetch(OPTIMIZE_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(updatedPayload)
+          });
+          
+          if (!r.ok) {
+            throw new Error(`HTTP ${r.status}: ${await r.text()}`);
+          }
+          
+          const resTxt = await r.text();
+          const res = JSON.parse(resTxt.replace(/\bNaN\b/g, "null"));
+          
+          // 4) Update the score using the predicted_engagement (same field as initial request)
+          const newScore = res.predicted_engagement || 0;
+          setGauge(newScore);
+          
+          // 5) Update lastPayload for future re-evaluations
+          lastPayload = updatedPayload;
+          
+          notify(`Score updated: ${newScore.toFixed(1)}%`, false);
+          
+        } catch (error) {
+          console.error("Re-evaluation failed:", error);
+          notify(`Re-evaluation failed: ${error.message}`);
+        } finally {
+          loading.style.display = "none";
+          document.getElementById("reEvalBtn").innerHTML = origBtnText;
+          document.getElementById("reEvalBtn").disabled = false;
+        }
+      };
 
       /* ══ Misc: back button, filter, re-eval ════════════ */
       document.getElementById("goBackBtn").onclick = () => { step2.classList.add("hidden"); step1.classList.remove("hidden"); };
       document.querySelector(".video-filter-clear").onclick = () => { const f=document.getElementById("videoFilter"); f.value=""; f.dispatchEvent(new Event("input")); };
       document.getElementById("videoFilter").oninput = ev => {
         const q = ev.target.value.toLowerCase(); document.querySelectorAll("#videoCards > div").forEach(c=>c.style.display=c.textContent.toLowerCase().includes(q)?"":"none");
-      };
-      document.getElementById("reEvalBtn").onclick = async () => {
-        if (!payload) return; loading.style.display="flex";
-        try { const r=await fetch(`${API_BASE_URL}/api/optimize`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
-          const res=await r.json(); loading.style.display="none"; setGauge(res.improved_engagement);
-        } catch(e){console.error(e); loading.style.display="none"; notify("Re-evaluation failed.");}
       };
     });
   </script>
