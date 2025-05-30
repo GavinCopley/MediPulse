@@ -453,148 +453,151 @@ menu: nav/home.html
       // Format real-time information if available
       let realTimeInfoHTML = '';
       if (realTimeInfo && !realTimeInfo.error) {
-        // Start with a header section for the AI-powered info
         realTimeInfoHTML = `
-          <div class="mb-6 border-t border-gray-200 pt-6">
+          <div class="mb-8 border-t border-gray-200 pt-8">
             <div class="flex items-center mb-6">
-              <div class="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full p-2 mr-3">
-                <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl p-3 mr-4 shadow-md">
+                <svg class="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                         d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
-              <h4 class="font-medium text-gray-900">AI-Powered Hospital Insights</h4>
-              <span class="ml-2 px-2 py-1 text-xs font-medium text-indigo-800 bg-indigo-100 rounded-full">Powered by Gemini</span>
+              <div>
+                <h4 class="font-bold text-xl text-gray-800">AI-Powered Hospital Insights</h4>
+                <p class="text-gray-500 text-sm">Up-to-date information about this hospital</p>
+              </div>
+              <span class="ml-auto px-3 py-1.5 text-xs font-medium text-indigo-800 bg-indigo-100 rounded-full shadow-sm border border-indigo-200">Powered by Gemini</span>
             </div>
             
             <div class="grid md:grid-cols-2 gap-6">
               ${realTimeInfo.achievements && realTimeInfo.achievements.length > 0 ? `
-                <div class="bg-gradient-to-b from-amber-50 to-white rounded-xl p-5 shadow-sm border border-amber-100">
-                  <div class="flex items-center mb-3">
-                    <div class="p-1.5 bg-amber-100 rounded-lg mr-2">
+                <div class="bg-gradient-to-b from-amber-50 to-white rounded-xl p-6 shadow-md border border-amber-100 transform transition-all hover:shadow-lg">
+                  <div class="flex items-center mb-4">
+                    <div class="p-2 bg-amber-100 rounded-lg mr-3 shadow-sm">
                       <svg class="h-5 w-5 text-amber-600" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm0 10a1 1 0 011 1v1h1a1 1 0 110 2H6v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1v-1a1 1 0 011-1zm7-10a1 1 0 01.707.293l.707.707.707-.707A1 1 0 0116 3v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0V6h-1a1 1 0 110-2h1V3a1 1 0 011-1zm0 10a1 1 0 01.707.293l.707.707.707-.707A1 1 0 0116 13v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1h-1a1 1 0 110-2h1v-1a1 1 0 011-1z" clip-rule="evenodd" />
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
                       </svg>
                     </div>
-                    <h5 class="font-semibold text-amber-900">Notable Achievements</h5>
+                    <h5 class="font-bold text-amber-900">Notable Achievements</h5>
                   </div>
-                  <ul class="space-y-2 pl-4">
+                  <ul class="space-y-3">
                     ${Array.isArray(realTimeInfo.achievements) ? 
                       realTimeInfo.achievements.map(item => `
-                        <li class="flex items-start">
-                          <svg class="h-5 w-5 text-amber-600 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <li class="flex items-start rounded-lg p-2 hover:bg-amber-50 transition-colors">
+                          <svg class="h-5 w-5 text-amber-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                           </svg>
-                          <span class="text-gray-700">${typeof item === 'object' ? (item.title || item.text || JSON.stringify(item)) : item}</span>
+                          <span class="text-gray-800 leading-relaxed">${typeof item === 'object' ? (item.title || item.text || JSON.stringify(item)) : item}</span>
                         </li>
                       `).join('') :
-                      `<li class="flex items-start">
-                        <svg class="h-5 w-5 text-amber-600 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      `<li class="flex items-start rounded-lg p-2 bg-amber-50">
+                        <svg class="h-5 w-5 text-amber-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                           <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                         </svg>
-                        <span class="text-gray-700">${typeof realTimeInfo.achievements === 'object' ? (realTimeInfo.achievements.title || realTimeInfo.achievements.text || JSON.stringify(realTimeInfo.achievements)) : realTimeInfo.achievements}</span>
+                        <span class="text-gray-800 leading-relaxed">${typeof realTimeInfo.achievements === 'object' ? (realTimeInfo.achievements.title || realTimeInfo.achievements.text || JSON.stringify(realTimeInfo.achievements)) : realTimeInfo.achievements}</span>
                       </li>`
                     }
                   </ul>
                 </div>` : ''}
                 
               ${realTimeInfo.technology && realTimeInfo.technology.length > 0 ? `
-                <div class="bg-gradient-to-b from-blue-50 to-white rounded-xl p-5 shadow-sm border border-blue-100">
-                  <div class="flex items-center mb-3">
-                    <div class="p-1.5 bg-blue-100 rounded-lg mr-2">
+                <div class="bg-gradient-to-b from-blue-50 to-white rounded-xl p-6 shadow-md border border-blue-100 transform transition-all hover:shadow-lg">
+                  <div class="flex items-center mb-4">
+                    <div class="p-2 bg-blue-100 rounded-lg mr-3 shadow-sm">
                       <svg class="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
                       </svg>
                     </div>
-                    <h5 class="font-semibold text-blue-900">Technology & Facilities</h5>
+                    <h5 class="font-bold text-blue-900">Advanced Technology & Facilities</h5>
                   </div>
-                  <ul class="space-y-2 pl-4">
+                  <ul class="space-y-3">
                     ${Array.isArray(realTimeInfo.technology) ? 
                       realTimeInfo.technology.map(item => `
-                        <li class="flex items-start">
-                          <svg class="h-5 w-5 text-blue-600 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <li class="flex items-start rounded-lg p-2 hover:bg-blue-50 transition-colors">
+                          <svg class="h-5 w-5 text-blue-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                           </svg>
-                          <span class="text-gray-700">${typeof item === 'object' ? (item.title || item.text || JSON.stringify(item)) : item}</span>
+                          <span class="text-gray-800 leading-relaxed">${typeof item === 'object' ? (item.title || item.text || JSON.stringify(item)) : item}</span>
                         </li>
                       `).join('') :
-                      `<li class="flex items-start">
-                        <svg class="h-5 w-5 text-blue-600 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      `<li class="flex items-start rounded-lg p-2 bg-blue-50">
+                        <svg class="h-5 w-5 text-blue-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                           <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                         </svg>
-                        <span class="text-gray-700">${typeof realTimeInfo.technology === 'object' ? (realTimeInfo.technology.title || realTimeInfo.technology.text || JSON.stringify(realTimeInfo.technology)) : realTimeInfo.technology}</span>
+                        <span class="text-gray-800 leading-relaxed">${typeof realTimeInfo.technology === 'object' ? (realTimeInfo.technology.title || realTimeInfo.technology.text || JSON.stringify(realTimeInfo.technology)) : realTimeInfo.technology}</span>
                       </li>`
                     }
                   </ul>
                 </div>` : ''}
               
               ${realTimeInfo.programs && realTimeInfo.programs.length > 0 ? `
-                <div class="bg-gradient-to-b from-green-50 to-white rounded-xl p-5 shadow-sm border border-green-100">
-                  <div class="flex items-center mb-3">
-                    <div class="p-1.5 bg-green-100 rounded-lg mr-2">
+                <div class="bg-gradient-to-b from-green-50 to-white rounded-xl p-6 shadow-md border border-green-100 transform transition-all hover:shadow-lg">
+                  <div class="flex items-center mb-4">
+                    <div class="p-2 bg-green-100 rounded-lg mr-3 shadow-sm">
                       <svg class="h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
                       </svg>
                     </div>
-                    <h5 class="font-semibold text-green-900">Special Programs</h5>
+                    <h5 class="font-bold text-green-900">Special Programs</h5>
                   </div>
-                  <ul class="space-y-2 pl-4">
+                  <ul class="space-y-3">
                     ${Array.isArray(realTimeInfo.programs) ? 
                       realTimeInfo.programs.map(item => `
-                        <li class="flex items-start">
-                          <svg class="h-5 w-5 text-green-600 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <li class="flex items-start rounded-lg p-2 hover:bg-green-50 transition-colors">
+                          <svg class="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                           </svg>
-                          <span class="text-gray-700">${typeof item === 'object' ? (item.title || item.text || JSON.stringify(item)) : item}</span>
+                          <span class="text-gray-800 leading-relaxed">${typeof item === 'object' ? (item.title || item.text || JSON.stringify(item)) : item}</span>
                         </li>
                       `).join('') :
-                      `<li class="flex items-start">
-                        <svg class="h-5 w-5 text-green-600 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      `<li class="flex items-start rounded-lg p-2 bg-green-50">
+                        <svg class="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                           <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                         </svg>
-                        <span class="text-gray-700">${typeof realTimeInfo.programs === 'object' ? (realTimeInfo.programs.title || realTimeInfo.programs.text || JSON.stringify(realTimeInfo.programs)) : realTimeInfo.programs}</span>
+                        <span class="text-gray-800 leading-relaxed">${typeof realTimeInfo.programs === 'object' ? (realTimeInfo.programs.title || realTimeInfo.programs.text || JSON.stringify(realTimeInfo.programs)) : realTimeInfo.programs}</span>
                       </li>`
                     }
                   </ul>
                 </div>` : ''}
                 
               ${realTimeInfo.community_initiatives && realTimeInfo.community_initiatives.length > 0 ? `
-                <div class="bg-gradient-to-b from-purple-50 to-white rounded-xl p-5 shadow-sm border border-purple-100">
-                  <div class="flex items-center mb-3">
-                    <div class="p-1.5 bg-purple-100 rounded-lg mr-2">
+                <div class="bg-gradient-to-b from-purple-50 to-white rounded-xl p-6 shadow-md border border-purple-100 transform transition-all hover:shadow-lg">
+                  <div class="flex items-center mb-4">
+                    <div class="p-2 bg-purple-100 rounded-lg mr-3 shadow-sm">
                       <svg class="h-5 w-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                       </svg>
                     </div>
-                    <h5 class="font-semibold text-purple-900">Community Initiatives</h5>
+                    <h5 class="font-bold text-purple-900">Community Initiatives</h5>
                   </div>
-                  <ul class="space-y-2 pl-4">
+                  <ul class="space-y-3">
                     ${Array.isArray(realTimeInfo.community_initiatives) ? 
                       realTimeInfo.community_initiatives.map(item => `
-                        <li class="flex items-start">
-                          <svg class="h-5 w-5 text-purple-600 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <li class="flex items-start rounded-lg p-2 hover:bg-purple-50 transition-colors">
+                          <svg class="h-5 w-5 text-purple-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                           </svg>
-                          <span class="text-gray-700">${typeof item === 'object' ? (item.title || item.text || JSON.stringify(item)) : item}</span>
+                          <span class="text-gray-800 leading-relaxed">${typeof item === 'object' ? (item.title || item.text || JSON.stringify(item)) : item}</span>
                         </li>
                       `).join('') :
-                      `<li class="flex items-start">
-                        <svg class="h-5 w-5 text-purple-600 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      `<li class="flex items-start rounded-lg p-2 bg-purple-50">
+                        <svg class="h-5 w-5 text-purple-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                           <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                         </svg>
-                        <span class="text-gray-700">${typeof realTimeInfo.community_initiatives === 'object' ? (realTimeInfo.community_initiatives.title || realTimeInfo.community_initiatives.text || JSON.stringify(realTimeInfo.community_initiatives)) : realTimeInfo.community_initiatives}</span>
+                        <span class="text-gray-800 leading-relaxed">${typeof realTimeInfo.community_initiatives === 'object' ? (realTimeInfo.community_initiatives.title || realTimeInfo.community_initiatives.text || JSON.stringify(realTimeInfo.community_initiatives)) : realTimeInfo.community_initiatives}</span>
                       </li>`
                     }
                   </ul>
                 </div>` : ''}
             </div>
 
-            <div class="mt-6 bg-indigo-50 rounded-lg p-4 text-sm text-indigo-700 border border-indigo-100 flex items-center">
-              <svg class="h-5 w-5 text-indigo-600 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <div class="mt-6 bg-gradient-to-r from-indigo-50 via-indigo-100 to-indigo-50 rounded-xl p-4 text-sm border border-indigo-200 flex items-center shadow-sm">
+              <svg class="h-6 w-6 text-indigo-700 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
               </svg>
               <div>
-                This information is automatically generated and updated periodically based on publicly available data. Last updated: ${new Date().toLocaleDateString()}
+                <p class="font-semibold text-indigo-900 mb-1">AI-Generated Information</p>
+                <p class="text-indigo-800">This information is automatically compiled from public sources and updated periodically. Last updated: ${new Date().toLocaleDateString('en-US', {month: 'long', day: 'numeric', year: 'numeric'})}</p>
               </div>
             </div>
           </div>
@@ -602,13 +605,13 @@ menu: nav/home.html
       } else if (realTimeInfo && realTimeInfo.error) {
         realTimeInfoHTML = `
           <div class="mb-6 border-t border-gray-200 pt-6">
-            <div class="bg-yellow-50 rounded-lg p-4 text-sm flex items-center">
-              <svg class="h-6 w-6 text-yellow-500 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <div class="bg-yellow-50 rounded-xl p-5 text-sm flex items-center shadow-md border border-yellow-200">
+              <svg class="h-8 w-8 text-yellow-500 mr-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m-1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <div>
-                <p class="font-medium text-yellow-800">Additional hospital information is currently unavailable</p>
-                <p class="text-yellow-700 mt-1">We're working to restore this feature. Please check back later.</p>
+                <p class="font-bold text-yellow-800 text-lg mb-1">Additional hospital information temporarily unavailable</p>
+                <p class="text-yellow-700">We're working to restore our AI-powered insights. Please check back later for up-to-date information about this hospital's achievements, technology, and community programs.</p>
               </div>
             </div>
           </div>
