@@ -1,149 +1,102 @@
 ---
-layout: tailwind
+layout: base
 title: Medipulse Chatbot
 permalink: /hospital-chat
 search_exclude: true
 menu: nav/home.html
 ---
 
-<div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-  <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-    <h2 class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">Medipulse Chatbot</h2>
-  </div>
-
-  <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-    <div id="chat-container" class="border rounded-md px-3 py-3 overflow-y-auto h-80 bg-gray-100"></div>
-    <form class="space-y-4 mt-4" id="chat-form">
-      <div>
-        <label for="user-input" class="block text-sm/6 font-medium text-gray-900">Your Message</label>
-        <div class="mt-2">
-          <input type="text" id="user-input" placeholder="Type your message here" required class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6">
-        </div>
-      </div>
-      <div>
-        <button type="submit" class="flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-rose-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Send</button>
-      </div>
-    </form>
-    <!-- Clear History Button -->
-    <div class="mt-4">
-      <button id="clear-history" class="flex w-full justify-center rounded-md bg-gray-300 px-3 py-1.5 text-sm/6 font-semibold text-gray-900 shadow-sm hover:bg-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400">
-        Clear History
-      </button>
+<div class="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
+  <div class="w-full max-w-md space-y-6">
+    <!-- Header -->
+    <div class="text-center">
+      <h1 class="text-3xl font-bold text-indigo-600">MediPulse Chatbot</h1>
+      <p class="mt-2 text-sm text-gray-600">Ask questions about hospitals, diseases, or treatments.</p>
     </div>
+
+    <!-- Chat container -->
+    <div id="chat-container" class="h-80 overflow-y-auto bg-white border border-gray-300 rounded-lg p-4 space-y-2 shadow-inner"></div>
+
+    <!-- Input form -->
+    <form id="chat-form" class="flex space-x-2">
+      <input 
+        id="user-input" 
+        type="text" 
+        placeholder="Type your message..." 
+        required 
+        class="flex-1 rounded-md border border-gray-300 px-4 py-2 text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500"
+      />
+      <button 
+        type="submit" 
+        class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 text-sm font-semibold shadow"
+      >
+        Send
+      </button>
+    </form>
+
+    <!-- Clear button -->
+    <button 
+      id="clear-history" 
+      class="w-full bg-gray-200 text-gray-800 py-2 rounded-md hover:bg-gray-300 text-sm font-medium"
+    >
+      Clear History
+    </button>
   </div>
 </div>
 
 <script type="module">
-  import { pythonURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js';
+  import { postChat } from '{{site.baseurl}}/assets/js/api/chatbot.js';
 
-  // Load chat history from localStorage
-  function loadChatHistory() {
-    const chatContainer = document.getElementById("chat-container");
-    const chatHistory = JSON.parse(localStorage.getItem("chatHistory")) || [];
+  const chatContainer = document.getElementById("chat-container");
+  const chatForm = document.getElementById("chat-form");
+  const userInput = document.getElementById("user-input");
+  const clearBtn = document.getElementById("clear-history");
 
-    // Render messages from localStorage
-    chatHistory.forEach((message) => {
-      const messageDiv = document.createElement("div");
-      messageDiv.className = message.isBot
-        ? "bg-gray-200 text-gray-900 px-4 py-2 rounded-lg my-2"
-        : "bg-blue-100 text-gray-900 px-4 py-2 rounded-lg my-2";
-      messageDiv.textContent = message.text;
-      chatContainer.appendChild(messageDiv);
-    });
-
-    // Scroll to the latest message
+  const appendMessage = (text, isBot) => {
+    const div = document.createElement("div");
+    div.className = `max-w-[80%] px-4 py-2 rounded-md text-sm shadow ${
+      isBot
+        ? "bg-gray-100 text-left self-start text-gray-800"
+        : "bg-indigo-100 text-right self-end text-indigo-800 ml-auto"
+    }`;
+    div.textContent = text;
+    chatContainer.appendChild(div);
     chatContainer.scrollTop = chatContainer.scrollHeight;
-  }
+  };
 
-  // Save chat history to localStorage
-  function saveChatHistory(userInput, botResponse) {
-    const chatHistory = JSON.parse(localStorage.getItem("chatHistory")) || [];
+  const saveHistory = (userMsg, botMsg) => {
+    const history = JSON.parse(localStorage.getItem("chatHistory") || "[]");
+    history.push({ text: userMsg, isBot: false });
+    history.push({ text: botMsg, isBot: true });
+    localStorage.setItem("chatHistory", JSON.stringify(history));
+  };
 
-    // Save user and bot messages to localStorage
-    chatHistory.push({ text: userInput, isBot: false });
-    chatHistory.push({ text: botResponse, isBot: true });
+  const loadHistory = () => {
+    const history = JSON.parse(localStorage.getItem("chatHistory") || "[]");
+    history.forEach(msg => appendMessage(msg.text, msg.isBot));
+  };
 
-    // Update localStorage with new chat history
-    localStorage.setItem("chatHistory", JSON.stringify(chatHistory));
-  }
+  chatForm.addEventListener("submit", async e => {
+    e.preventDefault();
+    const msg = userInput.value.trim();
+    if (!msg) return;
+    appendMessage(msg, false);
+    userInput.value = "";
 
-  async function handleChat(event) {
-    event.preventDefault(); // Prevent form submission
-
-    const userInputField = document.getElementById("user-input");
-    const userInput = userInputField.value.trim();
-
-    if (!userInput) return false;
-
-    const chatContainer = document.getElementById("chat-container");
-
-    // Add user message to chat
-    const userMessageDiv = document.createElement("div");
-    userMessageDiv.className = "bg-blue-100 text-gray-900 px-4 py-2 rounded-lg my-2";
-    userMessageDiv.textContent = userInput;
-    chatContainer.appendChild(userMessageDiv);
-
-    userInputField.value = ""; // Clear the input field
-
-    try {
-      const response = await fetch(`${pythonURI}/api/chatbot`, {
-        method: "POST",
-        cache: "default",
-        mode: "cors",
-        credentials: "include",
-        body: JSON.stringify({
-          user_input: userInput
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Origin': 'client'
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error(`Server returned status: ${response.status}`);
-      }
-
-      const data = await response.json();
-
-      // Add chatbot response to chat
-      const botMessageDiv = document.createElement("div");
-      botMessageDiv.className = "bg-gray-200 text-gray-900 px-4 py-2 rounded-lg my-2";
-      botMessageDiv.textContent = data.model_response || "No response received.";
-      chatContainer.appendChild(botMessageDiv);
-
-      // Save messages to localStorage
-      saveChatHistory(userInput, data.model_response || "No response received.");
-
-    } catch (error) {
-      console.error("Error");
-
-      // Display an error message
-      const errorMessageDiv = document.createElement("div");
-      errorMessageDiv.className = "bg-red-200 text-red-900 px-4 py-2 rounded-lg my-2";
-      errorMessageDiv.textContent = "Error: Unable to process your message.";
-      chatContainer.appendChild(errorMessageDiv);
+    const result = await postChat(msg);
+    if (result.success) {
+      const reply = result.model_response || "No response.";
+      appendMessage(reply, true);
+      saveHistory(msg, reply);
+    } else {
+      appendMessage("Generating...", true);
     }
+  });
 
-    // Scroll to the latest message
-    chatContainer.scrollTop = chatContainer.scrollHeight;
+  clearBtn.addEventListener("click", () => {
+    localStorage.removeItem("chatHistory");
+    chatContainer.innerHTML = "";
+  });
 
-    return false;
-  }
-
-  // Clear chat history from UI and localStorage
-  function clearChatHistory() {
-    const chatContainer = document.getElementById("chat-container");
-    chatContainer.innerHTML = ''; // Clear chat container
-    localStorage.removeItem("chatHistory"); // Remove chat history from localStorage
-  }
-
-  // Load chat history on page load
-  document.addEventListener("DOMContentLoaded", loadChatHistory);
-
-  // Attach event listener to the form
-  document.getElementById("chat-form").addEventListener("submit", handleChat);
-
-  // Attach event listener to the clear history button
-  document.getElementById("clear-history").addEventListener("click", clearChatHistory);
+  document.addEventListener("DOMContentLoaded", loadHistory);
 </script>

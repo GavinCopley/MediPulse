@@ -666,4 +666,41 @@ document.addEventListener('DOMContentLoaded', () => {
         observer.observe(section);
     });
 });
+
+
+</script>
+<!-- Floating Chatbot Button -->
+<!-- Floating Circular Chatbot Button -->
+<button id="chatbot-fab" class="fixed bottom-6 right-6 z-50 bg-indigo-600 hover:bg-indigo-700 text-white w-16 h-16 rounded-full shadow-lg flex items-center justify-center text-sm font-semibold transition-transform hover:scale-105">
+  💬 Chat
+</button>
+  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h5m-5 4h8M5 20l-1-4 1-4m14 8l1-4-1-4M5 20h14" />
+  </svg>
+</button>
+
+<!-- Chatbot Popup Panel -->
+<div id="chatbot-popup" class="hidden fixed bottom-20 right-6 z-50 w-96 max-w-[90vw] bg-white border border-gray-300 rounded-lg shadow-xl overflow-hidden">
+  <div class="bg-indigo-600 text-white px-4 py-2 text-sm font-semibold flex justify-between items-center">
+    <span>MediPulse Chatbot</span>
+    <button id="chatbot-close" class="text-white hover:text-gray-300 text-xl leading-none">&times;</button>
+  </div>
+  <iframe src="{{site.baseurl}}/hospital-chat" class="w-full h-[450px] border-none"></iframe>
+</div>
+
+<!-- Chatbot Toggle Script -->
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const fab = document.getElementById("chatbot-fab");
+    const popup = document.getElementById("chatbot-popup");
+    const closeBtn = document.getElementById("chatbot-close");
+
+    fab.addEventListener("click", () => {
+      popup.classList.toggle("hidden");
+    });
+
+    closeBtn.addEventListener("click", () => {
+      popup.classList.add("hidden");
+    });
+  });
 </script>
