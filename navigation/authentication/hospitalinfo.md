@@ -487,14 +487,26 @@ menu: nav/home.html
                           <svg class="h-5 w-5 text-amber-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                           </svg>
-                          <span class="text-gray-800 leading-relaxed">${typeof item === 'object' ? (item.title || item.text || JSON.stringify(item)) : item}</span>
+                          <span class="text-gray-800 leading-relaxed">
+                            ${typeof item === 'object' ? 
+                              (item.name || item.title || '') + 
+                              (item.year ? ` (${item.year})` : '') + 
+                              (item.description ? `: ${item.description}` : '') : 
+                              item}
+                          </span>
                         </li>
                       `).join('') :
                       `<li class="flex items-start rounded-lg p-2 bg-amber-50">
                         <svg class="h-5 w-5 text-amber-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                           <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                         </svg>
-                        <span class="text-gray-800 leading-relaxed">${typeof realTimeInfo.achievements === 'object' ? (realTimeInfo.achievements.title || realTimeInfo.achievements.text || JSON.stringify(realTimeInfo.achievements)) : realTimeInfo.achievements}</span>
+                        <span class="text-gray-800 leading-relaxed">
+                          ${typeof realTimeInfo.achievements === 'object' ? 
+                            (realTimeInfo.achievements.name || realTimeInfo.achievements.title || '') + 
+                            (realTimeInfo.achievements.year ? ` (${realTimeInfo.achievements.year})` : '') + 
+                            (realTimeInfo.achievements.description ? `: ${realTimeInfo.achievements.description}` : '') : 
+                            realTimeInfo.achievements}
+                        </span>
                       </li>`
                     }
                   </ul>
