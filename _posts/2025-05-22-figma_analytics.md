@@ -1,8 +1,8 @@
 ---
-layout: notebookbase
-title: Data Analytics Feature
+layout: tailwind
+title: Figma - Analytics Page
 description: Figma description of your analytics and optimization page
-permalink: /notebooks/figma-user/
+permalink: /notebooks/figma/analytics
 ---
 
 # 🩺 MediPulse – Video Analytics & Optimization Dashboard (Figma Design)

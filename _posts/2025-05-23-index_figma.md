@@ -1,8 +1,8 @@
 ---
-layout: notebookbase
-title: Data Analytics Feature
+layout: tailwind
+title: Figma - Index page
 description: Figma description of your users page
-permalink: /notebooks/figma-profile/
+permalink: /notebooks/figma/index/
 ---
 
 # MediPulse – User Profile, Hospital Info, and Welcome Pages (Figma Design)

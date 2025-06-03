@@ -1,8 +1,8 @@
 ---
-layout: notebookbase
-title: Data Analytics Feature
+layout: tailwind
+title: Data Search
 description: Description of the new data analytics feature
-permalink: /notebooks/data-search/
+permalink: /notebooks/figma/search
 ---
 # Hospital Search Interface
 
