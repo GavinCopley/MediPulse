@@ -170,40 +170,37 @@ let videoChart;
 
 async function fetchChannelFiles() {
   try {
-    console.log("Fetching YouTube files from:", `${pythonURI}/api/youtube/files`);
-    const res = await fetch(`${pythonURI}/api/youtube/files`, {
+    const response = await fetch(`${pythonURI}/api/youtube/files`, {
       method: 'GET',
       mode: 'cors',
-      cache: 'no-cache',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        'Accept': 'application/json',
+        'X-Origin': 'client'
       }
     });
-    console.log("Raw response:", res);
-    const json = await res.json();
-    console.log("YouTube files response:", json);
     
-    if (!json.success) {
-      console.error("Error fetching files:", json.error);
-      return;
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    
+    const result = await response.json();
+    
+    if (!result.success) {
+      throw new Error(result.error || "Failed to load files");
     }
 
-    const files = json.files;
+    const files = result.files;
     if (!files || files.length === 0) {
-      console.log("No YouTube files found");
       return;
     }
-
-    console.log("Found YouTube files:", files);
 
     // Update dropdowns
     channel1Select.innerHTML = files.map(f => `<option value="${f}">${f.replace('.csv','')}</option>`).join('');
     channel2Select.innerHTML = files.map(f => `<option value="${f}">${f.replace('.csv','')}</option>`).join('');
     channel1Select.value = files[0];
     channel2Select.value = files[1] || files[0];
-    
-    console.log("Selected initial files:", channel1Select.value, channel2Select.value);
     
     // Update chart with initial data
     await updateVideoChart();
@@ -214,27 +211,32 @@ async function fetchChannelFiles() {
 
 async function fetchChannelData(filename) {
   try {
-    console.log("Fetching data for file:", filename);
-    const url = `${pythonURI}/api/youtube/data/${filename}`;
-    console.log("Request URL:", url);
-    const res = await fetch(url, {
+    const response = await fetch(`${pythonURI}/api/youtube/data/${filename}`, {
       method: 'GET',
       mode: 'cors',
-      cache: 'no-cache',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        'Accept': 'application/json',
+        'X-Origin': 'client'
       }
     });
-    console.log("Raw response:", res);
-    const json = await res.json();
-    console.log("Response data:", json);
     
-    if (!json.success || !json.data) {
-      console.error(`Error fetching data for ${filename}:`, json.error);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    
+    const result = await response.json();
+    
+    if (!result.success) {
+      throw new Error(result.error || "Failed to load data");
+    }
+    
+    if (!result.data) {
       return [];
     }
-    return normalize(json.data);
+    
+    return normalize(result.data);
   } catch (error) {
     console.error(`Error fetching channel data for ${filename}:`, error);
     return [];
