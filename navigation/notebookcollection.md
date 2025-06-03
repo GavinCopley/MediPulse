@@ -78,5 +78,27 @@ menu: nav/home.html
             </div>
         </div>
         <!-- Add more cards here as you add more notebooks -->
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+            <div class="p-6">
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">
+                    <a href="{{site.baseurl}}/notebooks/figma-user/" class="hover:text-blue-600 transition-colors duration-300">
+                        Analytics and Optimization Figma
+                    </a>
+                </h3>
+                <p class="text-gray-600 mb-4">Figma design for frontend video analytics and optimization</p>
+                <div class="flex items-center justify-between mt-4">
+                    <span class="text-sm text-gray-500">
+                        February 20, 2025
+                    </span>
+                    <a href="{{ site.baseurl }}/notebooks/figma-user/" 
+                       class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-300">
+                        View Notebook
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                        <svg?
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
