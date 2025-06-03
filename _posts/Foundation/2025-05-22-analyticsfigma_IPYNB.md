@@ -1,7 +1,7 @@
 ---
 layout: notebookbase
 title: Data Analytics Feature
-description: Figma description of your users page
+description: Figma description of your analytics and optimization page
 permalink: /notebooks/figma-user/
 ---
 
