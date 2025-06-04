@@ -21,7 +21,6 @@ MediPulse is built using modern web technologies and follows best practices for 
 
 The MediPulse platform requires a modern development environment with the following components:
 
-- Node.js and npm for frontend development
 - Python for data analysis and AI components
 - YouTube Data API credentials
 - GitHub account for version control and deployment
@@ -58,9 +57,20 @@ LOG_FILE = /tmp/jekyll$(PORT).log
 
 ## Development Environment Setup
 
-Comprehensive start. A topic-by-topic guide to getting this project running is published [here](https://nighthawkcoders.github.io/portfolio_2025/devops/tools/home).
+To isolate dependencies and ensure a clean development environment, it's recommended to use a Python virtual environment. Follow these steps:
 
-Quick start.  A quick start below is a reminder, but is dependent on your knowledge.  Only follow this instruction if you need a refresher.  Always default to the comprehensive start if any problem occurs.
+1. Navigate to the repository root directory:
+   ```bash
+   cd <repo-dir>
+
+2. Create Environment
+  python -m venv venv
+
+3. Activate environment
+  source venv/bin/activate
+
+4. Install Packages
+  pip install -r requirements.txt
 
 #### Clone Repo
 
