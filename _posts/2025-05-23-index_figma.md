@@ -2,6 +2,7 @@
 layout: tailwind
 title: Figma - Index page
 description: Figma description of your users page
+menu: nav/home.html
 permalink: /notebooks/figma/index/
 ---
 

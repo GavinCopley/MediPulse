@@ -2,6 +2,7 @@
 layout: tailwind
 title: Data Analytics Feature
 description: Description of the new data analytics feature 
+menu: nav/home.html
 permalink: /notebooks/data_analytics/
 ---
 

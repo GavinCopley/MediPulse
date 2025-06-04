@@ -2,6 +2,7 @@
 layout: tailwind
 title: Hospitals For You
 description: Description of the machine learning  
+menu: nav/home.html
 permalink: /notebooks/hospitalsforyou/
 ---
 

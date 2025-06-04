@@ -2,6 +2,7 @@
 layout: tailwind
 title: Figma - Analytics Page
 description: Figma description of your analytics and optimization page
+menu: nav/home.html
 permalink: /notebooks/figma/analytics
 ---
 
