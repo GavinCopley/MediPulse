@@ -7,9 +7,11 @@
 
         <!-- Right Section - Navigation & Login -->
         <div class="flex items-center space-x-8">
+            <!-- Documentation Link - Always visible -->
+            <a href="{{site.baseurl}}/documentation" class="text-black hover:text-indigo-600 text-lg font-medium">Documentation</a>
+            
             <!-- Navigation Links - Only visible when authenticated -->
             <div id="auth-nav-links" style="display: none;">
-                <a href="{{site.baseurl}}/documentation" class="text-black hover:text-indigo-600 text-lg font-medium">Documentation</a>
                 <a href="{{site.baseurl}}/hospitalforyou" class="text-black hover:text-indigo-600 text-lg font-medium mr-8">Hospitals For You</a>
                 <a href="{{site.baseurl}}/optimize" class="text-black hover:text-indigo-600 text-lg font-medium">Optimize</a>
             </div>
