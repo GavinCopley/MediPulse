@@ -8,7 +8,7 @@ permalink: /notebooks/summary_dashboard/
 
 <div class="max-w-5xl mx-auto px-6 py-12 bg-white rounded-lg shadow-md text-gray-800 space-y-12">
 
-<h1 class="text-3xl font-bold text-blue-700">📊 Summary Dashboard: Hospital & YouTube Data Comparison</h1>
+<h1 class="text-3xl font-bold text-blue-700"> Summary Dashboard: Hospital & YouTube Data Comparison</h1>
 
 <p class="text-lg text-gray-600 leading-relaxed">
   This dashboard allows users to explore and compare hospital performance metrics and YouTube engagement statistics using a dynamic, tabbed interface built with Flask, TailwindCSS, and Chart.js.
@@ -16,7 +16,7 @@ permalink: /notebooks/summary_dashboard/
 
 <hr class="border-t border-gray-300" />
 
-<h2 class="text-2xl font-semibold text-gray-700">🖥️ Frontend Overview</h2>
+<h2 class="text-2xl font-semibold text-gray-700">Frontend Overview</h2>
 
 <ul class="list-disc list-inside text-gray-600 space-y-2">
   <li><strong>Tabbed Interface</strong>: Easily switch between hospital data and YouTube analytics.</li>
@@ -27,7 +27,7 @@ permalink: /notebooks/summary_dashboard/
 <div class="space-y-8 mt-6">
 
   <div>
-    <h3 class="text-xl font-bold text-gray-700 mb-1">🏥 Hospital Comparison</h3>
+    <h3 class="text-xl font-bold text-gray-700 mb-1"> Hospital Comparison</h3>
     <span class="text-sm italic text-blue-600 block mb-2">(Frontend + Backend)</span>
     <ul class="list-disc list-inside text-gray-600 space-y-1">
       <li>Data Source: <code>GET /api/comparison</code> → reads from <code>data/comparisondata.csv</code></li>
@@ -44,7 +44,7 @@ permalink: /notebooks/summary_dashboard/
   </div>
 
   <div>
-    <h3 class="text-xl font-bold text-gray-700 mb-1">📺 YouTube Comparison</h3>
+    <h3 class="text-xl font-bold text-gray-700 mb-1"> YouTube Comparison</h3>
     <span class="text-sm italic text-indigo-600 block mb-2">(Frontend + Backend)</span>
     <ul class="list-disc list-inside text-gray-600 space-y-1">
       <li>File Selection: <code>GET /api/youtube/files</code> lists available CSVs in <code>/data/yt/</code></li>
@@ -66,12 +66,12 @@ permalink: /notebooks/summary_dashboard/
 
 <hr class="border-t border-gray-300" />
 
-<h2 class="text-2xl font-semibold text-gray-700">🔌 Backend API Endpoints</h2>
+<h2 class="text-2xl font-semibold text-gray-700"> Backend API Endpoints</h2>
 
 <div class="space-y-6 mt-4">
 
   <div>
-    <h3 class="text-xl font-bold text-gray-700">📍 <code>/api/comparison</code> (GET)</h3>
+    <h3 class="text-xl font-bold text-gray-700"> <code>/api/comparison</code> (GET)</h3>
     <p class="text-gray-600 mt-2">Reads hospital metrics from <code>data/comparisondata.csv</code> and returns a normalized JSON response.</p>
     <pre class="bg-gray-100 p-4 rounded text-sm overflow-x-auto">
 {
@@ -91,7 +91,7 @@ permalink: /notebooks/summary_dashboard/
   </div>
 
   <div>
-    <h3 class="text-xl font-bold text-gray-700">📍 <code>/api/youtube/files</code> (GET)</h3>
+    <h3 class="text-xl font-bold text-gray-700"> <code>/api/youtube/files</code> (GET)</h3>
     <p class="text-gray-600 mt-2">Returns a list of available CSV datasets in the <code>/data/yt/</code> directory.</p>
     <pre class="bg-gray-100 p-4 rounded text-sm overflow-x-auto">
 {
@@ -102,7 +102,7 @@ permalink: /notebooks/summary_dashboard/
   </div>
 
   <div>
-    <h3 class="text-xl font-bold text-gray-700">📍 <code>/api/youtube/data/&lt;filename&gt;</code> (GET)</h3>
+    <h3 class="text-xl font-bold text-gray-700"> <code>/api/youtube/data/&lt;filename&gt;</code> (GET)</h3>
     <p class="text-gray-600 mt-2">Reads and processes the specified CSV file, returning cleaned data for visualization.</p>
     <pre class="bg-gray-100 p-4 rounded text-sm overflow-x-auto">
 {
@@ -124,7 +124,7 @@ permalink: /notebooks/summary_dashboard/
 
 <hr class="border-t border-gray-300 my-8" />
 
-<h2 class="text-xl font-semibold text-gray-700">✨ Interactive Exploration Tips</h2>
+<h2 class="text-xl font-semibold text-gray-700"> Interactive Exploration Tips</h2>
 
 <ul class="list-disc list-inside text-gray-600 space-y-2">
   <li>Use the dropdowns to explore new combinations of data.</li>
