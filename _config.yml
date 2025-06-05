@@ -20,7 +20,7 @@ header_pages:
   - navigation/authentication/MLhospital.md
   - navigation/dataAnalytics.md
 
-Server: https://medipulse-832734119496.us-west2.run.app
+Server: https://medipulse.opencodingsociety.com/
 Domain: medipulse-832734119496.us-west2.run.app
 Subdomain: medipulse-832734119496.us-west2
 
