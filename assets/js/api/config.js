@@ -1,18 +1,18 @@
 export var pythonURI;
 if (location.hostname === "localhost") {
-        pythonURI = "https://MediPulse.opencodingsociety.com";
+        pythonURI = "https://medipulse.opencodingsociety.com/";
 } else if (location.hostname === "127.0.0.1") {
-        pythonURI = "https://MediPulse.opencodingsociety.com";
+        pythonURI = "https://medipulse.opencodingsociety.com/";
 } else {
-        pythonURI =  "https://MediPulse.opencodingsociety.com";
+        pythonURI =  "https://medipulse.opencodingsociety.com/";
 }
 export var javaURI;
 if (location.hostname === "localhost") {
-        javaURI = "https://MediPulse.opencodingsociety.com";
+        javaURI = "https://medipulse.opencodingsociety.com/";
 } else if (location.hostname === "127.0.0.1") {
-        javaURI = "https://MediPulse.opencodingsociety.com"; //rey
+        javaURI = "https://medipulse.opencodingsociety.com/"; //rey
 } else {
-        javaURI = "https://MediPulse.opencodingsociety.com";
+        javaURI = "https://medipulse.opencodingsociety.com/";
 }
 
 export const fetchOptions = {
