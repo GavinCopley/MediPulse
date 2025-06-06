@@ -20,7 +20,7 @@ header_pages:
   - navigation/authentication/MLhospital.md
   - navigation/dataAnalytics.md
 
-Server: https://medipulse.opencodingsociety.com/
-Domain: https://medipulse.opencodingsociety.com/
-Subdomain: https://medipulse.opencodingsociety.com/
+Server: http://127.0.0.1:8135/
+Domain: http://127.0.0.1:8135/
+Subdomain: http://127.0.0.1:8135/
 

@@ -101,7 +101,7 @@ menu: nav/home.html
 </div>
 
 <script>
-  const pythonURI = "https://medipulse.opencodingsociety.com/";
+  const pythonURI = "http://127.0.0.1:8135/";
   
   document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('search-form');
