@@ -46,7 +46,7 @@ permalink: /socials
       <h3 class="text-xl font-semibold text-purple-600">Thomas Bao</h3>
       <p class="text-slate-600 text-center">Full Stack Developer</p>
       <div class="mt-2 p-2 bg-purple-50 rounded-lg">
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=placeholder-thomas" alt="Thomas's QR Code" class="w-24 h-24" />
+        <img src="{{site.baseurl}}/images/thomasqr1.png" alt="Thomas's QR Code" class="w-24 h-24" />
       </div>
     </div>
     <div class="bg-white rounded-2xl border border-sky-200 shadow-lg p-6 flex flex-col items-center space-y-4 hover:shadow-xl transition-shadow duration-300">
@@ -54,7 +54,7 @@ permalink: /socials
       <h3 class="text-xl font-semibold text-sky-600">Jacob Zierolf</h3>
       <p class="text-slate-600 text-center">Deployment Manager</p>
       <div class="mt-2 p-2 bg-sky-50 rounded-lg">
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=placeholder-jacob" alt="Jacob's QR Code" class="w-24 h-24" />
+        <img src="{{site.baseurl}}/images/jacobqr.png" alt="Jacob's QR Code" class="w-24 h-24" />
       </div>
     </div>
     <div class="bg-white rounded-2xl border border-cyan-200 shadow-lg p-6 flex flex-col items-center space-y-4 hover:shadow-xl transition-shadow duration-300">
