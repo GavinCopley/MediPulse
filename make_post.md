@@ -55,11 +55,11 @@ permalink: /make_post
 <script type="module">
   let pythonURI;
   if (location.hostname === "localhost") {
-    pythonURI = "http://127.0.0.1:8135/";
+    pythonURI = "http://127.0.0.1:8115/";
   } else if (location.hostname === "127.0.0.1") {
-    pythonURI = "http://127.0.0.1:8135/";
+    pythonURI = "http://127.0.0.1:8115/";
   } else {
-    pythonURI = "http://127.0.0.1:8135/";
+    pythonURI = "http://127.0.0.1:8115/";
   }
 
   async function createPost(post) {

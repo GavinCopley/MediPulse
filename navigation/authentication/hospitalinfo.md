@@ -101,7 +101,7 @@ menu: nav/home.html
 </div>
 
 <script>
-  const pythonURI = "http://127.0.0.1:8135/";
+  const pythonURI = "http://127.0.0.1:8115/";
   
   document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('search-form');

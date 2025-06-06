@@ -1,18 +1,18 @@
 export var pythonURI;
 if (location.hostname === "localhost") {
-        pythonURI = "http://127.0.0.1:8135/";
+        pythonURI = "http://127.0.0.1:8115/";
 } else if (location.hostname === "127.0.0.1") {
-        pythonURI = "http://127.0.0.1:8135/";
+        pythonURI = "http://127.0.0.1:8115/";
 } else {
-        pythonURI =  "http://127.0.0.1:8135/";
+        pythonURI =  "http://127.0.0.1:8115/";
 }
 export var javaURI;
 if (location.hostname === "localhost") {
-        javaURI = "http://127.0.0.1:8135/";
+        javaURI = "http://127.0.0.1:8115/";
 } else if (location.hostname === "127.0.0.1") {
-        javaURI = "http://127.0.0.1:8135/"; //rey
+        javaURI = "http://127.0.0.1:8115/"; //rey
 } else {
-        javaURI = "http://127.0.0.1:8135/";
+        javaURI = "http://127.0.0.1:8115/";
 }
 
 export const fetchOptions = {
