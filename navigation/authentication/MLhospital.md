@@ -285,7 +285,7 @@ const landmarks=[
 let userMap,userMarker,chosen;
 let landmarkMap,landmarkTemp,pickMap,pickMarker,hospMap,routeCtl;
 let selectedIssue='',numResults=3;
-const apiURL='http://127.0.0.1:8115/api/predict';
+const apiURL='https://medipulse.opencodingsociety.com/api/predict';
 
 
 /*==== PROGRESS ====*/

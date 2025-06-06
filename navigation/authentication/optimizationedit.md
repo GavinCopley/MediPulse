@@ -1055,7 +1055,7 @@ menu: nav/home.html
             console.log("Sending data to optimization API:", videoData);
             
             // Make API request to the optimization service
-            fetch("http://127.0.0.1:8115//api/optimize", {
+            fetch("https://medipulse.opencodingsociety.com//api/optimize", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify(videoData)
@@ -1674,7 +1674,7 @@ menu: nav/home.html
         publish_hour: publishDate.getHours()
       };
       
-      fetch("http://127.0.0.1:8115//api/optimize", {
+      fetch("https://medipulse.opencodingsociety.com//api/optimize", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedData)

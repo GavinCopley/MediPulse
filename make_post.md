@@ -55,11 +55,11 @@ permalink: /make_post
 <script type="module">
   let pythonURI;
   if (location.hostname === "localhost") {
-    pythonURI = "http://127.0.0.1:8115/";
+    pythonURI = "https://medipulse.opencodingsociety.com/";
   } else if (location.hostname === "127.0.0.1") {
-    pythonURI = "http://127.0.0.1:8115/";
+    pythonURI = "https://medipulse.opencodingsociety.com/";
   } else {
-    pythonURI = "http://127.0.0.1:8115/";
+    pythonURI = "https://medipulse.opencodingsociety.com/";
   }
 
   async function createPost(post) {
