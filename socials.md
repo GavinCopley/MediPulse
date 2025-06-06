@@ -22,7 +22,7 @@ permalink: /socials
       <h3 class="text-xl font-semibold text-indigo-600">Gavin Copley</h3>
       <p class="text-slate-600 text-center">Lead Developer and Scrum Master</p>
       <div class="mt-2 p-2 bg-indigo-50 rounded-lg">
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=placeholder-gavin" alt="Gavin's QR Code" class="w-24 h-24" />
+        <img src="{{site.baseurl}}/images/gavin_vcard.png" alt="Gavin's QR Code" class="w-24 h-24" />
       </div>
     </div>
     <div class="bg-white rounded-2xl border border-blue-200 shadow-lg p-6 flex flex-col items-center space-y-4 hover:shadow-xl transition-shadow duration-300">
