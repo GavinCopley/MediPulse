@@ -329,7 +329,9 @@ menu: nav/home.html
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       /* ══ Constants & helpers ═════════════════════════════ */
-      const API_BASE_URL = "http://localhost:8115";
+      // Get the base URL for API calls - using relative paths to work on any deployment
+      const pythonURI = window.location.origin;
+      
       const clamp = x => Math.max(0, Math.min(x, 99)); // Cap at 99 instead of 100
       const formatTime = secs => `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, "0")}`;
 
@@ -520,7 +522,17 @@ menu: nav/home.html
 
         loading.style.display = "flex";
         try {
-          const r = await fetch(`${API_BASE_URL}/api/optimize`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
+          const r = await fetch(`${pythonURI}/api/optimize`, { 
+            method: "POST", 
+            cache: "default",
+            mode: "cors",
+            credentials: "include",
+            headers: { 
+              "Content-Type": "application/json",
+              "X-Origin": "client"
+            }, 
+            body: JSON.stringify(payload) 
+          });
           const resTxt = await r.text();
           const res = JSON.parse(resTxt.replace(/\bNaN\b/g, "null"));
           loading.style.display = "none";
